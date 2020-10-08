@@ -4,6 +4,8 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 
+import java.util.ArrayList;
+
 public class PaulMath extends FeatureManager {
 
     public static float highestValue(float[] array) {
@@ -67,5 +69,35 @@ public class PaulMath extends FeatureManager {
         return Math.abs(one - two);
     }
 
+    public static String camelToSnake(String camel) {
+        ArrayList<String> words = new ArrayList<String>();
 
+        String currentWord = "";
+        for(char letter : camel.toCharArray()) {
+
+            if(Character.isUpperCase(letter)) {
+                //if multiple uppercase in a row, don't break words
+                if(!currentWord.toUpperCase().equals(currentWord)) {
+                    words.add(currentWord);
+                    currentWord = "";
+                }
+            }
+
+            currentWord += letter;
+
+
+        }
+        //add the final word if it's relevant
+        if(!currentWord.equals("")) words.add(currentWord);
+
+        //join into snake
+        String snakey = "";
+        for(int i = 0; i < words.size(); i++) {
+            snakey += words.get(i);
+            //if it's not the last word, add the underscore
+            if(i + 1 < words.size()) snakey += "_";
+        }
+
+        return snakey.toUpperCase();
+    }
 }

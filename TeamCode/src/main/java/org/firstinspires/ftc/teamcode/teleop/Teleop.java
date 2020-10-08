@@ -5,7 +5,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.auxilary.controlmaps.BasicDrivingControlMap;
 import org.firstinspires.ftc.teamcode.managers.ColorSensor;
+import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 import org.firstinspires.ftc.teamcode.managers.InputManager;
 import org.firstinspires.ftc.teamcode.managers.MovementManager;
 
@@ -27,19 +29,22 @@ public class Teleop extends OpMode {
                 hardwareMap.get(DcMotor.class, "br"));
 //        sensor = new ColorSensor(hardwareMap.get(NormalizedColorSensor.class, "sensor"));
         grab = hardwareMap.get(Servo.class, "grab");
-        input = new InputManager(gamepad1);
+        input = new InputManager(gamepad1, new BasicDrivingControlMap());
         driver.resetEncoders();
         driver.runUsingEncoders();
+
+        FeatureManager.logger = telemetry.log();
     }
 
     public void loop() {
+        input.update();
         if(!input.getGamepad().left_bumper) {
-            driver.driveOmni(input.getMovementControls());
+            driver.driveOmni(input.getVector("drive"));
         } else {
-            driver.driveOmniExponential(input.getMovementControls());
+            driver.driveOmniExponential(input.getVector("drive"));
         }
 
-        grab.setPosition(input.generalToggle("a", 0f, 1f));
+        grab.setPosition(input.getScalar("grab"));
 
 
         telemetry.addData("FL Ticks:", driver.frontLeft.getCurrentPosition());
