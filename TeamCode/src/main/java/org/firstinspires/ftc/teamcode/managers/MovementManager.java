@@ -14,6 +14,8 @@ public class MovementManager extends FeatureManager {
     public DcMotor backLeft;
     public DcMotor backRight;
 
+    private static float speed = 1.0f;
+
     /**
      * Create a MovementManager with four motors.
      * @param fl Front Left motor
@@ -21,13 +23,6 @@ public class MovementManager extends FeatureManager {
      * @param br Back Right motor
      * @param bl Back Left motor
      */
-
-    private static float speed = 1.0f;
-    private int avg;
-
-
-    private LinearOpMode opMode;
-
     public MovementManager(DcMotor fl, DcMotor fr, DcMotor br, DcMotor bl) {
         this.frontLeft = fl;
         this.frontRight = fr;
