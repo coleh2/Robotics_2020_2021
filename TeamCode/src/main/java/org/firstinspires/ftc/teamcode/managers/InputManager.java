@@ -47,7 +47,7 @@ public class InputManager extends FeatureManager {
         return controlModel.get(name).res(gamepadHistory);
     }
 
-    public boolean getKey(String name) {
+    public boolean getBoolean(String name) {
         return controlModel.get(name).res(gamepadHistory)[0] != 0;
     }
 
