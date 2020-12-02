@@ -44,7 +44,9 @@ public class InputManager extends FeatureManager {
     }
 
     public float[] getVector(String name) {
+        if(controlModel.get(name) == null) throw new IllegalArgumentException();
         return controlModel.get(name).res(gamepadHistory);
+
     }
 
     public boolean getBoolean(String name) {

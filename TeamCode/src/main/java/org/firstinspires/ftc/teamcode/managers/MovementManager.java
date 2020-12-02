@@ -28,8 +28,8 @@ public class MovementManager extends FeatureManager {
         this.frontRight = fr;
         this.backRight = br;
         this.backLeft = bl;
-        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     public void driveRaw(float fl, float fr, float br, float bl) {

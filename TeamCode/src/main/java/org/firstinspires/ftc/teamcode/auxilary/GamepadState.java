@@ -77,7 +77,7 @@ public class GamepadState {
         this.time = System.currentTimeMillis();
 
         this.history = history;
-        history.history = null;
+        if(history != null) history.history = null;
     }
 
     /**

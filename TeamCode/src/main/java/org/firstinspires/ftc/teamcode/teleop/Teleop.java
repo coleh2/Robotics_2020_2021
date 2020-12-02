@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.auxilary.controlmaps.BasicDrivingControlMap;
 import org.firstinspires.ftc.teamcode.managers.ColorSensor;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
+import org.firstinspires.ftc.teamcode.managers.ImuManager;
 import org.firstinspires.ftc.teamcode.managers.InputManager;
 import org.firstinspires.ftc.teamcode.managers.MovementManager;
 
@@ -19,6 +20,7 @@ public class Teleop extends OpMode {
     MovementManager driver;
     ColorSensor sensor;
     Servo grab;
+    ImuManager imu;
 
     private static boolean toggleSpeed = false;
 
@@ -27,9 +29,9 @@ public class Teleop extends OpMode {
                 hardwareMap.get(DcMotor.class, "fr"),
                 hardwareMap.get(DcMotor.class, "bl"),
                 hardwareMap.get(DcMotor.class, "br"));
-//        sensor = new ColorSensor(hardwareMap.get(NormalizedColorSensor.class, "sensor"));
-        grab = hardwareMap.get(Servo.class, "grab");
         input = new InputManager(gamepad1, new BasicDrivingControlMap());
+        imu = new ImuManager(hardwareMap.get(com.qualcomm.hardware.bosch.BNO055IMU.class, "imu"));
+
         driver.resetEncoders();
         driver.runUsingEncoders();
 
@@ -44,8 +46,6 @@ public class Teleop extends OpMode {
             driver.driveOmniExponential(input.getVector("drive"));
         }
 
-        grab.setPosition(input.getScalar("grab"));
-
 
         telemetry.addData("FL Ticks:", driver.frontLeft.getCurrentPosition());
         telemetry.addData("FR Ticks:", driver.frontRight.getCurrentPosition());
@@ -55,8 +55,6 @@ public class Teleop extends OpMode {
                 driver.frontRight.getCurrentPosition()+
                 driver.backLeft.getCurrentPosition()+
                 driver.backRight.getCurrentPosition())/4);
-
-        telemetry.addData("Servo Position", grab.getPosition());
 
         telemetry.addData("FL Power: ", driver.frontLeft.getPower());
         telemetry.addData("FL Port: ", driver.frontLeft.getPortNumber());
@@ -69,5 +67,7 @@ public class Teleop extends OpMode {
 
         telemetry.addData("BR Power: ", driver.backRight.getPower());
         telemetry.addData("BR Port: ", driver.backRight.getPortNumber());
+
+        telemetry.addData("Orientation", imu.getOrientation().toString());
     }
 }

@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.managers.InputManager;
 import org.firstinspires.ftc.teamcode.managers.MovementManager;
 
 
-@TeleOp
+@TeleOp(group = "testOpmodes")
 public class ImuTester extends OpMode {
 
     ImuManager imu;
@@ -27,5 +27,6 @@ public class ImuTester extends OpMode {
     public void loop() {
 
         FeatureManager.logger.add("IMU Orientation: " + imu.getOrientation().toString());
+        FeatureManager.logger.add("IMU Acceleration: " + imu.getLinearAcceleration().toString());
     }
 }

@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.managers;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 
+import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -29,5 +30,9 @@ public class ImuManager {
      */
     public Orientation getOrientation() {
         return imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+    }
+
+    public Acceleration getLinearAcceleration() {
+        return imu.getLinearAcceleration();
     }
 }
