@@ -26,11 +26,11 @@ Every function has a given argument count. You can see detailed info for all fun
 
 Controls has 3 basic data types, all of which are automatically coerced/casted/converted into whatever value is needed.
 
-* Vector
+* **Vector**  
   Vectors are float arrays. They are converted into floats by taking the first element (`vector[0]`).
-* Scalar
+* **Scalar**  
   Scalars are floats. They are converted into vectors with `[scalar]` and booleans with `scalar != 0.0f`.
-* Booleans
+* **Booleans**  
   Booleans are... booleans. They are converted into scalars by using `bool ? 1f : 0f`-- if true, 1; otherwise, 0.
   
 By using these conversions, any type can be converted into any other. 
