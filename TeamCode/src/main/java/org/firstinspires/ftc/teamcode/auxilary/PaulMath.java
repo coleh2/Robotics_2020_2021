@@ -91,13 +91,13 @@ public class PaulMath extends FeatureManager {
         if(!currentWord.equals("")) words.add(currentWord);
 
         //join into snake
-        String snakey = "";
+        StringBuilder snakey = new StringBuilder();
         for(int i = 0; i < words.size(); i++) {
-            snakey += words.get(i);
+            snakey.append(words.get(i));
             //if it's not the last word, add the underscore
-            if(i + 1 < words.size()) snakey += "_";
+            if(i + 1 < words.size()) snakey.append("_");
         }
 
-        return snakey.toUpperCase();
+        return snakey.toString().toUpperCase();
     }
 }
