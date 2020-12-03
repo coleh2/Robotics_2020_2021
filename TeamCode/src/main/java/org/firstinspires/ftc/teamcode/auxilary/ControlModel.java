@@ -181,7 +181,6 @@ public class ControlModel {
                 pointer++;
                 String varName = tokens[pointer];
                 this.value = model.variables.register(varName, this.name);
-                return;
             }
             StringBuilder srcSoFar = new StringBuilder();
             //find the end of this method, with all variables
