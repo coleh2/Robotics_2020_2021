@@ -50,7 +50,7 @@ public class BasicDrivingControlMap extends ControlMap {
         * [AND](#and)
         * [OR](#or)
         * [TERNARY](#ternary)
-      - [IF](#if)
+        * [IF](#if)
         * [SCALE](#scale)
         * [DUMMY](#dummy)
         * [NULL](#null)
