@@ -57,7 +57,7 @@ public class BasicDrivingControlMap extends ControlMap {
         * [LITERAL](#literal)
         * [SET_VARIABLE & GET_VARIABLE](#set-variable---get-variable)
         * [GREATER_THAN](#greater-than)
-      - [LESS_THAN](#less-than)
+        * [LESS_THAN](#less-than)
 
 ## More Detail
 
@@ -397,7 +397,7 @@ Returns whether the first argument is greater than the second argument. Returns 
 greaterThan(rightTrigger, 0.5)
 ```
 
-#### LESS_THAN
+##### LESS_THAN
 
 Returns whether the first argument is less than the second argument. Returns boolean, 2 arguments.
 
