@@ -285,9 +285,15 @@ public class ControlModel {
                     case DUMMY:
                         return children[0].res(state);
                     case GREATER_THAN:
-                        return new float[] { children[0].res(state)[0] > children[0].res(state)[1] ? 1f : 0f};
+                        return new float[] { children[0].res(state)[0] > children[1].res(state)[0] ? 1f : 0f};
                     case LESS_THAN:
-                        return new float[] { children[0].res(state)[0] < children[0].res(state)[1] ? 1f : 0f};
+                        return new float[] { children[0].res(state)[0] < children[1].res(state)[0] ? 1f : 0f};
+                    case OR:
+                        return new float[] {
+                                (children[0].res(state)[0] != 0 || children[1].res(state)[0] != 0) ? 1f : 0f};
+                    case AND:
+                        return new float[] {
+                                (children[0].res(state)[0] != 0 && children[1].res(state)[0] != 0) ? 1f : 0f};
                     case NULL:
                     default:
                         return new float[]{0f};
@@ -342,7 +348,8 @@ public class ControlModel {
 
         NOT("Middleware", 1), TERNARY("Middleware", 3), IF("Middleware", 3), SCALE("Middleware", 2),
         DUMMY("Middleware", 1), NULL("Middleware", 0), LITERAL("Middleware", 1), SET_VARIABLE("Middleware", 1),
-        GET_VARIABLE("Middleware", 0), GREATER_THAN("Middleware", 2), LESS_THAN("Middleware", 2);
+        GET_VARIABLE("Middleware", 0), GREATER_THAN("Middleware", 2), LESS_THAN("Middleware", 2), AND("Middleware", 2),
+        OR("Middleware", 2);
 
         public String subtype;
         public int paramCount;

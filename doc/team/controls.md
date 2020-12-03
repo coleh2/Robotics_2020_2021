@@ -20,7 +20,7 @@ separations-- `vector3<scale<leftStickX 0.5> leftStickY rightStickY>` is just as
 `VECTOR3 SCALE LEFT_STICK_X 0.5 LEFT_STICK_Y RIGHT_STICK_Y` The only thing you really have to worry about is making sure that the statement is *one* function.
 `scale(leftStickX, 0.5), leftStickY, rightStickY` is 3 functions, so it is __invalid__.  
 
-Every function has a given argument count. You can see detailed info for all functions in [#Function-Details].
+Every function has a given argument count. You can see detailed info for all functions in [Function Details](#function-details).
 
 ### Data Types
 
@@ -257,9 +257,25 @@ Logical NOT operator. Inverts a boolean. Returns boolean, 1 argument.
 not(a)
 ```
 
+##### AND
+
+Logical AND operator. Returns true if both argument 1 and argument 2 are true. Returns boolean, 2 argument.
+
+```jshelllanguage
+and(a, b)
+```
+
+##### OR
+
+Logical OR operator. Returns whether either argument 1 or argument 2 is true. Returns boolean, 2 argument.
+
+```jshelllanguage
+or(a, b)
+```
+
 ##### TERNARY
 
-The same as (IF)[#IF], for if you feel like being fancy or can't use `if` because of reserved keywords. Returns vector, 3 arguments.
+The same as [IF](#if), for if you feel like being fancy or can't use `if` because of reserved keywords. Returns vector, 3 arguments.
 
 ```jshelllanguage
 ternary(a, rightTrigger, 0.5)
@@ -340,4 +356,6 @@ Returns whether the first argument is less than the second argument. Returns boo
 ```jshelllanguage
 lessThan(rightStickY, 0)
 ```
+
+
 
