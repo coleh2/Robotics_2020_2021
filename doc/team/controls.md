@@ -329,7 +329,7 @@ The same as [IF](#if), for if you feel like being fancy or can't use `if` becaus
 ternary(a, rightTrigger, 0.5)
 ```
 
-#### IF
+##### IF
 
 If first child is false, returns 2nd child. Otherwise, returns 3rd child. Returns vector, 3 arguments.
 
