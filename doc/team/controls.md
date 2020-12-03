@@ -11,6 +11,15 @@ public class BasicDrivingControlMap extends ControlMap {
 }
 ```
 
+Then, hand it to InputManager and it'll handle all the parsing and let you use `getVector`, `getBoolean`, and `getScalar` to grab the results!
+
+```java
+input = new InputManager(gamepad1, new BasicDrivingControlMap());
+
+float[] drivingControls = input.getVector("drive");
+```
+
+
 ## Table of Contents
 
 - [Controls!](#controls-)
