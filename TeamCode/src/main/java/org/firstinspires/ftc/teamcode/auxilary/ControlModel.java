@@ -20,6 +20,8 @@ public class ControlModel {
         this.controls = getControlFields(map.getClass());
     }
 
+    public ControlModel() {}
+
     private HashMap<String, Control> getControlFields(Class mapClass) {
         HashMap<String, Control> result = new HashMap<String, Control>();
         Field[] allDeclaredFields = mapClass.getDeclaredFields();
@@ -38,8 +40,7 @@ public class ControlModel {
     }
 
     public Control get(String name) {
-        Control control = controls.get(name);
-        return control;
+        return controls.get(name);
     }
 
     private void updateVariables(GamepadState state) {
@@ -154,7 +155,7 @@ public class ControlModel {
             int pointer = 0;
             if(tokens[pointer].equals("")) pointer++;
 
-            if(tokens[pointer].matches("[\\d.]+")) {
+            if(tokens[pointer].matches("^[\\d.]+$")) {
                 this.type = ControlType.LITERAL;
                 //inline literals mean that it has to be stepped back 1 token in order to not skip
                 pointer--;
@@ -185,6 +186,20 @@ public class ControlModel {
             StringBuilder srcSoFar = new StringBuilder();
             //find the end of this method, with all variables
             for(int i = pointer + 1; paramsToGo > 0; i++) {
+                //inline literals as arguments need to be parsed differently
+                if(tokens[i].matches("^[\\d.]+$")) {
+                    Control inlineLiteral = new Control(model);
+                    inlineLiteral.type = ControlType.LITERAL;
+                    inlineLiteral.setName(name);
+                    inlineLiteral.children = new Control[0];
+                    inlineLiteral.value = Float.parseFloat(tokens[i]);
+                    children[type.paramCount - lastTopLevelParam] = inlineLiteral;
+
+                    paramsToGo--;
+                    lastTopLevelParam = paramsToGo;
+                    srcSoFar = new StringBuilder();
+                    continue;
+                }
                 ControlType thisTokenType = ControlType.valueOf(PaulMath.camelToSnake(tokens[i]));
                 paramsToGo += thisTokenType.paramCount;
                 paramsToGo--;
@@ -204,7 +219,7 @@ public class ControlModel {
             return res(state, true);
         }
 
-        public float[] res(GamepadState state, boolean recurse) {
+        private float[] res(GamepadState state, boolean recurse) {
             //update variables if we need them
             if(this.containsVariableAccess() && recurse) model.updateVariables(state);
 
@@ -325,6 +340,8 @@ public class ControlModel {
         }
 
         public String toString() {
+            if(this.type == ControlType.LITERAL) return this.value + "";
+
             StringBuilder paramsAsStrings = new StringBuilder();
             for(int i = 0; i < children.length; i++) {
                 paramsAsStrings.append(children[i].toString());

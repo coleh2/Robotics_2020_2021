@@ -25,7 +25,7 @@ public class Teleop extends OpMode {
     private static boolean toggleSpeed = false;
 
     public void init() {
-        FeatureManager.logger = telemetry.log();
+        FeatureManager.logger.setBackend(telemetry.log());
 
         driver = new MovementManager(hardwareMap.get(DcMotor.class, "fl"),
                 hardwareMap.get(DcMotor.class, "fr"),

@@ -19,9 +19,9 @@ public class ImuTester extends OpMode {
     ImuManager imu;
 
     public void init() {
-        imu = new ImuManager(hardwareMap.get(com.qualcomm.hardware.bosch.BNO055IMU.class, "imu"));
+        FeatureManager.logger.setBackend(telemetry.log());
 
-        FeatureManager.logger = telemetry.log();
+        imu = new ImuManager(hardwareMap.get(com.qualcomm.hardware.bosch.BNO055IMU.class, "imu"));
     }
 
     public void loop() {

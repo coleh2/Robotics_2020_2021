@@ -6,6 +6,9 @@ import org.firstinspires.ftc.teamcode.auxilary.*;
 import org.firstinspires.ftc.teamcode.managers.*;
 import org.firstinspires.ftc.teamcode.teleop.*;
 
+import java.io.OutputStream;
+import java.io.PrintStream;
+
 public class FeatureManager {
 
     public final static float SPEED = 0.6f;
@@ -21,5 +24,35 @@ public class FeatureManager {
 
     public final static int INPUT_DOUBLECLICK_TIME = 400;
 
-    public static Telemetry.Log logger;
+    public static final FeatureManager.Logger logger = new Logger();
+
+    public static class Logger {
+        public Telemetry.Log backend;
+        public PrintStream fallbackBackend;
+        private boolean usesFallback;
+        public void setBackend(Telemetry.Log log) {
+            backend = log;
+            usesFallback = false;
+        }
+
+        public void setBackend(PrintStream log) {
+            fallbackBackend = log;
+            usesFallback = true;
+        }
+
+        public Logger() {this.fallbackBackend = System.out; }
+
+        public Logger(Telemetry.Log log) { this.backend = log;}
+
+        public void log(String l) {
+            if(usesFallback) fallbackBackend.println(l);
+            else backend.add(l);
+        }
+        public void println(String l) {
+            log(l);
+        }
+        public void add(String l) {
+            log(l);
+        }
+    }
 }
