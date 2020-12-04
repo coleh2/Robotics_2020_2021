@@ -10,7 +10,7 @@ public class omniCalcMovingForwardsTest {
     public void runTest() {
         final float[] movementVhr = new float[] {1f, 0f, 0f};
 
-        final String expectedOutput = "[-1.0, -1.0, -1.0, -1.0]";
+        final String expectedOutput = "[1.0, 1.0, 1.0, 1.0]";
 
         String result = Arrays.toString(PaulMath.omniCalc(movementVhr[0], movementVhr[1], movementVhr[2]));
 
