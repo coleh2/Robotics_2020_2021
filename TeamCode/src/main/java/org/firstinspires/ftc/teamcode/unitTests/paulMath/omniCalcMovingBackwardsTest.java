@@ -8,7 +8,7 @@ import java.util.Arrays;
 public class omniCalcMovingBackwardsTest {
     @Test
     public void runTest() {
-        final float[] movementVhr = new float[] {1f, 0f, 0f};
+        final float[] movementVhr = new float[] {-1f, 0f, 0f};
 
         final String expectedOutput = "[-1.0, -1.0, -1.0, -1.0]";
 
