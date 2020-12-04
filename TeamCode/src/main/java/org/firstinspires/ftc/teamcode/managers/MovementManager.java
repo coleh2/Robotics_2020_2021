@@ -14,7 +14,7 @@ public class MovementManager extends FeatureManager {
     public DcMotor backLeft;
     public DcMotor backRight;
 
-    private static float speed = 1.0f;
+    private static float scale = 0.5f;
 
     /**
      * Create a MovementManager with four motors.
@@ -28,8 +28,11 @@ public class MovementManager extends FeatureManager {
         this.frontRight = fr;
         this.backRight = br;
         this.backLeft = bl;
+
+        frontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+        frontRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        backRight.setDirection(DcMotorSimple.Direction.FORWARD);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     public void driveRaw(float fl, float fr, float br, float bl) {
@@ -47,7 +50,7 @@ public class MovementManager extends FeatureManager {
     }
 
     public void driveOmni(float[] powers) {
-        float[] sum = PaulMath.omniCalc(powers[0], powers[1], powers[2]);
+        float[] sum = PaulMath.omniCalc(powers[0]*scale, powers[1]*scale, powers[2] * scale);
         driveRaw(sum[0], sum[1], sum[2], sum[3]);
     }
 
@@ -108,6 +111,15 @@ public class MovementManager extends FeatureManager {
             //Waiting for motor to finish
         }
         stopDrive();
+    }
+    public float getScale(){
+        return scale;
+    }
+    public void upScale(){
+        scale+=0.01;
+    }
+    public void downScale(){
+        scale-=0.01;
     }
 
     public void driveWithVertical(float power, float distance) {

@@ -25,17 +25,19 @@ public class Teleop extends OpMode {
     private static boolean toggleSpeed = false;
 
     public void init() {
+        FeatureManager.logger = telemetry.log();
+
         driver = new MovementManager(hardwareMap.get(DcMotor.class, "fl"),
                 hardwareMap.get(DcMotor.class, "fr"),
-                hardwareMap.get(DcMotor.class, "bl"),
-                hardwareMap.get(DcMotor.class, "br"));
+                hardwareMap.get(DcMotor.class, "br"),
+                hardwareMap.get(DcMotor.class, "bl"));
         input = new InputManager(gamepad1, new BasicDrivingControlMap());
         imu = new ImuManager(hardwareMap.get(com.qualcomm.hardware.bosch.BNO055IMU.class, "imu"));
 
-        driver.resetEncoders();
-        driver.runUsingEncoders();
+       // driver.resetEncoders();
+      //  driver.runUsingEncoders();
 
-        FeatureManager.logger = telemetry.log();
+
     }
 
     public void loop() {
@@ -44,6 +46,12 @@ public class Teleop extends OpMode {
             driver.driveOmni(input.getVector("drive"));
         } else {
             driver.driveOmniExponential(input.getVector("drive"));
+        }
+        if(input.getGamepad().dpad_up){
+            driver.upScale();
+        }
+        if (input.getGamepad().dpad_down){
+            driver.downScale();
         }
 
 
@@ -67,6 +75,10 @@ public class Teleop extends OpMode {
 
         telemetry.addData("BR Power: ", driver.backRight.getPower());
         telemetry.addData("BR Port: ", driver.backRight.getPortNumber());
+
+        telemetry.addData("speed: ", driver.getScale());
+
+
 
         telemetry.addData("Orientation", imu.getOrientation().toString());
     }
