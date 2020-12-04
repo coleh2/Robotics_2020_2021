@@ -5,6 +5,8 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
+import static org.junit.Assert.assertEquals;
+
 public class omniCalcMovingBackwardsTest {
     @Test
     public void runTest() {
@@ -21,6 +23,6 @@ public class omniCalcMovingBackwardsTest {
         System.out.println("Expected Result: " + expectedOutput);
 
         //exit with a non-zero code to indicate an error
-        if(!result.equals(expectedOutput)) System.exit(1);
+        assertEquals(result, expectedOutput);
     }
 }
