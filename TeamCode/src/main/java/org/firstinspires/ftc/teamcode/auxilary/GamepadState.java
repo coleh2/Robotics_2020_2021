@@ -31,6 +31,10 @@ public class GamepadState {
 
     public GamepadState() {}
 
+    public GamepadState(Gamepad gamepad) {
+        this(gamepad, initialState());
+    }
+
     public static GamepadState initialState() {
         GamepadState st = new GamepadState();
 

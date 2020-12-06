@@ -6,6 +6,7 @@ import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Objects;
@@ -17,10 +18,11 @@ public class ControlModel {
     public ControlModelVariables variables;
 
     public ControlModel(ControlMap map) {
+        this.variables = new ControlModelVariables();
         this.controls = getControlFields(map.getClass());
     }
 
-    public ControlModel() {}
+    public ControlModel() { this.variables = new ControlModelVariables(); }
 
     private HashMap<String, Control> getControlFields(Class mapClass) {
         HashMap<String, Control> result = new HashMap<String, Control>();
@@ -32,7 +34,8 @@ public class ControlModel {
                     Control thisControl = parseField(field);
                     result.put(thisControl.name, thisControl);
                 } catch (Exception err) {
-                    FeatureManager.logger.add("WARNING: Unparsable control field `" + field.getName() + "` in control map `" + mapClass.getName() + "`: " + err.getMessage());
+                    FeatureManager.logger.add("WARNING: Un-parsable control field `" + field.getName() + "` in control map `"
+                            + mapClass.getName() + "`: \n" + Arrays.toString(err.getStackTrace()) + "\n" + err.getMessage());
                 }
             }
         }
@@ -47,6 +50,11 @@ public class ControlModel {
         for(ControlModelVariables.ControlModelVariable variable : variables.values()) {
             for(String setterName : variable.setters) this.get(setterName).res(state, false);
         }
+    }
+
+    public ControlModelVariables getVariables() {
+        if(this.variables == null) throw new IllegalStateException("something has gone very wrong and the variable store is null again");
+        return this.variables;
     }
 
     private Control parseField(Field field) throws IllegalAccessException, IllegalArgumentException {
@@ -67,6 +75,7 @@ public class ControlModel {
 
             public ControlModelVariable() {
                 this.setters = new ArrayList<String>();
+                this.value = new float[] {0f};
             }
         }
 
@@ -80,7 +89,7 @@ public class ControlModel {
         }
 
         public int register(String variableName, String setterName) {
-            this.register(variableName);
+            register(variableName);
             ControlModelVariable c = this.get(variableName);
             if(c != null) c.setters.add(setterName);
 
@@ -108,8 +117,15 @@ public class ControlModel {
             this.put(key, oldValue);
         }
 
+        public String getName(int idx) {
+            Set<String> entries = this.keySet();
+            String key = entries.toArray(new String[0])[idx];
+            if(key == null) throw new IllegalArgumentException("Unregistered index " + idx);
+            return key;
+        }
+
         public float[] get(int idx) {
-            if(idx >= this.size()) throw new IllegalArgumentException();
+            if(idx >= this.size()) throw new IllegalArgumentException("Unregistered index in control variables");
 
             Set<String> entries = this.keySet();
             String key = entries.toArray(new String[0])[idx];
@@ -167,21 +183,21 @@ public class ControlModel {
             int paramsToGo = type.paramCount;
             int lastTopLevelParam = type.paramCount;
 
+
             //literals don't get all the parsing. Neither do variables.
             if(type == ControlType.LITERAL) {
                 pointer++;
                 this.value = Float.parseFloat(tokens[pointer]);
                 return;
-            }
-            if(type == ControlType.GET_VARIABLE) {
+            } else if(type == ControlType.GET_VARIABLE) {
                 pointer++;
                 String varName = tokens[pointer];
-                this.value = model.variables.register(varName);
+                this.value = model.getVariables().register(varName);
                 return;
             } else if(type == ControlType.SET_VARIABLE) {
                 pointer++;
                 String varName = tokens[pointer];
-                this.value = model.variables.register(varName, this.name);
+                this.value = model.getVariables().register(varName, this.name);
             }
             StringBuilder srcSoFar = new StringBuilder();
             //find the end of this method, with all variables
@@ -200,8 +216,18 @@ public class ControlModel {
                     srcSoFar = new StringBuilder();
                     continue;
                 }
-                ControlType thisTokenType = ControlType.valueOf(PaulMath.camelToSnake(tokens[i]));
-                paramsToGo += thisTokenType.paramCount;
+
+                boolean hasType = false;
+                for(ControlType c : ControlType.values()) {
+                    if(c.name().equals(PaulMath.camelToSnake(tokens[i]))) hasType = true;
+                }
+
+                if(hasType) {
+                    ControlType thisTokenType = ControlType.valueOf(PaulMath.camelToSnake(tokens[i]));
+                    paramsToGo += thisTokenType.paramCount;
+                }
+                //if not, must be a variable, which gets passed in normally
+
                 paramsToGo--;
                 srcSoFar.append(" ").append(tokens[i]);
                 //if we're done with the parameter, parse the total source
@@ -292,10 +318,10 @@ public class ControlModel {
                         return new float[]{this.value};
                     case SET_VARIABLE:
                         float[] variableSetValue = children[0].res(state);
-                        model.variables.put((int)this.value, variableSetValue);
+                        model.getVariables().put((int)this.value, variableSetValue);
                         return variableSetValue;
                     case GET_VARIABLE:
-                        return model.variables.get((int)this.value);
+                        return model.getVariables().get((int)this.value);
                     case DUMMY:
                         return children[0].res(state);
                     case GREATER_THAN:
@@ -341,6 +367,8 @@ public class ControlModel {
 
         public String toString() {
             if(this.type == ControlType.LITERAL) return this.value + "";
+            else if(this.type == ControlType.GET_VARIABLE) return "GET_VARIABLE(" + model.variables.getName((int)this.value) + "#" +(int)this.value + ")";
+            else if(this.type == ControlType.SET_VARIABLE) return "SET_VARIABLE(" + model.variables.getName((int)this.value) + "#" +(int)this.value + ", " + this.children[0].toString() + ")";
 
             StringBuilder paramsAsStrings = new StringBuilder();
             for(int i = 0; i < children.length; i++) {
@@ -363,9 +391,12 @@ public class ControlModel {
         TOGGLE_BETWEEN("OutputType", 3),
 
         NOT("Middleware", 1), TERNARY("Middleware", 3), IF("Middleware", 3), SCALE("Middleware", 2),
-        DUMMY("Middleware", 1), NULL("Middleware", 0), LITERAL("Middleware", 1), SET_VARIABLE("Middleware", 1),
-        GET_VARIABLE("Middleware", 0), GREATER_THAN("Middleware", 2), LESS_THAN("Middleware", 2), AND("Middleware", 2),
-        OR("Middleware", 2);
+        DUMMY("Middleware", 1), NULL("Middleware", 0), GREATER_THAN("Middleware", 2), LESS_THAN("Middleware", 2),
+        AND("Middleware", 2), OR("Middleware", 2),
+
+        SET_VARIABLE("Variable", 1), GET_VARIABLE("Variable", 1), LITERAL("Literal", 1);
+
+
 
         public String subtype;
         public int paramCount;

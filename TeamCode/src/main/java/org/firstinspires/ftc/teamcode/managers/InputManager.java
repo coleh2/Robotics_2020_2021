@@ -44,16 +44,18 @@ public class InputManager extends FeatureManager {
     }
 
     public float[] getVector(String name) {
-        if(controlModel.get(name) == null) throw new IllegalArgumentException();
+        if(controlModel.get(name) == null) throw new IllegalArgumentException("Unknown control name " + name);
         return controlModel.get(name).res(gamepadHistory);
 
     }
 
     public boolean getBoolean(String name) {
+        if(controlModel.get(name) == null) throw new IllegalArgumentException("Unknown control name " + name);
         return controlModel.get(name).res(gamepadHistory)[0] != 0;
     }
 
     public float getScalar(String name) {
+        if(controlModel.get(name) == null) throw new IllegalArgumentException("Unknown control name " + name);
         return controlModel.get(name).res(gamepadHistory)[0];
     }
 
