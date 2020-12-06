@@ -24,11 +24,12 @@ public class ImuManager {
         parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
         parameters.useExternalCrystal = true;
         parameters.loggingEnabled  = false;
-        parameters.accelerationIntegrationAlgorithm = new NavUtilIntegrationAlgorithm();
+        parameters.accelerationIntegrationAlgorithm = new NavUtilAccelerationIntegrator();
 
         imu.initialize(parameters);
         imu.startAccelerationIntegration(new Position(DistanceUnit.CM, 0.0, 0.0, 0.0, System.nanoTime()),
-                new Velocity(DistanceUnit.CM, 0.0, 0.0, 0.0, System.nanoTime()), 10);
+                new Velocity(DistanceUnit.CM, 0.0, 0.0, 0.0, System.nanoTime()),
+                10);
     }
 
     /**
@@ -48,7 +49,7 @@ public class ImuManager {
     }
 
 
-    private static class NavUtilIntegrationAlgorithm implements BNO055IMU.AccelerationIntegrator {
+    private static class NavUtilAccelerationIntegrator implements BNO055IMU.AccelerationIntegrator {
 
         Position position;
         Velocity velocity;
