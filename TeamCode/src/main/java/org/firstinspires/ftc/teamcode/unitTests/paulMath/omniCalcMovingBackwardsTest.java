@@ -20,9 +20,8 @@ public class omniCalcMovingBackwardsTest {
 
 
         System.out.println("Result: " + result);
-        System.out.println("Expected Result: " + expectedOutput);
 
         //exit with a non-zero code to indicate an error
-        assertEquals(result, expectedOutput);
+        assertEquals(expectedOutput, result);
     }
 }
