@@ -12,7 +12,7 @@ public class PaulMath extends FeatureManager {
         int arrayLength = array.length;
         float highest = -1000000;
         for (int i = 0; i < arrayLength; i++) {
-            if(array[i] > highest) {
+            if (array[i] > highest) {
                 highest = array[i];
             }
         }
@@ -45,7 +45,7 @@ public class PaulMath extends FeatureManager {
         }
         //This makes sure that no value is greater than 1 by dividing all of them by the maximum
         float highest = highestValue(sum);
-        if(highest > 1) {
+        if (highest > 1) {
             normalizeArray(sum);
         }
         return sum;
@@ -57,7 +57,7 @@ public class PaulMath extends FeatureManager {
 
     public static int encoderDistance(double distance) {
         double ROTATIONS = distance / CIRCUMFERENCE;
-        int counts =  (int)((ENCODER_CPR * ROTATIONS * GEAR_RATIO)/SLIP);
+        int counts = (int) ((ENCODER_CPR * ROTATIONS * GEAR_RATIO) / SLIP);
         return counts;
     }
 
@@ -69,11 +69,11 @@ public class PaulMath extends FeatureManager {
         ArrayList<String> words = new ArrayList<String>();
 
         String currentWord = "";
-        for(char letter : camel.toCharArray()) {
+        for (char letter : camel.toCharArray()) {
 
-            if(Character.isUpperCase(letter)) {
+            if (Character.isUpperCase(letter)) {
                 //if multiple uppercase in a row, don't break words
-                if(!currentWord.toUpperCase().equals(currentWord)) {
+                if (!currentWord.toUpperCase().equals(currentWord)) {
                     words.add(currentWord);
                     currentWord = "";
                 }
@@ -84,14 +84,14 @@ public class PaulMath extends FeatureManager {
 
         }
         //add the final word if it's relevant
-        if(!currentWord.equals("")) words.add(currentWord);
+        if (!currentWord.equals("")) words.add(currentWord);
 
         //join into snake
         StringBuilder snakey = new StringBuilder();
-        for(int i = 0; i < words.size(); i++) {
+        for (int i = 0; i < words.size(); i++) {
             snakey.append(words.get(i));
             //if it's not the last word, add the underscore
-            if(i + 1 < words.size()) snakey.append("_");
+            if (i + 1 < words.size()) snakey.append("_");
         }
 
         return snakey.toString().toUpperCase();
@@ -99,13 +99,30 @@ public class PaulMath extends FeatureManager {
 
     /**
      * Counts proportional error for PID control.
-     * @param currentValue the value we are currently at
+     *
+     * @param currentValue  the value we are currently at
      * @param expectedValue the value we want
      * @return a constant times the difference between the paramaters
      */
     public static float proportionalPID(float currentValue, float expectedValue) {
-        float difference = Math.abs(expectedValue - currentValue);
-        float Kp = 0.7f;
-        return Kp*difference;
-    }
+        float newCurrent = currentValue;
+        float newExpectedValue = expectedValue = (expectedValue % 180) * (expectedValue<180?1:-1);
+
+        float difference = (expectedValue - newCurrent);
+
+        if(difference >= 180){
+            difference = ( difference - 360);
+        }
+        else if(difference <= -180){
+            difference =  (difference + 360);
+        }
+        float Kp = 0.007f;
+
+        if (Math.abs(difference) > 1) {
+            return (Kp * difference)+0.2f;
+        } else {
+            return 0;
+        }
+
+}
 }

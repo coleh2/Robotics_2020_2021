@@ -35,19 +35,30 @@ public class ImuTester extends OpMode {
     public void loop() {
 
         if(input.getGamepad().a) {
-            float proportional = math.proportionalPID(imu.getOrientation().firstAngle, 90f);
-            driver.driveOmni(new float[] {0,0,proportional});
+            float proportional = math.proportionalPID(imu.getOrientation().thirdAngle, 45f);
+            driver.driveOmni(new float[] {0,0,-proportional});
+           // FeatureManager.logger.add("IMU Target: " + math.proportionalPID(imu.getOrientation().thirdAngle, 45));
+
+        }
+        if(input.gamepad.y){
+            driver.stopDrive();
         }
         if(input.getGamepad().b) {
-            float proportional = math.proportionalPID(imu.getOrientation().secondAngle, 90f);
-            driver.driveOmni(new float[] {0,0,proportional});
+            float proportional = math.proportionalPID(imu.getOrientation().thirdAngle, 180f);
+            driver.driveOmni(new float[] {0,0,-proportional});
+          //  FeatureManager.logger.add("IMU Target: " + math.proportionalPID(imu.getOrientation().thirdAngle, 180));
+
         }
         if(input.getGamepad().x) {
             float proportional = math.proportionalPID(imu.getOrientation().thirdAngle, 90f);
-            driver.driveOmni(new float[] {0,0,proportional});
+            driver.driveOmni(new float[] {0,0,-proportional});
+          //  FeatureManager.logger.add("IMU Target: " + math.proportionalPID(imu.getOrientation().thirdAngle, 90));
+
+
         }
 
-        FeatureManager.logger.add("IMU Orientation: " + imu.getOrientation().toString());
-        FeatureManager.logger.add("IMU Acceleration: " + imu.getLinearAcceleration().toString());
+        FeatureManager.logger.add("IMU Orientation: " + imu.getOrientation().thirdAngle);
+
+        //  FeatureManager.logger.add("IMU Acceleration: " + imu.getLinearAcceleration().toString());
     }
 }
