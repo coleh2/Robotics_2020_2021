@@ -106,20 +106,19 @@ public class PaulMath extends FeatureManager {
      */
     public static float proportionalPID(float currentValue, float expectedValue) {
         float newCurrent = currentValue;
+
+         if(currentValue < 0){
+            newCurrent =  (currentValue + 360);
+        }
         float newExpectedValue = expectedValue = (expectedValue % 180) * (expectedValue<180?1:-1);
 
         float difference = (expectedValue - newCurrent);
 
-        if(difference >= 180){
-            difference = ( difference - 360);
-        }
-        else if(difference <= -180){
-            difference =  (difference + 360);
-        }
+
         float Kp = 0.007f;
 
         if (Math.abs(difference) > 1) {
-            return (Kp * difference)+0.2f;
+            return Range.clip((Kp * difference), 0.2f, 0.5f);
         } else {
             return 0;
         }
