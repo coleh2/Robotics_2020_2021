@@ -118,10 +118,9 @@ public class PaulMath extends FeatureManager {
         float Kp = 0.007f;
 
         if (Math.abs(difference) > 1) {
-            return Range.clip((Kp * difference), 0.2f, 0.5f);
+            return (Range.clip((Kp * Math.abs(difference)), 0.2f, 0.5f)) * (difference/Math.abs(difference));
         } else {
             return 0;
         }
-
-}
+    }
 }
