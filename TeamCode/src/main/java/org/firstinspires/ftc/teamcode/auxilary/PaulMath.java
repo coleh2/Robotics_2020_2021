@@ -97,28 +97,48 @@ public class PaulMath extends FeatureManager {
         return snakey.toString().toUpperCase();
     }
 
+
     /**
      * Counts proportional error for PID control.
      *
      * @param currentValue  the value we are currently at
      * @param expectedValue the value we want
-     * @return a constant times the difference between the paramaters
+     * @return amount to change in order to get to the target value quickly and smoothly
      */
     public static float proportionalPID(float currentValue, float expectedValue) {
-        float newCurrent = currentValue;
+        return proportionalPID(currentValue, expectedValue, 0.007f);
+    }
 
-         if(currentValue < 0){
-            newCurrent =  (currentValue + 360);
-        }
-        float newExpectedValue = expectedValue = (expectedValue % 180) * (expectedValue<180?1:-1);
+    public static float proportionalPID(float currentValue, float expectedValue, float Kp) {
+        return proportionalPID(currentValue, expectedValue, Kp, 0.2f, 0.5f);
+    }
 
-        float difference = (expectedValue - newCurrent);
+    /**
+     * Counts proportional error for PID control.
+     *
+     * @param currentValue  the value we are currently at
+     * @param expectedValue the value we want
+     * @param Kp proportional coefficient. 0.007 by default
+     * @param clipMin Minimum absolute value that the output can be. 0.2 by default.
+     * @param clipMax Maximum absolute value that the output can be. 0.5 by default.
+     * @return a constant times the difference between the paramaters
+     */
+    public static float proportionalPID(float currentValue, float expectedValue, float Kp, float clipMin, float clipMax) {
+        float currentBased360 = (currentValue + 360) % 360;
+        float targetBased360 = (expectedValue + 360) % 360;
 
+        float difference = (targetBased360 - currentBased360);
 
-        float Kp = 0.007f;
+        if(FeatureManager.debug) FeatureManager.logger.log("diffraw " + difference);
+
+        if(difference > 180) difference += -360;
+        else if(difference < -180) difference += 360;
+
+        if(FeatureManager.debug) FeatureManager.logger.log("diffadded " + difference);
 
         if (Math.abs(difference) > 1) {
-            return (Range.clip((Kp * Math.abs(difference)), 0.2f, 0.5f)) * (difference/Math.abs(difference));
+            //abs val then multiply by sign of difference; easier than two ifs for positive clip and negative clip
+            return (Range.clip((Kp * Math.abs(difference)), clipMin, clipMax)) * (difference<=0?-1:1);
         } else {
             return 0;
         }

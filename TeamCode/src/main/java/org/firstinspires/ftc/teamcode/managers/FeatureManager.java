@@ -27,9 +27,11 @@ public class FeatureManager {
 
     public static final FeatureManager.Logger logger = new Logger();
 
+    public static boolean debug = false;
+
     public static class Logger {
-        public Telemetry.Log backend;
-        public PrintStream fallbackBackend;
+        private Telemetry.Log backend;
+        private PrintStream fallbackBackend;
         private boolean usesFallback;
         public void setBackend(Telemetry.Log log) {
             backend = log;
