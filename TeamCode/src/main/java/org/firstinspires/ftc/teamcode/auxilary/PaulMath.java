@@ -96,4 +96,16 @@ public class PaulMath extends FeatureManager {
 
         return snakey.toString().toUpperCase();
     }
+
+    /**
+     * Counts proportional error for PID control.
+     * @param currentValue the value we are currently at
+     * @param expectedValue the value we want
+     * @return a constant times the difference between the paramaters
+     */
+    public static float proportionalPID(float currentValue, float expectedValue) {
+        float difference = Math.abs(expectedValue - currentValue);
+        float Kp = 0.7f;
+        return Kp*difference;
+    }
 }
