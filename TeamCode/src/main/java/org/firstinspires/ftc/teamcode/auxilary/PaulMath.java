@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 
 import java.util.ArrayList;
 
-public class PaulMath extends FeatureManager {
+public abstract class PaulMath extends FeatureManager {
 
     public static float highestValue(float[] array) {
         int arrayLength = array.length;
