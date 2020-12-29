@@ -30,10 +30,10 @@ public class TeleopFlywheel extends OpMode {
     public void init() {
         FeatureManager.logger.setBackend(telemetry.log());
 
-        driver = new MovementManager(hardwareMap.get(DcMotor.class, "fl"),
-                hardwareMap.get(DcMotor.class, "fr"),
-                hardwareMap.get(DcMotor.class, "br"),
-                hardwareMap.get(DcMotor.class, "bl"));
+//        driver = new MovementManager(hardwareMap.get(DcMotor.class, "fl"),
+//                hardwareMap.get(DcMotor.class, "fr"),
+//                hardwareMap.get(DcMotor.class, "br"),
+//                hardwareMap.get(DcMotor.class, "bl"));
         input = new InputManager(gamepad1, new BasicDrivingControlMap());
         imu = new ImuManager(hardwareMap.get(com.qualcomm.hardware.bosch.BNO055IMU.class, "imu"));
         limbs = new ManipulationManager(
@@ -47,7 +47,7 @@ public class TeleopFlywheel extends OpMode {
                         "flywheelRight",
                         "flywheelLeft"
                 },
-                new float[] {1, 1}
+                new float[] {1f, 3.7f/20}
             );
 
        // driver.resetEncoders();
@@ -57,18 +57,18 @@ public class TeleopFlywheel extends OpMode {
     }
 
     public void loop() {
-        input.update();
-        if(!input.getGamepad().left_bumper) {
-            driver.driveOmni(input.getVector("drive"));
-        } else {
-            driver.driveOmniExponential(input.getVector("drive"));
-        }
-        if(input.getGamepad().dpad_up){
-            driver.upScale();
-        }
-        if (input.getGamepad().dpad_down){
-            driver.downScale();
-        }
+//        input.update();
+//        if(!input.getGamepad().left_bumper) {
+//            driver.driveOmni(input.getVector("drive"));
+//        } else {
+//            driver.driveOmniExponential(input.getVector("drive"));
+//        }
+//        if(input.getGamepad().dpad_up){
+//            driver.upScale();
+//        }
+//        if (input.getGamepad().dpad_down){
+//            driver.downScale();
+//        }
 
 
         if(input.getGamepad().a){
