@@ -20,7 +20,6 @@ public class ImuTester extends OpMode {
     ImuManager imu;
     InputManager input;
     MovementManager driver;
-    PaulMath math;
 
     public void init() {
         FeatureManager.logger.setBackend(telemetry.log());
@@ -35,7 +34,7 @@ public class ImuTester extends OpMode {
     public void loop() {
 
         if(input.getGamepad().a) {
-            float proportional = math.proportionalPID(imu.getOrientation().thirdAngle, 45f);
+            float proportional = PaulMath.proportionalPID(imu.getOrientation().thirdAngle, 45f);
             driver.driveOmni(new float[] {0,0,-proportional});
            // FeatureManager.logger.add("IMU Target: " + math.proportionalPID(imu.getOrientation().thirdAngle, 45));
 
@@ -44,13 +43,13 @@ public class ImuTester extends OpMode {
             driver.stopDrive();
         }
         if(input.getGamepad().b) {
-            float proportional = math.proportionalPID(imu.getOrientation().thirdAngle, 180f);
+            float proportional = PaulMath.proportionalPID(imu.getOrientation().thirdAngle, 180f);
             driver.driveOmni(new float[] {0,0,-proportional});
           //  FeatureManager.logger.add("IMU Target: " + math.proportionalPID(imu.getOrientation().thirdAngle, 180));
 
         }
         if(input.getGamepad().x) {
-            float proportional = math.proportionalPID(imu.getOrientation().thirdAngle, 90f);
+            float proportional = PaulMath.proportionalPID(imu.getOrientation().thirdAngle, 90f);
             driver.driveOmni(new float[] {0,0,-proportional});
           //  FeatureManager.logger.add("IMU Target: " + math.proportionalPID(imu.getOrientation().thirdAngle, 90));
 
