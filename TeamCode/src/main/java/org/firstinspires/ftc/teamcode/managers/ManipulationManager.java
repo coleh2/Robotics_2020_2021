@@ -14,12 +14,14 @@ public class ManipulationManager {
     public String[] servoNames;
     public String[] motorNames;
 
-    public ManipulationManager(CRServo[] _servos, DcMotor[] _motors) {
+    public float[] motorCoefficient;
+
+    public ManipulationManager(CRServo[] _servos, DcMotor[] _motors, float[] motorCoefficient) {
         this.servos = _servos;
         this.motors = _motors;
     }
 
-    public ManipulationManager(CRServo[] _servos, String[] _servoNames, DcMotor[] _motors, String[] _motorNames) {
+    public ManipulationManager(CRServo[] _servos, String[] _servoNames, DcMotor[] _motors, String[] _motorNames, float[] motorCoefficient) {
         if(_servoNames.length != _servos.length) throw new IllegalArgumentException("Servo Names must be the same length as Servos");
         if(_motorNames.length != _motors.length) throw new IllegalArgumentException("Motor Names must be the same length as Motors");
         this.servos = _servos;
@@ -47,7 +49,7 @@ public class ManipulationManager {
     public void setMotorPower(String name, double power) {
         int index = (Arrays.asList(motorNames)).indexOf(name);
         if(index == -1) throw new IllegalArgumentException("Motor " + name + " does not exist or is not registered");
-        motors[index].setPower(power);
+        motors[index].setPower(power*motorCoefficient[index]);
     }
 
     public void setMotorPower(int i, double power) {
@@ -57,4 +59,6 @@ public class ManipulationManager {
     public void setServoPower(int i, double power) {
         servos[i].setPower(power);
     }
+
+
 }

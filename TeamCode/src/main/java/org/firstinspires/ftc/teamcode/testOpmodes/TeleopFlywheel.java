@@ -46,7 +46,8 @@ public class TeleopFlywheel extends OpMode {
                 new String[] {
                         "flywheelRight",
                         "flywheelLeft"
-                }
+                },
+                new float[] {1, 1}
             );
 
        // driver.resetEncoders();
