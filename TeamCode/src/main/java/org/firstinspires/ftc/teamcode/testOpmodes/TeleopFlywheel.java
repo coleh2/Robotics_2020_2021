@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.testOpmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -10,6 +11,7 @@ import org.firstinspires.ftc.teamcode.managers.ColorSensor;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 import org.firstinspires.ftc.teamcode.managers.ImuManager;
 import org.firstinspires.ftc.teamcode.managers.InputManager;
+import org.firstinspires.ftc.teamcode.managers.ManipulationManager;
 import org.firstinspires.ftc.teamcode.managers.MovementManager;
 
 
@@ -21,7 +23,7 @@ public class TeleopFlywheel extends OpMode {
     ColorSensor sensor;
     Servo grab;
     ImuManager imu;
-    //ManipulationManager limbs;
+    ManipulationManager limbs;
 
     private static boolean toggleSpeed = false;
 
@@ -34,7 +36,18 @@ public class TeleopFlywheel extends OpMode {
                 hardwareMap.get(DcMotor.class, "bl"));
         input = new InputManager(gamepad1, new BasicDrivingControlMap());
         imu = new ImuManager(hardwareMap.get(com.qualcomm.hardware.bosch.BNO055IMU.class, "imu"));
-        //limbs = new ManipulationManager();
+        limbs = new ManipulationManager(
+                new CRServo[] {},
+                new String[] {},
+                new DcMotor[] {
+                        hardwareMap.get(DcMotor.class, "flywheelRight"),
+                        hardwareMap.get(DcMotor.class, "flywheelLeft")
+                },
+                new String[] {
+                        "flywheelRight",
+                        "flywheelLeft"
+                }
+            );
 
        // driver.resetEncoders();
       //  driver.runUsingEncoders();
@@ -56,25 +69,25 @@ public class TeleopFlywheel extends OpMode {
             driver.downScale();
         }
 
-        /*
+
         if(input.getGamepad().a){
-            limbs.flywheelRight(1f);
+            limbs.setMotorPower("flywheelRight", 1f);
         } else
         if(input.getGamepad().b){
-            limbs.flywheelRight(-1f);
+            limbs.setMotorPower("flywheelRight", -1f);
         } else {
-            limbs.flywheelRight(0f);
+            limbs.setMotorPower("flywheelRight", 0f);
         }
 
         if(input.getGamepad().x){
-            limbs.flywheelLeft(1f);
+            limbs.setMotorPower("flywheelLeft", 1f);
         } else
         if(input.getGamepad().y){
-            limbs.flywheelLeft(-1f);
+            limbs.setMotorPower("flywheelLeft", -1f);
         } else {
-            limbs.flywheelRight(0f);
+            limbs.setMotorPower("flywheelLeft", 0f);
         }
-        */
+
 
 
         telemetry.addData("FL Ticks:", driver.frontLeft.getCurrentPosition());
