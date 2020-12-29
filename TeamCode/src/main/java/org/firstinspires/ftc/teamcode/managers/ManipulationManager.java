@@ -19,6 +19,7 @@ public class ManipulationManager {
     public ManipulationManager(CRServo[] _servos, DcMotor[] _motors, float[] motorCoefficient) {
         this.servos = _servos;
         this.motors = _motors;
+        this.motorCoefficient = motorCoefficient;
     }
 
     public ManipulationManager(CRServo[] _servos, String[] _servoNames, DcMotor[] _motors, String[] _motorNames, float[] motorCoefficient) {
@@ -28,6 +29,7 @@ public class ManipulationManager {
         this.servoNames = _servoNames;
         this.motors = _motors;
         this.motorNames = _motorNames;
+        this.motorCoefficient = motorCoefficient;
     }
 
     public void setServoNames(String[] _servoNames) {
