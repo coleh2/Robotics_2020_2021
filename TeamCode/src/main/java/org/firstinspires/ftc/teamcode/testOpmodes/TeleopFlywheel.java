@@ -19,7 +19,6 @@ import org.firstinspires.ftc.teamcode.managers.MovementManager;
 public class TeleopFlywheel extends OpMode {
 
     InputManager input;
-    MovementManager driver;
     ColorSensor sensor;
     Servo grab;
     ImuManager imu;
@@ -47,7 +46,7 @@ public class TeleopFlywheel extends OpMode {
                         "flywheelRight",
                         "flywheelLeft"
                 },
-                new float[] {1f, 20f/3.7f}
+                new float[] {1f, 1f}
             );
 
        // driver.resetEncoders();
@@ -89,32 +88,8 @@ public class TeleopFlywheel extends OpMode {
             limbs.setMotorPower("flywheelLeft", 0f);
         }
 
-
-
-        telemetry.addData("FL Ticks:", driver.frontLeft.getCurrentPosition());
-        telemetry.addData("FR Ticks:", driver.frontRight.getCurrentPosition());
-        telemetry.addData("BL Ticks:", driver.backRight.getCurrentPosition());
-        telemetry.addData("BR Ticks:", driver.backLeft.getCurrentPosition());
-        telemetry.addData("Average Ticks:", (driver.frontLeft.getCurrentPosition()+
-                driver.frontRight.getCurrentPosition()+
-                driver.backLeft.getCurrentPosition()+
-                driver.backRight.getCurrentPosition())/4);
-
-        telemetry.addData("FL Power: ", driver.frontLeft.getPower());
-        telemetry.addData("FL Port: ", driver.frontLeft.getPortNumber());
-
-        telemetry.addData("FR Power: ", driver.frontRight.getPower());
-        telemetry.addData("FR Port: ", driver.frontRight.getPortNumber());
-
-        telemetry.addData("BL Power: ", driver.backLeft.getPower());
-        telemetry.addData("BL Port: ", driver.backLeft.getPortNumber());
-
-        telemetry.addData("BR Power: ", driver.backRight.getPower());
-        telemetry.addData("BR Port: ", driver.backRight.getPortNumber());
-
-        telemetry.addData("speed: ", driver.getScale());
-
-
+        telemetry.addData("flywheelLeft Power", limbs.getMotorPower("flywheelLeft"));
+        telemetry.addData("flywheelRight Power", limbs.getMotorPower("flywheelRight"));
 
         telemetry.addData("Orientation", imu.getOrientation().toString());
     }

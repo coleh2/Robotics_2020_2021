@@ -54,6 +54,12 @@ public class ManipulationManager {
         motors[index].setPower(power*motorCoefficient[index]);
     }
 
+    public double getMotorPower(String name) {
+        int index = (Arrays.asList(motorNames)).indexOf(name);
+        if(index == -1) throw new IllegalArgumentException("Motor " + name + " does not exist or is not registered");
+        return motors[index].getPower();
+    }
+
     public void setMotorPower(int i, double power) {
         motors[i].setPower(power);
     }
