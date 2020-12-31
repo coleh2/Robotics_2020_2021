@@ -31,30 +31,19 @@ public class ImuTester extends OpMode {
         imu = new ImuManager(hardwareMap.get(com.qualcomm.hardware.bosch.BNO055IMU.class, "imu"));
     }
 
+    float expected = 0f;
+
     public void loop() {
 
-        if(input.getGamepad().a) {
-            float proportional = PaulMath.proportionalPID(imu.getOrientation().thirdAngle, 45f);
-            driver.driveOmni(new float[] {0,0,-proportional});
-           // FeatureManager.logger.add("IMU Target: " + math.proportionalPID(imu.getOrientation().thirdAngle, 45));
-
-        }
-        if(input.gamepad.y){
-            driver.stopDrive();
-        }
-        if(input.getGamepad().b) {
-            float proportional = PaulMath.proportionalPID(imu.getOrientation().thirdAngle, 180f);
-            driver.driveOmni(new float[] {0,0,-proportional});
-          //  FeatureManager.logger.add("IMU Target: " + math.proportionalPID(imu.getOrientation().thirdAngle, 180));
-
-        }
-        if(input.getGamepad().x) {
-            float proportional = PaulMath.proportionalPID(imu.getOrientation().thirdAngle, 90f);
-            driver.driveOmni(new float[] {0,0,-proportional});
-          //  FeatureManager.logger.add("IMU Target: " + math.proportionalPID(imu.getOrientation().thirdAngle, 90));
 
 
-        }
+        if(input.getGamepad().dpad_up) expected = 90f;
+        if(input.getGamepad().dpad_right) expected = 0f;
+        if(input.getGamepad().dpad_down) expected = -90f;
+        if(input.getGamepad().dpad_left) expected = 180f;
+
+        float proportional = PaulMath.proportionalPID(imu.getOrientation().thirdAngle, expected);
+        driver.driveOmni(new float[] {0,0,-proportional});
 
         FeatureManager.logger.add("IMU Orientation: " + imu.getOrientation().thirdAngle);
 
