@@ -70,25 +70,25 @@ public class TeleopIntake extends OpMode {
 //            driver.downScale();
 //        }
 
-        float directionDrum = 1f;
+        float directionDrum = -1f;
         float directionIntake = 1f;
 
         if(input.getGamepad().a){
-            directionDrum = -1;
-        } else directionDrum = 1;
+            directionDrum = 1;
+        } else directionDrum = -1;
 
         if(input.getGamepad().b){
             directionIntake = -1;
         } else directionIntake = 1;
 
         if(input.getGamepad().right_trigger > 0.1){
-            limbs.setMotorPower("intake", 0.75);
+            limbs.setMotorPower("intake", 1);
         } else {
             limbs.setMotorPower("intake", 0);
         }
 
         if(input.getGamepad().left_trigger > 0.1){
-            limbs.setMotorPower("drum", 0.5);
+            limbs.setMotorPower("drum", 0.5*directionDrum);
         } else {
             limbs.setMotorPower("drum", 0);
         }

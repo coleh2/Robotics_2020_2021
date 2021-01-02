@@ -77,7 +77,7 @@ public class TeleopShoot extends OpMode {
 
 
         if(input.getGamepad().right_trigger > 0.1){
-            limbs.setMotorPower("flywheelRight", 1);
+            limbs.setMotorPower("flywheelRight", -1);
             limbs.setMotorPower("flywheelLeft", 1);
         } else {
             limbs.setMotorPower("flywheelRight", 0);
