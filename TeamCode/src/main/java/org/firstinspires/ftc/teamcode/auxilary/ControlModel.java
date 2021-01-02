@@ -291,6 +291,12 @@ public class ControlModel {
                     case COMBO:
                         if(children[0].res(state)[0] != 0) return children[1].res(state);
                         else return children[0].res(state);
+                    case DEADZONE:
+                        float[] a = children[0].res(state);
+                        float[] b = children[0].res(state);
+
+                        if (Math.abs(a[0]) > Math.abs(b[0])) return a;
+                        else return b;
                     case TOGGLE_BETWEEN:
                         boolean currentTbState = this.state != 0;
                         if(children[0].res(state)[0] != 0 && children[0].res(state.history)[0] == 0) currentTbState = !currentTbState;
@@ -392,10 +398,9 @@ public class ControlModel {
 
         NOT("Middleware", 1), TERNARY("Middleware", 3), IF("Middleware", 3), SCALE("Middleware", 2),
         DUMMY("Middleware", 1), NULL("Middleware", 0), GREATER_THAN("Middleware", 2), LESS_THAN("Middleware", 2),
-        AND("Middleware", 2), OR("Middleware", 2),
+        AND("Middleware", 2), OR("Middleware", 2), DEADZONE("Middleware", 2),
 
         SET_VARIABLE("Variable", 1), GET_VARIABLE("Variable", 1), LITERAL("Literal", 1);
-
 
 
         public String subtype;
