@@ -82,13 +82,13 @@ public class TeleopIntake extends OpMode {
         } else directionIntake = 1;
 
         if(input.getGamepad().right_trigger > 0.1){
-            limbs.setMotorPower("intake", input.getGamepad().right_trigger*directionIntake);
+            limbs.setMotorPower("intake", 0.75);
         } else {
             limbs.setMotorPower("intake", 0);
         }
 
         if(input.getGamepad().left_trigger > 0.1){
-            limbs.setMotorPower("drum", input.getGamepad().left_trigger*directionDrum);
+            limbs.setMotorPower("drum", 0.5);
         } else {
             limbs.setMotorPower("drum", 0);
         }
