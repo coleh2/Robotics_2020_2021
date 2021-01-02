@@ -12,11 +12,10 @@ import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 import org.firstinspires.ftc.teamcode.managers.ImuManager;
 import org.firstinspires.ftc.teamcode.managers.InputManager;
 import org.firstinspires.ftc.teamcode.managers.ManipulationManager;
-import org.firstinspires.ftc.teamcode.managers.MovementManager;
 
 
 @TeleOp
-public class TeleopIntake extends OpMode {
+public class TeleopShoot extends OpMode {
 
     InputManager input;
 //    MovementManager driver;
@@ -41,11 +40,15 @@ public class TeleopIntake extends OpMode {
                 new String[] {},
                 new DcMotor[] {
                         hardwareMap.get(DcMotor.class, "drum"),
-                        hardwareMap.get(DcMotor.class, "intake")
+                        hardwareMap.get(DcMotor.class, "intake"),
+                        hardwareMap.get(DcMotor.class, "flywheelRight"),
+                        hardwareMap.get(DcMotor.class, "flywheelLeft")
                 },
                 new String[] {
                         "drum",
-                        "intake"
+                        "intake",
+                        "flywheelRight",
+                        "flywheelLeft"
                 },
                 new float[] {1f, 1f}
             );
@@ -70,28 +73,33 @@ public class TeleopIntake extends OpMode {
 //            driver.downScale();
 //        }
 
-        float directionDrum = 1f;
-        float directionIntake = 1f;
 
-        if(input.getGamepad().a){
-            directionDrum = -1;
-        } else directionDrum = 1;
 
-        if(input.getGamepad().b){
-            directionIntake = -1;
-        } else directionIntake = 1;
 
         if(input.getGamepad().right_trigger > 0.1){
-            limbs.setMotorPower("intake", input.getGamepad().right_trigger*directionIntake);
+            limbs.setMotorPower("flywheelRight", 1);
+            limbs.setMotorPower("flywheelLeft", 1);
         } else {
-            limbs.setMotorPower("intake", 0);
+            limbs.setMotorPower("flywheelRight", 0);
+            limbs.setMotorPower("flywheelLeft", 0);
         }
 
         if(input.getGamepad().left_trigger > 0.1){
-            limbs.setMotorPower("drum", input.getGamepad().left_trigger*directionDrum);
+            limbs.setMotorPower("drum", 0.5);
+            limbs.setMotorPower("intake", 0.5);
         } else {
-            limbs.setMotorPower("drum", 0);
+            if (input.getGamepad().left_bumper) {
+                limbs.setMotorPower("drum", .5);
+            } else {
+                limbs.setMotorPower("drum", 0);
+            }
+            if(input.getGamepad().right_bumper){
+                limbs.setMotorPower("intake", .5);
+            } else {
+                limbs.setMotorPower("intake", 0);
+            }
         }
+
 
 
 
@@ -120,7 +128,8 @@ public class TeleopIntake extends OpMode {
 
         telemetry.addData("Drum Power", limbs.getMotorPower("drum"));
         telemetry.addData("Intake Power", limbs.getMotorPower("intake"));
-
+        telemetry.addData("Flywheel Right Power", limbs.getMotorPower("flywheelRight"));
+        telemetry.addData("Flywheel Left Power", limbs.getMotorPower("flywheelLeft"));
         telemetry.addData("Orientation", imu.getOrientation().toString());
     }
 }
