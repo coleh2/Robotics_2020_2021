@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.managers;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.NaiveAccelerationIntegrator;
+import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -11,6 +13,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.NavUtil;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
+
+import static org.firstinspires.ftc.robotcore.external.navigation.NavUtil.meanIntegrate;
+import static org.firstinspires.ftc.robotcore.external.navigation.NavUtil.plus;
 
 public class ImuManager {
     public BNO055IMU imu;
@@ -82,14 +87,26 @@ public class ImuManager {
 
         @Override
         public void update(Acceleration linearAcceleration) {
-            this.acceleration = linearAcceleration;
+            if (linearAcceleration.acquisitionTime != 0) {
+                // We can only integrate if we have a previous acceleration to baseline from
+                if (acceleration != null) {
+                    Acceleration accelPrev    = acceleration;
+                    Velocity     velocityPrev = velocity;
 
-            long deltaTime = acceleration.acquisitionTime - time;
+                    acceleration = linearAcceleration;
 
-            this.velocity = NavUtil.integrate(acceleration, deltaTime);
-            this.position = NavUtil.integrate(velocity, deltaTime);
+                    if (accelPrev.acquisitionTime != 0) {
+                        Velocity deltaVelocity = meanIntegrate(acceleration, accelPrev);
+                        velocity = plus(velocity, deltaVelocity);
+                    }
 
-            time = acceleration.acquisitionTime;
+                    if (velocityPrev.acquisitionTime != 0) {
+                        Position deltaPosition = meanIntegrate(velocity, velocityPrev);
+                        position = plus(position, deltaPosition);
+                    }
+                }
+                else acceleration = linearAcceleration;
+            }
         }
     }
 }

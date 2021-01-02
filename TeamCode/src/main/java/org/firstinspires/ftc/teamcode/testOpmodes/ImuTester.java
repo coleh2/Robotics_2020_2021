@@ -32,10 +32,11 @@ public class ImuTester extends OpMode {
     }
 
     float expected = 0f;
+    float movement = 0f;
 
     public void loop() {
 
-
+        imu.getPosition();
 
         if(input.getGamepad().dpad_up) expected = 90f;
         if(input.getGamepad().dpad_right) expected = 0f;
@@ -45,8 +46,12 @@ public class ImuTester extends OpMode {
         float proportional = PaulMath.proportionalPID(imu.getOrientation().thirdAngle, expected);
         driver.driveOmni(new float[] {0,0,-proportional});
 
-        FeatureManager.logger.add("IMU Orientation: " + imu.getOrientation().thirdAngle);
+        float[] manualDrivingControls = input.getVector("drive");
+        if(manualDrivingControls[0] + manualDrivingControls[1] + manualDrivingControls[2] != 0) driver.driveOmni(manualDrivingControls);
 
-        //  FeatureManager.logger.add("IMU Acceleration: " + imu.getLinearAcceleration().toString());
+        telemetry.addData("IMU Orientation: ", imu.getOrientation().thirdAngle);
+
+        telemetry.addData("IMU Acceleration: ", imu.getLinearAcceleration().toString());
+        telemetry.addData("IMU Position: ", imu.getPosition().toString());
     }
 }

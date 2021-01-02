@@ -293,10 +293,10 @@ public class ControlModel {
                         else return children[0].res(state);
                     case DEADZONE:
                         float[] a = children[0].res(state);
-                        float[] b = children[0].res(state);
+                        float[] b = children[1].res(state);
 
                         if (Math.abs(a[0]) > Math.abs(b[0])) return a;
-                        else return b;
+                        else return new float[] {0f, 0f, 0f};
                     case TOGGLE_BETWEEN:
                         boolean currentTbState = this.state != 0;
                         if(children[0].res(state)[0] != 0 && children[0].res(state.history)[0] == 0) currentTbState = !currentTbState;
