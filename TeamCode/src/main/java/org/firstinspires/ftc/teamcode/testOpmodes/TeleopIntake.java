@@ -16,9 +16,10 @@ import org.firstinspires.ftc.teamcode.managers.MovementManager;
 
 
 @TeleOp
-public class TeleopFlywheel extends OpMode {
+public class TeleopIntake extends OpMode {
 
     InputManager input;
+//    MovementManager driver;
     ColorSensor sensor;
     Servo grab;
     ImuManager imu;
@@ -39,12 +40,12 @@ public class TeleopFlywheel extends OpMode {
                 new CRServo[] {},
                 new String[] {},
                 new DcMotor[] {
-                        hardwareMap.get(DcMotor.class, "flywheelRight"),
-                        hardwareMap.get(DcMotor.class, "flywheelLeft")
+                        hardwareMap.get(DcMotor.class, "drum"),
+                        hardwareMap.get(DcMotor.class, "intake")
                 },
                 new String[] {
-                        "flywheelRight",
-                        "flywheelLeft"
+                        "drum",
+                        "intake"
                 },
                 new float[] {1f, 1f}
             );
@@ -69,27 +70,52 @@ public class TeleopFlywheel extends OpMode {
 //            driver.downScale();
 //        }
 
+        float directionDrum = 1f;
+        float directionIntake = 1f;
 
-        if(input.getGamepad().right_trigger > 0.5){
-            limbs.setMotorPower("flywheelRight", 1f);
-        } else
-        if(input.getGamepad().right_bumper){
-            limbs.setMotorPower("flywheelRight", -1f);
-        } else {
-            limbs.setMotorPower("flywheelRight", 0f);
+        if(input.getGamepad().a){
+            directionDrum = -1;
+        } else directionDrum = 1;
+
+        if(input.getGamepad().b){
+            directionIntake = -1;
+        } else directionIntake = 1;
+
+        if(input.getGamepad().right_trigger > 0.1){
+            limbs.setMotorPower("drum", input.getGamepad().right_trigger*directionDrum);
         }
 
-        if(input.getGamepad().left_trigger > 0.5){
-            limbs.setMotorPower("flywheelLeft", 1f);
-        } else
-        if(input.getGamepad().left_bumper){
-            limbs.setMotorPower("flywheelLeft", -1f);
-        } else {
-            limbs.setMotorPower("flywheelLeft", 0f);
+        if(input.getGamepad().left_trigger > 0.1){
+            limbs.setMotorPower("intake", input.getGamepad().left_trigger*directionIntake);
         }
 
-        telemetry.addData("flywheelLeft Power", limbs.getMotorPower("flywheelLeft"));
-        telemetry.addData("flywheelRight Power", limbs.getMotorPower("flywheelRight"));
+
+
+//        telemetry.addData("FL Ticks:", driver.frontLeft.getCurrentPosition());
+//        telemetry.addData("FR Ticks:", driver.frontRight.getCurrentPosition());
+//        telemetry.addData("BL Ticks:", driver.backRight.getCurrentPosition());
+//        telemetry.addData("BR Ticks:", driver.backLeft.getCurrentPosition());
+//        telemetry.addData("Average Ticks:", (driver.frontLeft.getCurrentPosition()+
+//                driver.frontRight.getCurrentPosition()+
+//                driver.backLeft.getCurrentPosition()+
+//                driver.backRight.getCurrentPosition())/4);
+//
+//        telemetry.addData("FL Power: ", driver.frontLeft.getPower());
+//        telemetry.addData("FL Port: ", driver.frontLeft.getPortNumber());
+//
+//        telemetry.addData("FR Power: ", driver.frontRight.getPower());
+//        telemetry.addData("FR Port: ", driver.frontRight.getPortNumber());
+//
+//        telemetry.addData("BL Power: ", driver.backLeft.getPower());
+//        telemetry.addData("BL Port: ", driver.backLeft.getPortNumber());
+//
+//        telemetry.addData("BR Power: ", driver.backRight.getPower());
+//        telemetry.addData("BR Port: ", driver.backRight.getPortNumber());
+
+//        telemetry.addData("speed: ", driver.getScale());
+
+        telemetry.addData("Drum Power", limbs.getMotorPower("drum"));
+        telemetry.addData("Intake Power", limbs.getMotorPower("intake"));
 
         telemetry.addData("Orientation", imu.getOrientation().toString());
     }
