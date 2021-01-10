@@ -22,7 +22,6 @@ public class TeleopServo extends OpMode {
     Servo grab;
     ImuManager imu;
     ManipulationManager limbs;
-    Servo shooterArm;
 
     private static boolean toggleSpeed = false;
 
@@ -35,28 +34,25 @@ public class TeleopServo extends OpMode {
 //                hardwareMap.get(DcMotor.class, "bl"));
         input = new InputManager(gamepad1, new BasicDrivingControlMap());
         imu = new ImuManager(hardwareMap.get(com.qualcomm.hardware.bosch.BNO055IMU.class, "imu"));
-//        limbs = new ManipulationManager(
-//                new CRServo[] {},
-//                new String[] {},
-//                new Servo[] {
-//                        hardwareMap.get(Servo.class, "shooterArm")
-//                },
-//                new String[] {
-//                        "shooterArm"
-//                },
-//                new DcMotor[] {
-////                        hardwareMap.get(DcMotor.class, "flywheelRight"),
-////                        hardwareMap.get(DcMotor.class, "flywheelLeft")
-//                },
-//                new String[] {
-////                        "flywheelRight",
-////                        "flywheelLeft"
-//                },
-//                new float[] {1f, 1f}
-//            );
-
-
-         shooterArm = hardwareMap.get(Servo.class, "shooterArm");
+        limbs = new ManipulationManager(
+                new CRServo[] {
+                        hardwareMap.get(CRServo.class, "shooterArm")
+                },
+                new String[]
+                        {"shooterArm"},
+                new Servo[] {
+                },
+                new String[] {
+                },
+                new DcMotor[] {
+                        hardwareMap.get(DcMotor.class, "flywheelRight"),
+                        hardwareMap.get(DcMotor.class, "flywheelLeft")
+                },
+                new String[] {
+                        "flywheelRight",
+                        "flywheelLeft"
+                }
+            );
        // driver.resetEncoders();
       //  driver.runUsingEncoders();
 
@@ -78,8 +74,10 @@ public class TeleopServo extends OpMode {
 //        }
 
         if(input.getGamepad().a) {
-//            limbs.setServoPosition("shooterArm", 0.7);
-            shooterArm.setPosition(0.7);
+            //limbs.setServoPosition("shooterArm", 0.7);
+            limbs.setServoPower("shooterArm", 0.0);
+        } else {
+            limbs.setServoPower("shooterArm", 0.75);
         }
 
 
@@ -105,6 +103,6 @@ public class TeleopServo extends OpMode {
 //        telemetry.addData("flywheelRight Power", limbs.getMotorPower("flywheelRight"));
 
         telemetry.addData("Orientation", imu.getOrientation().toString());
-//        telemetry.addData("Servo Position", limbs.getServoPosition("shooterArm"));
+        telemetry.addData("Servo Power", limbs.getServoPower("shooterArm"));
     }
 }

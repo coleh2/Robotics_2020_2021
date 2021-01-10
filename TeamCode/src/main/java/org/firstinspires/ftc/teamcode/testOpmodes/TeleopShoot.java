@@ -36,8 +36,12 @@ public class TeleopShoot extends OpMode {
         input = new InputManager(gamepad1, new BasicDrivingControlMap());
         imu = new ImuManager(hardwareMap.get(com.qualcomm.hardware.bosch.BNO055IMU.class, "imu"));
         limbs = new ManipulationManager(
-                new CRServo[] {},
-                new String[] {},
+                new CRServo[] {
+                        hardwareMap.get(CRServo.class, "shooterArm")
+                },
+                new String[] {
+                        "shooterArm"
+                },
                 new Servo[] {},
                 new String[] {},
                 new DcMotor[] {
@@ -59,6 +63,8 @@ public class TeleopShoot extends OpMode {
 
 
     }
+
+    float directionDrum;
 
     public void loop() {
 //        input.update();
@@ -85,17 +91,26 @@ public class TeleopShoot extends OpMode {
             limbs.setMotorPower("flywheelLeft", 0);
         }
 
+        if(input.getGamepad().right_bumper) {
+            limbs.setServoPower("shooterArm", 0);
+        } else {
+            limbs.setServoPower("shooterArm", 0.7);
+        }
+
+        if(input.getGamepad().a) directionDrum = -1;
+        else directionDrum = 1;
+
         if(input.getGamepad().left_trigger > 0.1){
-            limbs.setMotorPower("drum", 0.5);
+            limbs.setMotorPower("drum", -1*directionDrum);
             limbs.setMotorPower("intake", 0.5);
         } else {
             if (input.getGamepad().left_bumper) {
-                limbs.setMotorPower("drum", .5);
+                limbs.setMotorPower("drum", -1);
             } else {
                 limbs.setMotorPower("drum", 0);
             }
-            if(input.getGamepad().right_bumper){
-                limbs.setMotorPower("intake", .5);
+            if(input.getGamepad().b){
+                limbs.setMotorPower("intake", 0.5);
             } else {
                 limbs.setMotorPower("intake", 0);
             }
