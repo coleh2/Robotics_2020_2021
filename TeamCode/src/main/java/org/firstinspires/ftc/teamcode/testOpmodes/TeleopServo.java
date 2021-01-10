@@ -12,17 +12,17 @@ import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 import org.firstinspires.ftc.teamcode.managers.ImuManager;
 import org.firstinspires.ftc.teamcode.managers.InputManager;
 import org.firstinspires.ftc.teamcode.managers.ManipulationManager;
-import org.firstinspires.ftc.teamcode.managers.MovementManager;
 
 
 @TeleOp
-public class TeleopFlywheel extends OpMode {
+public class TeleopServo extends OpMode {
 
     InputManager input;
     ColorSensor sensor;
     Servo grab;
     ImuManager imu;
     ManipulationManager limbs;
+    Servo shooterArm;
 
     private static boolean toggleSpeed = false;
 
@@ -35,22 +35,28 @@ public class TeleopFlywheel extends OpMode {
 //                hardwareMap.get(DcMotor.class, "bl"));
         input = new InputManager(gamepad1, new BasicDrivingControlMap());
         imu = new ImuManager(hardwareMap.get(com.qualcomm.hardware.bosch.BNO055IMU.class, "imu"));
-        limbs = new ManipulationManager(
-                new CRServo[] {},
-                new String[] {},
-                new Servo[] {},
-                new String[] {},
-                new DcMotor[] {
-                        hardwareMap.get(DcMotor.class, "flywheelRight"),
-                        hardwareMap.get(DcMotor.class, "flywheelLeft")
-                },
-                new String[] {
-                        "flywheelRight",
-                        "flywheelLeft"
-                },
-                new float[] {1f, 1f}
-            );
+//        limbs = new ManipulationManager(
+//                new CRServo[] {},
+//                new String[] {},
+//                new Servo[] {
+//                        hardwareMap.get(Servo.class, "shooterArm")
+//                },
+//                new String[] {
+//                        "shooterArm"
+//                },
+//                new DcMotor[] {
+////                        hardwareMap.get(DcMotor.class, "flywheelRight"),
+////                        hardwareMap.get(DcMotor.class, "flywheelLeft")
+//                },
+//                new String[] {
+////                        "flywheelRight",
+////                        "flywheelLeft"
+//                },
+//                new float[] {1f, 1f}
+//            );
 
+
+         shooterArm = hardwareMap.get(Servo.class, "shooterArm");
        // driver.resetEncoders();
       //  driver.runUsingEncoders();
 
@@ -58,7 +64,7 @@ public class TeleopFlywheel extends OpMode {
     }
 
     public void loop() {
-//        input.update();
+        input.update();
 //        if(!input.getGamepad().left_bumper) {
 //            driver.driveOmni(input.getVector("drive"));
 //        } else {
@@ -71,28 +77,34 @@ public class TeleopFlywheel extends OpMode {
 //            driver.downScale();
 //        }
 
-
-        if(input.getGamepad().right_trigger > 0.5){
-            limbs.setMotorPower("flywheelRight", -1f);
-        } else
-        if(input.getGamepad().right_bumper){
-            limbs.setMotorPower("flywheelRight", 1f);
-        } else {
-            limbs.setMotorPower("flywheelRight", 0f);
+        if(input.getGamepad().a) {
+//            limbs.setServoPosition("shooterArm", 0.7);
+            shooterArm.setPosition(0.7);
         }
 
-        if(input.getGamepad().left_trigger > 0.5){
-            limbs.setMotorPower("flywheelLeft", 1f);
-        } else
-        if(input.getGamepad().left_bumper){
-            limbs.setMotorPower("flywheelLeft", -1f);
-        } else {
-            limbs.setMotorPower("flywheelLeft", 0f);
-        }
 
-        telemetry.addData("flywheelLeft Power", limbs.getMotorPower("flywheelLeft"));
-        telemetry.addData("flywheelRight Power", limbs.getMotorPower("flywheelRight"));
+//        if(input.getGamepad().right_trigger > 0.5){
+//            limbs.setMotorPower("flywheelRight", -1f);
+//        } else
+//        if(input.getGamepad().right_bumper){
+//            limbs.setMotorPower("flywheelRight", 1f);
+//        } else {
+//            limbs.setMotorPower("flywheelRight", 0f);
+//        }
+//
+//        if(input.getGamepad().left_trigger > 0.5){
+//            limbs.setMotorPower("flywheelLeft", 1f);
+//        } else
+//        if(input.getGamepad().left_bumper){
+//            limbs.setMotorPower("flywheelLeft", -1f);
+//        } else {
+//            limbs.setMotorPower("flywheelLeft", 0f);
+//        }
+//
+//        telemetry.addData("flywheelLeft Power", limbs.getMotorPower("flywheelLeft"));
+//        telemetry.addData("flywheelRight Power", limbs.getMotorPower("flywheelRight"));
 
         telemetry.addData("Orientation", imu.getOrientation().toString());
+        telemetry.addData("Servo Position", limbs.getServoPosition("shooterArm"));
     }
 }

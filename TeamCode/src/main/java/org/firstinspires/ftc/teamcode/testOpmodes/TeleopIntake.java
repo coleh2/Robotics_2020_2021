@@ -39,6 +39,8 @@ public class TeleopIntake extends OpMode {
         limbs = new ManipulationManager(
                 new CRServo[] {},
                 new String[] {},
+                new Servo[] {},
+                new String[] {},
                 new DcMotor[] {
                         hardwareMap.get(DcMotor.class, "drum"),
                         hardwareMap.get(DcMotor.class, "intake")
