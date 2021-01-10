@@ -51,8 +51,7 @@ public class TeleopShoot extends OpMode {
                         "intake",
                         "flywheelRight",
                         "flywheelLeft"
-                },
-                new float[] {1f, 1f}
+                }
             );
 
        // driver.resetEncoders();

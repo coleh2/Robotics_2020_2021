@@ -48,8 +48,7 @@ public class TeleopIntake extends OpMode {
                 new String[] {
                         "drum",
                         "intake"
-                },
-                new float[] {1f, 1f}
+                }
             );
 
        // driver.resetEncoders();

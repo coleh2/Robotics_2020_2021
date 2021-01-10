@@ -105,6 +105,6 @@ public class TeleopServo extends OpMode {
 //        telemetry.addData("flywheelRight Power", limbs.getMotorPower("flywheelRight"));
 
         telemetry.addData("Orientation", imu.getOrientation().toString());
-        telemetry.addData("Servo Position", limbs.getServoPosition("shooterArm"));
+//        telemetry.addData("Servo Position", limbs.getServoPosition("shooterArm"));
     }
 }
