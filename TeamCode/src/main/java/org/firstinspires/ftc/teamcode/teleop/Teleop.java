@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -11,6 +12,7 @@ import org.firstinspires.ftc.teamcode.managers.ColorSensor;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 import org.firstinspires.ftc.teamcode.managers.ImuManager;
 import org.firstinspires.ftc.teamcode.managers.InputManager;
+import org.firstinspires.ftc.teamcode.managers.ManipulationManager;
 import org.firstinspires.ftc.teamcode.managers.MovementManager;
 
 
@@ -19,6 +21,7 @@ public class Teleop extends OpMode {
 
     InputManager input;
     MovementManager driver;
+    ManipulationManager limbs;
     ColorSensor sensor;
     Servo grab;
     ImuManager imu;
@@ -34,6 +37,28 @@ public class Teleop extends OpMode {
                 hardwareMap.get(DcMotor.class, "bl"));
         input = new InputManager(gamepad1, new BasicDrivingControlMap());
         imu = new ImuManager(hardwareMap.get(com.qualcomm.hardware.bosch.BNO055IMU.class, "imu"));
+        limbs = new ManipulationManager(
+                new CRServo[] {
+                        hardwareMap.get(CRServo.class, "shooterArm")
+                },
+                new String[] {
+                        "shooterArm"
+                },
+                new Servo[] {},
+                new String[] {},
+                new DcMotor[] {
+                        hardwareMap.get(DcMotor.class, "drum"),
+                        hardwareMap.get(DcMotor.class, "intake"),
+                        hardwareMap.get(DcMotor.class, "flywheelRight"),
+                        hardwareMap.get(DcMotor.class, "flywheelLeft")
+                },
+                new String[] {
+                        "drum",
+                        "intake",
+                        "flywheelRight",
+                        "flywheelLeft"
+                }
+        );
 
        // driver.resetEncoders();
       //  driver.runUsingEncoders();
@@ -43,27 +68,49 @@ public class Teleop extends OpMode {
 
     public void loop() {
         input.update();
-        if(!input.getGamepad().left_bumper) {
-            driver.driveOmni(input.getVector("drive"));
+
+        driver.driveOmni(input.getVector("drive"));
+
+        if(input.getGamepad().right_trigger > 0.1){
+            limbs.setMotorPower("flywheelRight", -1);
+            limbs.setMotorPower("flywheelLeft", 1);
         } else {
-            driver.driveOmniExponential(input.getVector("drive"));
+            limbs.setMotorPower("flywheelRight", 0);
+            limbs.setMotorPower("flywheelLeft", 0);
         }
+
+        if(input.getGamepad().x) {
+            limbs.setServoPower("shooterArm", 0);
+        } else {
+            limbs.setServoPower("shooterArm", 0.65);
+        }
+
         if(input.getGamepad().dpad_up){
-            driver.upScale();
+            limbs.setMotorPower("drum", -1);
+        } else if(input.getGamepad().dpad_down) {
+            limbs.setMotorPower("drum", 1);
+        } else if (input.getGamepad().left_trigger > 0.1) {
+            limbs.setMotorPower("drum", -1);
+        } else {
+            limbs.setMotorPower("drum", 0);
         }
-        if (input.getGamepad().dpad_down){
-            driver.downScale();
+
+        if (input.getGamepad().left_trigger > 0.1) {
+            limbs.setMotorPower("intake", 0.5);
+        } else {
+            limbs.setMotorPower("intake", 0);
         }
 
 
-        telemetry.addData("FL Ticks:", driver.frontLeft.getCurrentPosition());
-        telemetry.addData("FR Ticks:", driver.frontRight.getCurrentPosition());
-        telemetry.addData("BL Ticks:", driver.backRight.getCurrentPosition());
-        telemetry.addData("BR Ticks:", driver.backLeft.getCurrentPosition());
-        telemetry.addData("Average Ticks:", (driver.frontLeft.getCurrentPosition()+
-                driver.frontRight.getCurrentPosition()+
-                driver.backLeft.getCurrentPosition()+
-                driver.backRight.getCurrentPosition())/4);
+
+//        telemetry.addData("FL Ticks:", driver.frontLeft.getCurrentPosition());
+//        telemetry.addData("FR Ticks:", driver.frontRight.getCurrentPosition());
+//        telemetry.addData("BL Ticks:", driver.backRight.getCurrentPosition());
+//        telemetry.addData("BR Ticks:", driver.backLeft.getCurrentPosition());
+//        telemetry.addData("Average Ticks:", (driver.frontLeft.getCurrentPosition()+
+//                driver.frontRight.getCurrentPosition()+
+//                driver.backLeft.getCurrentPosition()+
+//                driver.backRight.getCurrentPosition())/4);
 
         telemetry.addData("FL Power: ", driver.frontLeft.getPower());
         telemetry.addData("FL Port: ", driver.frontLeft.getPortNumber());
@@ -77,10 +124,13 @@ public class Teleop extends OpMode {
         telemetry.addData("BR Power: ", driver.backRight.getPower());
         telemetry.addData("BR Port: ", driver.backRight.getPortNumber());
 
+        telemetry.addData("Drum Power", limbs.getMotorPower("drum"));
+        telemetry.addData("Intake Power", limbs.getMotorPower("intake"));
+        telemetry.addData("Flywheel Right Power", limbs.getMotorPower("flywheelRight"));
+        telemetry.addData("Flywheel Left Power", limbs.getMotorPower("flywheelLeft"));
+        telemetry.addData("Orientation", imu.getOrientation().toString());
+
         telemetry.addData("speed: ", driver.getScale());
 
-
-
-        telemetry.addData("Orientation", imu.getOrientation().toString());
     }
 }
