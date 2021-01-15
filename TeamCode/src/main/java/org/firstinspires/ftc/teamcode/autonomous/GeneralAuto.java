@@ -14,6 +14,7 @@ public class GeneralAuto extends OpMode {
     MovementManager driver;
 
 
+
     public void init() {
         driver = new MovementManager(hardwareMap.get(DcMotor.class, "fl"),
                 hardwareMap.get(DcMotor.class, "fr"),
@@ -23,6 +24,10 @@ public class GeneralAuto extends OpMode {
 
 
     public void loop() {
+
+        if( getRuntime() < 3) {
+            driver.driveRaw(0.5f,0.5f,-0.5f, -0.5f);
+        } else driver.stopDrive();
 
 
         telemetry.addData("FL Power: ", driver.frontLeft.getPower());
