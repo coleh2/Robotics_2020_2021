@@ -28,6 +28,21 @@ public abstract class PaulMath extends FeatureManager {
         return array;
     }
 
+    public static float[] cartesianToPolar(float x, float y) {
+        double radius = Math.sqrt((x*x) + (y*y));
+        double angle = Math.atan2(y, x);
+
+        return new float[] {(float)radius, (float)(angle * 180 / Math.PI)};
+    }
+
+    public static float[] polarToCartesian(float angle, float magnitude) {
+
+        double y = Math.sin(angle) * magnitude;
+        double x = Math.cos(angle) * magnitude;
+
+        return new float[] {(float)x, (float)y };
+    }
+
     public static float[] omniCalc(float verticalPower, float horizontalPower, float rotationalPower) {
         float lx = Range.clip(horizontalPower, -1, 1);
         float lY = Range.clip(verticalPower, -1, 1);

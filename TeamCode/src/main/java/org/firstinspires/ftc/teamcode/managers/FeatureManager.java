@@ -51,6 +51,10 @@ public class FeatureManager {
             if(usesFallback) fallbackBackend.println(l);
             else backend.add(l);
         }
+        public void log(String n, Object l) {
+            if(!usesFallback) backend.add(n, l);
+        }
+
         public void log(Object l) {log(l.toString());}
         public void log(double l) {log("" + l);}
         public void log(boolean l) {log("" + l);}

@@ -5,6 +5,7 @@ import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -166,6 +167,14 @@ public class ControlModel {
             return false;
         }
 
+        public static class TimeAwareHistory {
+            float[][] valueHistory;
+
+            public TimeAwareHistory(int domain) {
+
+            }
+        }
+
         public void parse(String src) {
             String[] tokens = src.split("[^\\w\\d.]+");
             int pointer = 0;
@@ -275,7 +284,7 @@ public class ControlModel {
                     case TOGGLE:
                         boolean currentState = this.state != 0;
                         //only on rising edge so that it doesn't toggle onoffonoffonoff when people press a button
-                        if(children[0].res(state)[0] != 0 && children[0].res(state.history)[0] == 0) currentState = !currentState;
+                        if(children[0].res(state)[0] != 0 && children[0].res(state.getHistory())[0] == 0) currentState = !currentState;
                         this.state = currentState?1:0;
 
                         return new float[]{(float) this.state};
@@ -286,7 +295,7 @@ public class ControlModel {
                     case PUSH:
                         //rising edge only
                         return new float[]{
-                            (children[0].res(state)[0] != 0 && children[0].res(state.history)[0] == 0)?1f:0f
+                            (children[0].res(state)[0] != 0 && children[0].res(state.getHistory())[0] == 0)?1f:0f
                         };
                     case COMBO:
                         if(children[0].res(state)[0] != 0) return children[1].res(state);
@@ -299,11 +308,16 @@ public class ControlModel {
                         else return new float[] {0f, 0f, 0f};
                     case TOGGLE_BETWEEN:
                         boolean currentTbState = this.state != 0;
-                        if(children[0].res(state)[0] != 0 && children[0].res(state.history)[0] == 0) currentTbState = !currentTbState;
+
+                        //rising edge? flip!
+                        if(children[0].res(state)[0] != 0 && this.value == 0) currentTbState = !currentTbState;
                         this.state = currentTbState?1:0;
 
+                        //remember past value for testing the rising edge later
+                        this.value = children[0].res(state)[0];
+
                         if(currentTbState) return children[1].res(state);
-                        else return children[1].res(state);
+                        else return children[0].res(state);
                     case NOT:
                         return new float[]{
                                 (children[0].res(state)[0]==0)?1f:0f
@@ -381,7 +395,7 @@ public class ControlModel {
                 paramsAsStrings.append(children[i].toString());
                 if(i + 1 < children.length) paramsAsStrings.append(", ");
             }
-            return this.type.toString() + (this.type.paramCount > 0 ? "(" + paramsAsStrings + ")" : "");
+            return this.type.toString() + "<" + this.value + "," + this.state + ">" + (this.type.paramCount > 0 ? "(" + paramsAsStrings + ")" : "");
         }
     }
 

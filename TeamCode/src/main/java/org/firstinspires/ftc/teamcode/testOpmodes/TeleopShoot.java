@@ -109,7 +109,7 @@ public class TeleopShoot extends OpMode {
             } else {
                 limbs.setMotorPower("drum", 0);
             }
-            if(input.getGamepad().b){
+            if(input.getGamepad().b) {
                 limbs.setMotorPower("intake", 0.5);
             } else {
                 limbs.setMotorPower("intake", 0);

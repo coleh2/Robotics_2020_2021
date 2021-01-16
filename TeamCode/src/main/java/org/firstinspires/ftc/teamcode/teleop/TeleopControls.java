@@ -69,12 +69,12 @@ public class TeleopControls extends OpMode {
     public void loop() {
         input.update();
 
-        driver.driveOmni(input.getVector("drive"));
+        driver.driveOmni((input.getVector("drive")));
 
         limbs.setMotorPower("intake", 0.5*input.getScalar("fullIntake"));
 
 
-        if(input.getGamepad().right_trigger > 0.1){
+        if(input.getGamepad().right_trigger > 0.1) {
             limbs.setMotorPower("flywheelRight", -1);
             limbs.setMotorPower("flywheelLeft", 1);
         } else {
@@ -83,21 +83,17 @@ public class TeleopControls extends OpMode {
         }
 
         if(input.getGamepad().a) {
-            limbs.setServoPower("shooterArm", 0);
+            limbs.setServoPower("shooterArm", 0.325);
         } else {
             limbs.setServoPower("shooterArm", 0.65);
         }
 
-        if(input.getGamepad().dpad_up){
+        limbs.setMotorPower("drum", (input.getGamepad().right_trigger > 0.1 || input.getScalar("fullIntake") == 1) ? -1 : 0);
+
+        if(input.getGamepad().dpad_up) {
             limbs.setMotorPower("drum", -1);
         } else if(input.getGamepad().dpad_down) {
             limbs.setMotorPower("drum", 1);
-        } else {limbs.setMotorPower("drum", -1*input.getScalar("fullIntake"));}
-
-        if(input.getGamepad().right_trigger > 0.1) {
-            limbs.setMotorPower("drum", -1);
-        } else {
-            limbs.setMotorPower("drum", 0);
         }
 
 
@@ -130,6 +126,11 @@ public class TeleopControls extends OpMode {
         telemetry.addData("Orientation", imu.getOrientation().toString());
 
         telemetry.addData("speed: ", driver.getScale());
+
+        telemetry.addData("left trigger: ", input.getGamepad().left_trigger);
+
+        telemetry.addData("controls://fullIntake:", input.getControl("fullIntake").toString());
+        telemetry.addData("controls://lt:", input.getScalar("lt"));
 
     }
 }

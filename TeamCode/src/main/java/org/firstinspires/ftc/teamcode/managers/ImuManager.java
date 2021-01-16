@@ -13,6 +13,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.NavUtil;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
+import org.firstinspires.ftc.teamcode.auxilary.PaulMath;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.NavUtil.meanIntegrate;
 import static org.firstinspires.ftc.robotcore.external.navigation.NavUtil.plus;
@@ -51,6 +52,23 @@ public class ImuManager {
 
     public Acceleration getLinearAcceleration() {
         return imu.getLinearAcceleration();
+    }
+
+    public float[] rotateDriveControlToHeadless(float[] drive) {
+        float y = drive[0];
+        float x = drive[1];
+
+        float[] polar = PaulMath.polarToCartesian(x, y);
+
+        polar[0] -= getOrientation().thirdAngle;
+
+        float[] cartesian = PaulMath.cartesianToPolar(polar[0], polar[1]);
+
+        return new float[] {
+                cartesian[0],
+                cartesian[1],
+                drive[2]
+        };
     }
 
 

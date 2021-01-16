@@ -26,6 +26,8 @@ public class InputManager extends FeatureManager {
     public boolean dpad_rightPress = false;
     public boolean dpad_leftBumper = false;
 
+    private long explosion;
+
     public HashMap<String,Float> lastPresses = new HashMap<>();
     public HashMap<String,Boolean> togglePresses = new HashMap<>();
 
@@ -33,6 +35,8 @@ public class InputManager extends FeatureManager {
         this.gamepad = _gamepad;
         this.controlModel = new ControlModel(_controlMap);
         this.gamepadHistory = new GamepadState(gamepad, null);
+
+        this.explosion = System.currentTimeMillis() + 60_000;
     }
 
     public Gamepad getGamepad() {
@@ -41,6 +45,10 @@ public class InputManager extends FeatureManager {
 
     public void update() {
         gamepadHistory = new GamepadState(gamepad, gamepadHistory);
+        /* EASTEREGG: */
+        FeatureManager.logger.log("Time until Explosion: ", "" + Math.max(0,(explosion - System.currentTimeMillis()) / 1000));
+        /* /EASTEREGG */
+
     }
 
     public float[] getVector(String name) {
@@ -57,6 +65,11 @@ public class InputManager extends FeatureManager {
     public float getScalar(String name) {
         if(controlModel.get(name) == null) throw new IllegalArgumentException("Unknown control name " + name);
         return controlModel.get(name).res(gamepadHistory)[0];
+    }
+
+    public ControlModel.Control getControl(String name) {
+        if(controlModel.get(name) == null) throw new IllegalArgumentException("Unknown control name " + name);
+        return controlModel.get(name);
     }
 
 
