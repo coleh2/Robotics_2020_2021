@@ -283,9 +283,12 @@ public class ControlModel {
                                 children[3].res(state)[0]};
                     case TOGGLE:
                         boolean currentState = this.state != 0;
+
                         //only on rising edge so that it doesn't toggle onoffonoffonoff when people press a button
-                        if(children[0].res(state)[0] != 0 && children[0].res(state.getHistory())[0] == 0) currentState = !currentState;
+                        if(children[0].res(state)[0] != 0 && this.value == 0) currentState = !currentState;
+
                         this.state = currentState?1:0;
+                        this.value = children[0].res(state)[0];
 
                         return new float[]{(float) this.state};
                     case HOLD:
@@ -294,9 +297,13 @@ public class ControlModel {
                         return new float[]{res?1f:0f};
                     case PUSH:
                         //rising edge only
-                        return new float[]{
-                            (children[0].res(state)[0] != 0 && children[0].res(state.getHistory())[0] == 0)?1f:0f
+                        float[] r = new float[]{
+                            (children[0].res(state)[0] != 0 && this.value == 0)?1f:0f
                         };
+                        //remember past value for testing the rising edge later
+                        this.value = children[0].res(state)[0];
+
+                        return r;
                     case COMBO:
                         if(children[0].res(state)[0] != 0) return children[1].res(state);
                         else return children[0].res(state);
