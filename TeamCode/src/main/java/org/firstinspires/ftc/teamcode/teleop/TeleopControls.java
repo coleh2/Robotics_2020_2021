@@ -44,8 +44,18 @@ public class TeleopControls extends OpMode {
                 new String[] {
                         "shooterArm"
                 },
-                new Servo[] {},
-                new String[] {},
+                new Servo[] {
+                        hardwareMap.get(Servo.class, "wobbleArmLeft"),
+                        hardwareMap.get(Servo.class, "wobbleArmRight"),
+                        hardwareMap.get(Servo.class, "wobbleGrabLeft"),
+                        hardwareMap.get(Servo.class, "wobbleGrabRight")
+                },
+                new String[] {
+                        "wobbleArmLeft",
+                        "wobbleArmRight",
+                        "wobbleGrabLeft",
+                        "wobbleGrabRight"
+                },
                 new DcMotor[] {
                         hardwareMap.get(DcMotor.class, "drum"),
                         hardwareMap.get(DcMotor.class, "intake"),
@@ -72,7 +82,10 @@ public class TeleopControls extends OpMode {
         driver.driveOmni((input.getVector("drive")));
 
         limbs.setMotorPower("intake", 0.5*input.getScalar("fullIntake"));
-
+        limbs.setServoPosition("wobbleArmRight", input.getScalar("wobbleGraber"));
+        limbs.setServoPosition("wobbleGrabRight", input.getScalar("wobbleGraber"));
+        limbs.setServoPosition("wobbleArmLeft", input.getScalar("wobbleGraberNegative"));
+        limbs.setServoPosition("wobbleGrabLeft", input.getScalar("wobbleGraberNegative"));
 
         if(input.getGamepad().right_trigger > 0.1) {
             limbs.setMotorPower("flywheelRight", -1);
