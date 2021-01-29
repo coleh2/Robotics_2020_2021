@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.HardwareDevice;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
 public class AutoState {
-    public static final float CONTINUE_TO = -1f;
+    public static final float CONTINUE_TO =0f;
     public static final float DRIVE_OMNI = 1f;
     public static final float MANIP_SERVO = 2f;
     public static final float MANIP_MOTOR = 3f;
@@ -21,32 +21,55 @@ public class AutoState {
     public float[][] step() {
         float[] action = stateAction.value;
         float type = stateAction.typeInt();
+
+        //don't change action disposition when continuing; that way, actions can be continuous.
+        float actDisposition = type;
         if(condition.shouldContinue()) {
             type = 0f;
-            action = new float[] {(float)condition.moveTo};
         }
 
         return new float[][] {
-                new float[] {type},
+                new float[] {type, (float)condition.moveTo, actDisposition},
                 action
         };
 
     }
 
+    public static enum ActionType { DRIVE, MANIP_SERVO, MANIP_MOTOR };
+
     public static class StateAction {
-        public static enum ActionType { DRIVE, MANIP_SERVO, MANIP_MOTOR };
+
 
         public float[] value;
-        public int target;
-        public String targetName;
         public ActionType type;
         public int typeInt() {
             return type.ordinal() + 1;
         }
+
+        public StateAction(ActionType _type, float[] _value) {
+            this.type = _type;
+            this.value = _value;
+        }
     }
 
+    public static enum ContinueType { TIME, SENSOR, INSTANT }
+
     public static class ContinueCondition {
-        public static enum ContinueType { TIME, SENSOR, INSTANT }
+
+        public ContinueCondition(ContinueType type, int moveTo) {
+            this.type = type;
+            this.moveTo = moveTo;
+        }
+
+        public ContinueCondition(ContinueType type) {
+            this.type = type;
+        }
+
+        public ContinueCondition(ContinueType type, long timeMs, int moveTo) {
+            this.type = type;
+            this.moveTo = moveTo;
+            this.timeMs = timeMs;
+        }
 
         public int moveTo;
         public ContinueType type;
@@ -73,7 +96,7 @@ public class AutoState {
             }
         }
 
-        private static class LogicalComparison {
+        public static class LogicalComparison {
             private static enum Type {LT, LTE, EQ, GTE, GT};
             private Type t;
 
