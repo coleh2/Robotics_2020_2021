@@ -39,20 +39,21 @@ public class TeleopControls extends OpMode {
         imu = new ImuManager(hardwareMap.get(com.qualcomm.hardware.bosch.BNO055IMU.class, "imu"));
         limbs = new ManipulationManager(
                 new CRServo[] {
-                        hardwareMap.get(CRServo.class, "shooterArm")
+                        hardwareMap.get(CRServo.class, "shooterArm"),
+                        hardwareMap.get(CRServo.class, "wobbleArmLeft"),
+                        hardwareMap.get(CRServo.class, "wobbleArmRight")
                 },
                 new String[] {
-                        "shooterArm"
+                        "shooterArm",
+                        "wobbleArmLeft",
+                        "wobbleArmRight"
                 },
                 new Servo[] {
-                        hardwareMap.get(Servo.class, "wobbleArmLeft"),
-                        hardwareMap.get(Servo.class, "wobbleArmRight"),
+
                         hardwareMap.get(Servo.class, "wobbleGrabLeft"),
                         hardwareMap.get(Servo.class, "wobbleGrabRight")
                 },
                 new String[] {
-                        "wobbleArmLeft",
-                        "wobbleArmRight",
                         "wobbleGrabLeft",
                         "wobbleGrabRight"
                 },
@@ -82,10 +83,10 @@ public class TeleopControls extends OpMode {
         driver.driveOmni((input.getVector("drive")));
 
         limbs.setMotorPower("intake", 0.5*input.getScalar("fullIntake"));
-        limbs.setServoPosition("wobbleArmRight", input.getScalar("wobbleGraber"));
-        limbs.setServoPosition("wobbleGrabRight", input.getScalar("wobbleGraber"));
-        limbs.setServoPosition("wobbleArmLeft", input.getScalar("wobbleGraberNegative"));
-        limbs.setServoPosition("wobbleGrabLeft", input.getScalar("wobbleGraberNegative"));
+        limbs.setServoPower("wobbleArmRight", input.getScalar("wobbleGraber"));
+        limbs.setServoPosition("wobbleGrabRight", input.getScalar("wobbleGraberNegative"));
+        limbs.setServoPower("wobbleArmLeft", -input.getScalar("wobbleGraber"));
+        limbs.setServoPosition("wobbleGrabLeft", -input.getScalar("wobbleGraberNegative"));
 
         if(input.getGamepad().right_trigger > 0.1) {
             limbs.setMotorPower("flywheelRight", -1);

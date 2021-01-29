@@ -36,13 +36,17 @@ public class TeleopServo extends OpMode {
         imu = new ImuManager(hardwareMap.get(com.qualcomm.hardware.bosch.BNO055IMU.class, "imu"));
         limbs = new ManipulationManager(
                 new CRServo[] {
-                        hardwareMap.get(CRServo.class, "shooterArm")
+                        hardwareMap.get(CRServo.class, "shooterArm"),
+                        hardwareMap.get(CRServo.class, "wobbleArmRight"),
+                        hardwareMap.get(CRServo.class, "wobbleArmLeft")
                 },
                 new String[]
-                        {"shooterArm"},
+                        {"shooterArm", "wobbleArmRight","wobbleArmLeft"},
                 new Servo[] {
+
                 },
                 new String[] {
+
                 },
                 new DcMotor[] {
                         hardwareMap.get(DcMotor.class, "flywheelRight"),
@@ -58,7 +62,8 @@ public class TeleopServo extends OpMode {
 
 
     }
-
+ float target = 0.1f;
+    boolean uped = false;
     public void loop() {
         input.update();
 //        if(!input.getGamepad().left_bumper) {
@@ -79,6 +84,22 @@ public class TeleopServo extends OpMode {
         } else {
             limbs.setServoPower("shooterArm", 0.75);
         }
+        if (input.getGamepad().x){
+            limbs.setServoPower("wobbleArmLeft", -target);
+            limbs.setServoPower("wobbleArmRight", target);
+            //45 degrees = ~0.065
+
+        }else{
+            limbs.setServoPower("wobbleArmLeft", 0);
+            limbs.setServoPower("wobbleArmRight", 0);
+        }
+        if(input.getGamepad().dpad_up ){
+            target+=0.0001;
+        }
+        if(input.getGamepad().dpad_down ){
+            target-=0.0001;
+        }
+
 
 
 //        if(input.getGamepad().right_trigger > 0.5){
@@ -104,5 +125,7 @@ public class TeleopServo extends OpMode {
 
         telemetry.addData("Orientation", imu.getOrientation().toString());
         telemetry.addData("Servo Power", limbs.getServoPower("shooterArm"));
+        telemetry.addData("Servo Target", target);
+
     }
 }

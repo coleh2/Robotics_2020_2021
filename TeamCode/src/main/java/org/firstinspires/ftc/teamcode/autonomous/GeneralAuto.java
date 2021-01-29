@@ -19,6 +19,7 @@ public class GeneralAuto extends OpMode {
 
 
     public void init() {
+        resetStartTime();
         driver = new MovementManager(hardwareMap.get(DcMotor.class, "fl"),
                 hardwareMap.get(DcMotor.class, "fr"),
                 hardwareMap.get(DcMotor.class, "bl"),
@@ -49,22 +50,37 @@ public class GeneralAuto extends OpMode {
 
 
     public void loop() {
-        limbs.setServoPosition("servoArm", 0.65);
+        limbs.setServoPower("shooterArm", 0.65);
 
         if( getRuntime() < 2.5) {
-            driver.driveRaw(0.5f,0.5f,-0.5f, -0.5f);
+            driver.driveRaw(0.6f,0.6f,-0.6f, -0.6f);
         } else if(getRuntime() < 3) {
             driver.stopDrive();
         } else if(getRuntime() < 3.5) {
             limbs.setMotorPower("flywheelRight", -1);
             limbs.setMotorPower("flywheelLeft", 1);
         } else if(getRuntime() < 4.5) {
-            limbs.setServoPosition("servoArm", 0);
+            limbs.setServoPower("shooterArm", 0);
+            limbs.setMotorPower("drum", -0.5);
+        } else if(getRuntime() < 5) {
+            limbs.setServoPower("shooterArm", 0.65);
+            limbs.setMotorPower("drum", 0);
+        } else if(getRuntime() < 5.5) {
+            limbs.setServoPower("shooterArm", 0);
             limbs.setMotorPower("drum", -0.5);
         } else if(getRuntime() < 6) {
+            limbs.setServoPower("shooterArm", 0.65);
+            limbs.setMotorPower("drum", 0);
+        }else if(getRuntime() < 6.5) {
+            limbs.setServoPower("shooterArm", 0);
+            limbs.setMotorPower("drum", -0.5);
+        } else if(getRuntime() < 7) {
+            limbs.setServoPower("shooterArm", 0.65);
+            limbs.setMotorPower("drum", 0);
+        } else if(getRuntime() < 7.5) {
             limbs.setMotorPower("flywheelRight", 0);
             limbs.setMotorPower("flywheelLeft", 0);
-        } else if(getRuntime() < 6.5) {
+        } else if(getRuntime() < 8) {
             driver.driveRaw(0.5f,0.5f,-0.5f, -0.5f);
         } else driver.stopDrive();
 
