@@ -80,9 +80,11 @@ public class AutoState {
 
         public LogicalComparison comparison;
 
-        private long startMs;
+        public long startMs = 0;
 
         public boolean shouldContinue() {
+            if(startMs == 0){ startMs = System.currentTimeMillis();}
+
             switch(type) {
                 case TIME:
                     return System.currentTimeMillis() - startMs > timeMs;

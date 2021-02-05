@@ -86,11 +86,11 @@ public class Teleop extends OpMode {
         }
 
         if(input.getGamepad().dpad_up){
-            limbs.setMotorPower("drum", -1);
-        } else if(input.getGamepad().dpad_down) {
             limbs.setMotorPower("drum", 1);
-        } else if (input.getGamepad().left_trigger > 0.1) {
+        } else if(input.getGamepad().dpad_down) {
             limbs.setMotorPower("drum", -1);
+        } else if (input.getGamepad().left_trigger > 0.1) {
+            limbs.setMotorPower("drum", 1);
         } else {
             limbs.setMotorPower("drum", 0);
         }

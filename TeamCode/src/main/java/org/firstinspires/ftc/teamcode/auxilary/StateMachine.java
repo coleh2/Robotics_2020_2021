@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.auxilary;
 
 public class StateMachine {
     public AutoState[] states;
-    private int currentState;
+    public int currentState;
 
     public StateMachine(AutoState[] _states) {
         this.states = _states;

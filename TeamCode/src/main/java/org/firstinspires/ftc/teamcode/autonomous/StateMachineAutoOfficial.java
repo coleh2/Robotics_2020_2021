@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.auxilary.AutoState;
 import org.firstinspires.ftc.teamcode.auxilary.StateMachine;
+import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 import org.firstinspires.ftc.teamcode.managers.ManipulationManager;
 import org.firstinspires.ftc.teamcode.managers.MovementManager;
 
@@ -44,7 +45,7 @@ public class StateMachineAutoOfficial extends OpMode {
                 }
         );
         stateMachine = new StateMachine(new AutoState[] {
-                new AutoState(new AutoState.ContinueCondition(AutoState.ContinueType.INSTANT, 1), new AutoState.StateAction(AutoState.ActionType.MANIP_MOTOR, new float[] {1f, -1f})),
+                new AutoState(new AutoState.ContinueCondition(AutoState.ContinueType.INSTANT, 1), new AutoState.StateAction(AutoState.ActionType.MANIP_MOTOR, new float[] {2f, 3f})),
                 new AutoState(new AutoState.ContinueCondition(AutoState.ContinueType.INSTANT, 2), new AutoState.StateAction(AutoState.ActionType.MANIP_MOTOR, new float[] {2f, 1f})),
                 new AutoState(new AutoState.ContinueCondition(AutoState.ContinueType.TIME, 3000L, 3), new AutoState.StateAction(AutoState.ActionType.DRIVE, new float[] {0.5f,0f,0f})),
                 new AutoState(new AutoState.ContinueCondition(AutoState.ContinueType.TIME, 500L, 4), new AutoState.StateAction(AutoState.ActionType.MANIP_SERVO, new float[] {0f, 0f})),
@@ -79,5 +80,35 @@ public class StateMachineAutoOfficial extends OpMode {
                 limbs.setMotorPower((int)actionToDoNow.action[0], actionToDoNow.action[1]);
                 break;
         }
+        telemetry.addData("StateType: ", actionToDoNow.type);
+        telemetry.addData("StateIdex: ", stateMachine.currentState);
+        telemetry.addData("Star Time: ", stateMachine.states[stateMachine.currentState].condition.startMs);
+        telemetry.addData(" TimeMs: ", stateMachine.states[stateMachine.currentState].condition.timeMs);
+        telemetry.addData(" Time Elalskljcbka s: ", System.currentTimeMillis() - stateMachine.states[2].condition.startMs);
+
+        telemetry.addData(" Target: ", stateMachine.states[stateMachine.currentState].condition.target);
+
+
+
+
+        telemetry.addData("Drum Power", limbs.getMotorPower("drum"));
+        telemetry.addData("Intake Power", limbs.getMotorPower("intake"));
+        telemetry.addData("Flywheel Right Power", limbs.getMotorPower("flywheelRight"));
+        telemetry.addData("Flywheel Left Power", limbs.getMotorPower("flywheelLeft"));
+
+        telemetry.addData("speed: ", driver.getScale());
+        telemetry.addData("FL Power: ", driver.frontLeft.getPower());
+        telemetry.addData("FL Port: ", driver.frontLeft.getPortNumber());
+
+        telemetry.addData("FR Power: ", driver.frontRight.getPower());
+        telemetry.addData("FR Port: ", driver.frontRight.getPortNumber());
+
+        telemetry.addData("BL Power: ", driver.backLeft.getPower());
+        telemetry.addData("BL Port: ", driver.backLeft.getPortNumber());
+
+        telemetry.addData("BR Power: ", driver.backRight.getPower());
+        telemetry.addData("BR Port: ", driver.backRight.getPortNumber());
+
+
     }
 }
