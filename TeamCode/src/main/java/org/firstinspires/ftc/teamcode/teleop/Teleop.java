@@ -90,7 +90,7 @@ public class Teleop extends OpMode {
         } else if(input.getGamepad().dpad_down) {
             limbs.setMotorPower("drum", 0.7);
         } else if (input.getGamepad().left_trigger > 0.1) {
-            limbs.setMotorPower("drum", -0.7.////////////////////////////////////////////////////////`);
+            limbs.setMotorPower("drum", -0.7);
         } else {
             limbs.setMotorPower("drum", 0);
         }
