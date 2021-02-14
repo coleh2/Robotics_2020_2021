@@ -47,21 +47,21 @@ public class StateMachineAutoOfficial extends OpMode {
 
         int currentState = 0;
         stateMachine = new StateMachine(new AutoState[] {
-                new AutoState(new AutoState.ContinueCondition(AutoState.ContinueType.INSTANT, 1), new AutoState.StateAction(AutoState.ActionType.MANIP_MOTOR, new float[] {2f, -1f})),
-                new AutoState(new AutoState.ContinueCondition(AutoState.ContinueType.INSTANT, 2), new AutoState.StateAction(AutoState.ActionType.MANIP_MOTOR, new float[] {3f, 1f})),
-                new AutoState(new AutoState.ContinueCondition(AutoState.ContinueType.TIME, 1_000L, 3), new AutoState.StateAction(AutoState.ActionType.DRIVE, new float[] {0.6f,0.6f,-0.6f,-0.6f})),
-                new AutoState(new AutoState.ContinueCondition(AutoState.ContinueType.INSTANT,  4), new AutoState.StateAction(AutoState.ActionType.DRIVE, new float[] {0f,0f,0f,0f})),
-                new AutoState(new AutoState.ContinueCondition(AutoState.ContinueType.TIME, 1_000L, 5), new AutoState.StateAction(AutoState.ActionType.MANIP_SERVO, new float[] {0f, 0f})),
-                new AutoState(new AutoState.ContinueCondition(AutoState.ContinueType.TIME, 1_000L,6), new AutoState.StateAction(AutoState.ActionType.MANIP_SERVO, new float[] {0f, 0.7f})),
-                new AutoState(new AutoState.ContinueCondition(AutoState.ContinueType.TIME, 1_000L, 7), new AutoState.StateAction(AutoState.ActionType.MANIP_SERVO, new float[] {0f, 0f})),
-                new AutoState(new AutoState.ContinueCondition(AutoState.ContinueType.TIME, 1_000L, 8), new AutoState.StateAction(AutoState.ActionType.MANIP_SERVO, new float[] {0f, 0.7f})),
-                new AutoState(new AutoState.ContinueCondition(AutoState.ContinueType.TIME, 1_000L, 9), new AutoState.StateAction(AutoState.ActionType.MANIP_SERVO, new float[] {0f, 0f})),
-                new AutoState(new AutoState.ContinueCondition(AutoState.ContinueType.TIME, 1_000L,10), new AutoState.StateAction(AutoState.ActionType.MANIP_SERVO, new float[] {0f, 0.7f})),
-                new AutoState(new AutoState.ContinueCondition(AutoState.ContinueType.TIME, 1_000L, 11), new AutoState.StateAction(AutoState.ActionType.DRIVE, new float[] {0.6f,0.6f,-0.6f,-0.6f})),
-                new AutoState(new AutoState.ContinueCondition(AutoState.ContinueType.INSTANT,  12), new AutoState.StateAction(AutoState.ActionType.DRIVE, new float[] {0f,0f,0f,0f})),
-                new AutoState(new AutoState.ContinueCondition(AutoState.ContinueType.INSTANT, 13), new AutoState.StateAction(AutoState.ActionType.DRIVE, new float[] {0f, 0f, 0f,0f})),
-                new AutoState(new AutoState.ContinueCondition(AutoState.ContinueType.INSTANT, 14), new AutoState.StateAction(AutoState.ActionType.MANIP_MOTOR, new float[] {2f, 0f})),
-                new AutoState(new AutoState.ContinueCondition(AutoState.ContinueType.INSTANT, 14), new AutoState.StateAction(AutoState.ActionType.MANIP_MOTOR, new float[] {3f, 0f}))
+                new AutoState(new AutoState.ContinueCondition(   AutoState.ContinueType.INSTANT,                 1),  new AutoState.StateAction(AutoState.ActionType.MANIP_MOTOR,    new float[] {2f, -1f}              )),
+                new AutoState(new AutoState.ContinueCondition(   AutoState.ContinueType.INSTANT,                 2),  new AutoState.StateAction(AutoState.ActionType.MANIP_MOTOR,    new float[] {3f, 1f}               )),
+                new AutoState(new AutoState.ContinueCondition(   AutoState.ContinueType.TIME,    1_000L, 3),  new AutoState.StateAction(AutoState.ActionType.DRIVE,          new float[] {0.6f,0.6f,-0.6f,-0.6f})),
+                new AutoState(new AutoState.ContinueCondition(   AutoState.ContinueType.INSTANT,                 4),  new AutoState.StateAction(AutoState.ActionType.DRIVE,          new float[] {0f,0f,0f,0f}          )),
+                new AutoState(new AutoState.ContinueCondition(   AutoState.ContinueType.TIME,    1_000L, 5),  new AutoState.StateAction(AutoState.ActionType.MANIP_SERVO,    new float[] {0f, 0f}               )),
+                new AutoState(new AutoState.ContinueCondition(   AutoState.ContinueType.TIME,    1_000L, 6),  new AutoState.StateAction(AutoState.ActionType.MANIP_SERVO,    new float[] {0f, 0.7f}             )),
+                new AutoState(new AutoState.ContinueCondition(   AutoState.ContinueType.TIME,    1_000L, 7),  new AutoState.StateAction(AutoState.ActionType.MANIP_SERVO,    new float[] {0f, 0f}               )),
+                new AutoState(new AutoState.ContinueCondition(   AutoState.ContinueType.TIME,    1_000L, 8),  new AutoState.StateAction(AutoState.ActionType.MANIP_SERVO,    new float[] {0f, 0.7f}             )),
+                new AutoState(new AutoState.ContinueCondition(   AutoState.ContinueType.TIME,    1_000L, 9),  new AutoState.StateAction(AutoState.ActionType.MANIP_SERVO,    new float[] {0f, 0f}               )),
+                new AutoState(new AutoState.ContinueCondition(   AutoState.ContinueType.TIME,    1_000L, 10), new AutoState.StateAction(AutoState.ActionType.MANIP_SERVO,    new float[] {0f, 0.7f}             )),
+                new AutoState(new AutoState.ContinueCondition(   AutoState.ContinueType.TIME,    1_000L, 11), new AutoState.StateAction(AutoState.ActionType.DRIVE,          new float[] {0.6f,0.6f,-0.6f,-0.6f})),
+                new AutoState(new AutoState.ContinueCondition(   AutoState.ContinueType.INSTANT,                 12), new AutoState.StateAction(AutoState.ActionType.DRIVE,          new float[] {0f,0f,0f,0f}          )),
+                new AutoState(new AutoState.ContinueCondition(   AutoState.ContinueType.INSTANT,                 13), new AutoState.StateAction(AutoState.ActionType.DRIVE,          new float[] {0f, 0f, 0f,0f}        )),
+                new AutoState(new AutoState.ContinueCondition(   AutoState.ContinueType.INSTANT,                 14), new AutoState.StateAction(AutoState.ActionType.MANIP_MOTOR,    new float[] {2f, 0f}               )),
+                new AutoState(new AutoState.ContinueCondition(   AutoState.ContinueType.INSTANT,                 14), new AutoState.StateAction(AutoState.ActionType.MANIP_MOTOR,    new float[] {3f, 0f}               ))
 
         });
 
