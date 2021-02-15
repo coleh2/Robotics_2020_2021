@@ -122,6 +122,15 @@ public class MovementManager extends FeatureManager {
         scale-=0.01;
     }
 
+    public float[] getMotorPositions() {
+        return new float[] {
+          frontRight.getCurrentPosition(),
+          frontLeft.getCurrentPosition(),
+          backRight.getCurrentPosition(),
+          backLeft.getCurrentPosition()
+        };
+    }
+
     public void driveWithVertical(float power, float distance) {
         int ticks = PaulMath.encoderDistance(distance);
         setTargetPositions(ticks, ticks, ticks, ticks);
