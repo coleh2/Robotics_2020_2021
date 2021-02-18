@@ -62,7 +62,7 @@ public class EncoderTester extends OpMode {
             );
 
         driver.resetEncoders();
-        driver.runUsingEncoders();
+//        driver.runUsingEncoders();
 
 
     }

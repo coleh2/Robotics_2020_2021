@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.teleop;
+package org.firstinspires.ftc.teamcode.testOpmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.auxilary.controlmaps.BasicDrivingControlMap;
-import org.firstinspires.ftc.teamcode.auxilary.controlmaps.JoshuaIsDeadzoneAndKilledJameControlMap;
 import org.firstinspires.ftc.teamcode.managers.ColorSensor;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 import org.firstinspires.ftc.teamcode.managers.ImuManager;
@@ -19,7 +18,7 @@ import java.util.Arrays;
 
 
 @TeleOp
-public class Teleop extends OpMode {
+public class Teleop2Controls extends OpMode {
 
     InputManager input;
     MovementManager driver;
@@ -72,7 +71,7 @@ public class Teleop extends OpMode {
 
         driver.driveOmni(input.getVector("drive"));
 
-        if(input.getGamepad().right_trigger > 0.1){
+        if(gamepad2.right_trigger > 0.1){
             limbs.setMotorPower("flywheelRight", -1);
             limbs.setMotorPower("flywheelLeft", 1);
         } else {
@@ -80,23 +79,23 @@ public class Teleop extends OpMode {
             limbs.setMotorPower("flywheelLeft", 0);
         }
 
-        if(input.getGamepad().a) {
+        if(gamepad2.a) {
             limbs.setServoPower("shooterArm", 0);
         } else {
             limbs.setServoPower("shooterArm", 0.57);
         }
 
-        if(input.getGamepad().dpad_up){
+        if(gamepad2.dpad_up){
             limbs.setMotorPower("drum", -0.7);
-        } else if(input.getGamepad().dpad_down) {
+        } else if(gamepad2.dpad_down) {
             limbs.setMotorPower("drum", 0.7);
-        } else if (input.getGamepad().left_trigger > 0.1) {
+        } else if (gamepad2.left_trigger > 0.1) {
             limbs.setMotorPower("drum", -0.7);
         } else {
             limbs.setMotorPower("drum", 0);
         }
 
-        if (input.getGamepad().left_trigger > 0.1) {
+        if (gamepad2.left_trigger > 0.1) {
             limbs.setMotorPower("intake", -0.8);
         } else {
             limbs.setMotorPower("intake", 0);
