@@ -18,7 +18,7 @@ import java.util.Arrays;
 
 
 @TeleOp
-public class Teleop2Controls extends OpMode {
+public class Teleop2Controllers extends OpMode {
 
     InputManager input;
     MovementManager driver;
