@@ -20,6 +20,23 @@ public class GamepadState {
     public boolean dpad_up;
     public boolean dpad_down;
 
+    public float gamepad2_left_stick_x;
+    public float gamepad2_left_stick_y;
+    public float gamepad2_right_stick_x;
+    public float gamepad2_right_stick_y;
+    public float gamepad2_left_trigger;
+    public float gamepad2_right_trigger;
+    public boolean gamepad2_left_bumper;
+    public boolean gamepad2_right_bumper;
+    public boolean gamepad2_a;
+    public boolean gamepad2_b;
+    public boolean gamepad2_x;
+    public boolean gamepad2_y;
+    public boolean gamepad2_dpad_left;
+    public boolean gamepad2_dpad_right;
+    public boolean gamepad2_dpad_up;
+    public boolean gamepad2_dpad_down;
+
     public long time;
 
     public GamepadState history;
@@ -55,6 +72,23 @@ public class GamepadState {
         st.dpad_up = false;
         st.dpad_down = false;
 
+        st.gamepad2_left_stick_x = 0f;
+        st.gamepad2_left_stick_y = 0f;
+        st.gamepad2_right_stick_x = 0f;
+        st.gamepad2_right_stick_y = 0f;
+        st.gamepad2_left_trigger = 0f;
+        st.gamepad2_right_trigger = 0f;
+        st.gamepad2_left_bumper = false;
+        st.gamepad2_right_bumper = false;
+        st.gamepad2_a = false;
+        st.gamepad2_b = false;
+        st.gamepad2_x = false;
+        st.gamepad2_y = false;
+        st.gamepad2_dpad_left = false;
+        st.gamepad2_dpad_right = false;
+        st.gamepad2_dpad_up = false;
+        st.gamepad2_dpad_down = false;
+
         st.time = 0;
 
         return st;
@@ -77,6 +111,47 @@ public class GamepadState {
         this.dpad_right = gamepad.dpad_right;
         this.dpad_up = gamepad.dpad_up;
         this.dpad_down = gamepad.dpad_down;
+
+        this.time = System.currentTimeMillis();
+
+        this.history = history;
+        if(history != null) history.history = null;
+    }
+
+    public GamepadState(Gamepad gamepad, Gamepad gamepad2, GamepadState history) {
+        this.left_stick_x = gamepad.left_stick_x;
+        this.left_stick_y = gamepad.left_stick_y;
+        this.right_stick_x = gamepad.right_stick_x;
+        this.right_stick_y = gamepad.right_stick_y;
+        this.left_trigger = gamepad.left_trigger;
+        this.right_trigger = gamepad.right_trigger;
+        this.left_bumper = gamepad.left_bumper;
+        this.right_bumper = gamepad.right_bumper;
+        this.a = gamepad.a;
+        this.b = gamepad.b;
+        this.x = gamepad.x;
+        this.y = gamepad.y;
+        this.dpad_left = gamepad.dpad_left;
+        this.dpad_right = gamepad.dpad_right;
+        this.dpad_up = gamepad.dpad_up;
+        this.dpad_down = gamepad.dpad_down;
+
+        this.gamepad2_left_stick_x = gamepad2.left_stick_x;
+        this.gamepad2_left_stick_y = gamepad2.left_stick_y;
+        this.gamepad2_right_stick_x = gamepad2.right_stick_x;
+        this.gamepad2_right_stick_y = gamepad2.right_stick_y;
+        this.gamepad2_left_trigger = gamepad2.left_trigger;
+        this.gamepad2_right_trigger = gamepad2.right_trigger;
+        this.gamepad2_left_bumper = gamepad2.left_bumper;
+        this.gamepad2_right_bumper = gamepad2.right_bumper;
+        this.gamepad2_a = gamepad2.a;
+        this.gamepad2_b = gamepad2.b;
+        this.gamepad2_x = gamepad2.x;
+        this.gamepad2_y = gamepad2.y;
+        this.gamepad2_dpad_left = gamepad2.dpad_left;
+        this.gamepad2_dpad_right = gamepad2.dpad_right;
+        this.gamepad2_dpad_up = gamepad2.dpad_up;
+        this.gamepad2_dpad_down = gamepad2.dpad_down;
 
         this.time = System.currentTimeMillis();
 
@@ -128,6 +203,44 @@ public class GamepadState {
                 return this.dpad_up?1f:0f;
             case "dpad_down":
                 return this.dpad_down?1f:0f;
+
+            case "gamepad2_left_stick_x":
+                return this.gamepad2_left_stick_x;
+            case "gamepad2_left_stick_y":
+                return this.gamepad2_left_stick_y;
+
+            case "gamepad2_right_stick_x":
+                return this.gamepad2_right_stick_x;
+            case "gamepad2_right_stick_y":
+                return this.gamepad2_right_stick_y;
+
+            case "gamepad2_left_trigger":
+                return this.gamepad2_left_trigger;
+            case "gamepad2_right_trigger":
+                return this.gamepad2_right_trigger;
+
+            case "gamepad2_left_bumper":
+                return this.gamepad2_left_bumper?1f:0f;
+            case "gamepad2_right_bumper":
+                return this.gamepad2_right_bumper?1f:0f;
+
+            case "gamepad2_a":
+                return this.gamepad2_a?1f:0f;
+            case "gamepad2_b":
+                return this.gamepad2_b?1f:0f;
+            case "gamepad2_x":
+                return this.gamepad2_x?1f:0f;
+            case "gamepad2_y":
+                return this.gamepad2_y?1f:0f;
+
+            case "gamepad2_dpad_left":
+                return this.gamepad2_dpad_left?1f:0f;
+            case "gamepad2_dpad_right":
+                return this.gamepad2_dpad_right?1f:0f;
+            case "gamepad2_dpad_up":
+                return this.gamepad2_dpad_up?1f:0f;
+            case "gamepad2_dpad_down":
+                return this.gamepad2_dpad_down?1f:0f;
 
             default:
                 return 0f;

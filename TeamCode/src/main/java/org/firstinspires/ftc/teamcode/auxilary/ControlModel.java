@@ -413,6 +413,12 @@ public class ControlModel {
         LEFT_TRIGGER("InputMethod", 0), RIGHT_TRIGGER("InputMethod", 0), LEFT_STICK_X("InputMethod", 0),
         LEFT_STICK_Y("InputMethod", 0), RIGHT_STICK_X("InputMethod", 0), RIGHT_STICK_Y("InputMethod", 0),
 
+        GAMEPAD2_DPAD_LEFT("InputMethod", 0), GAMEPAD2_DPAD_RIGHT("InputMethod", 0), GAMEPAD2_DPAD_DOWN("InputMethod", 0),
+        GAMEPAD2_DPAD_UP("InputMethod", 0), GAMEPAD2_A("InputMethod", 0), GAMEPAD2_X("InputMethod", 0), GAMEPAD2_B("InputMethod", 0),
+        GAMEPAD2_Y("InputMethod", 0), GAMEPAD2_LEFT_BUMPER("InputMethod", 0), GAMEPAD2_RIGHT_BUMPER("InputMethod", 0),
+        GAMEPAD2_LEFT_TRIGGER("InputMethod", 0), GAMEPAD2_RIGHT_TRIGGER("InputMethod", 0), GAMEPAD2_LEFT_STICK_X("InputMethod", 0),
+        GAMEPAD2_LEFT_STICK_Y("InputMethod", 0), GAMEPAD2_RIGHT_STICK_X("InputMethod", 0), GAMEPAD2_RIGHT_STICK_Y("InputMethod", 0),
+
         SCALAR("OutputType", 1), VECTOR2("OutputType", 2), VECTOR3("OutputType", 3), VECTOR4("OutputType", 4),
         TOGGLE("OutputType", 1), HOLD("OutputType", 1), PUSH("OutputType", 1), COMBO("OutputType", 2),
         TOGGLE_BETWEEN("OutputType", 3),
