@@ -251,7 +251,15 @@ public class ControlModel {
         }
 
         public float[] res(GamepadState state) {
-            return res(state, true);
+
+            try {
+                return res(state, true);
+            } catch(Exception e) {
+                FeatureManager.logger.add("ERROR: Controls Error");
+                FeatureManager.logger.add(e.getMessage());
+            }
+
+            return new float[] {0};
         }
 
         private float[] res(GamepadState state, boolean recurse) {
@@ -412,12 +420,14 @@ public class ControlModel {
         Y("InputMethod", 0), LEFT_BUMPER("InputMethod", 0), RIGHT_BUMPER("InputMethod", 0),
         LEFT_TRIGGER("InputMethod", 0), RIGHT_TRIGGER("InputMethod", 0), LEFT_STICK_X("InputMethod", 0),
         LEFT_STICK_Y("InputMethod", 0), RIGHT_STICK_X("InputMethod", 0), RIGHT_STICK_Y("InputMethod", 0),
+        SQUARE("InputMethod", 0), CIRCLE("InputMethod", 0), CROSS("InputMethod", 0), TRIANGLE("InputMethod", 0),
 
         GAMEPAD2_DPAD_LEFT("InputMethod", 0), GAMEPAD2_DPAD_RIGHT("InputMethod", 0), GAMEPAD2_DPAD_DOWN("InputMethod", 0),
         GAMEPAD2_DPAD_UP("InputMethod", 0), GAMEPAD2_A("InputMethod", 0), GAMEPAD2_X("InputMethod", 0), GAMEPAD2_B("InputMethod", 0),
         GAMEPAD2_Y("InputMethod", 0), GAMEPAD2_LEFT_BUMPER("InputMethod", 0), GAMEPAD2_RIGHT_BUMPER("InputMethod", 0),
         GAMEPAD2_LEFT_TRIGGER("InputMethod", 0), GAMEPAD2_RIGHT_TRIGGER("InputMethod", 0), GAMEPAD2_LEFT_STICK_X("InputMethod", 0),
         GAMEPAD2_LEFT_STICK_Y("InputMethod", 0), GAMEPAD2_RIGHT_STICK_X("InputMethod", 0), GAMEPAD2_RIGHT_STICK_Y("InputMethod", 0),
+        GAMEPAD2_SQUARE("InputMethod", 0), GAMEPAD2_CIRCLE("InputMethod", 0), GAMEPAD2_CROSS("InputMethod", 0), GAMEPAD2_TRIANGLE("InputMethod", 0),
 
         SCALAR("OutputType", 1), VECTOR2("OutputType", 2), VECTOR3("OutputType", 3), VECTOR4("OutputType", 4),
         TOGGLE("OutputType", 1), HOLD("OutputType", 1), PUSH("OutputType", 1), COMBO("OutputType", 2),
@@ -442,5 +452,9 @@ public class ControlModel {
 
     public float[] findMidpoint(float x1, float y1, float x2, float y2)  {
         return new float[]{x2 + (x1 - x2), y2 + (y1 - y2)};
+    }
+
+    public static class InWhichItIsRevealedThatTheAuthorIsAnIdiotControlsRuntimeException extends Exception {
+
     }
 }
