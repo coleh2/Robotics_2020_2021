@@ -187,12 +187,16 @@ public class GamepadState {
                 return this.right_bumper?1f:0f;
 
             case "a":
+            case "cross":
                 return this.a?1f:0f;
             case "b":
+            case "circle":
                 return this.b?1f:0f;
             case "x":
+            case "square":
                 return this.x?1f:0f;
             case "y":
+            case "triangle":
                 return this.y?1f:0f;
 
             case "dpad_left":
@@ -225,12 +229,16 @@ public class GamepadState {
                 return this.gamepad2_right_bumper?1f:0f;
 
             case "gamepad2_a":
+            case "gamepad2_cross":
                 return this.gamepad2_a?1f:0f;
             case "gamepad2_b":
+            case "gamepad2_circle":
                 return this.gamepad2_b?1f:0f;
             case "gamepad2_x":
+            case "gamepad2_square":
                 return this.gamepad2_x?1f:0f;
             case "gamepad2_y":
+            case "gamepad2_triangle":
                 return this.gamepad2_y?1f:0f;
 
             case "gamepad2_dpad_left":

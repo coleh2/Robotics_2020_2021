@@ -87,6 +87,30 @@ public class ManipulationManager {
 //        return servos[index].getPosition();
 //    }
 
+    public void setMotorModes(DcMotor.RunMode mode) {
+        for(DcMotor motor : motors) motor.setMode(mode);
+    }
+
+    public void resetEncoders() {
+        for(DcMotor motor : motors) motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
+    public void runUsingEncoders() {
+        for(DcMotor motor : motors) motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    public void resetEncoders(String name) {
+        int index = (Arrays.asList(motorNames)).indexOf(name);
+        if(index == -1) throw new IllegalArgumentException("Motor " + name + " does not exist or is not registered");
+        motors[index].setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
+    public void runUsingEncoders(String name) {
+        int index = (Arrays.asList(motorNames)).indexOf(name);
+        if(index == -1) throw new IllegalArgumentException("Motor " + name + " does not exist or is not registered");
+        motors[index].setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
     public void setMotorPower(int i, double power) {
         motors[i].setPower(power);
     }
