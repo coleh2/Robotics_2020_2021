@@ -15,6 +15,8 @@ import java.util.HashMap;
  */
 public class InputManager extends FeatureManager {
     public Gamepad gamepad;
+    public Gamepad gamepad2;
+
     public ControlModel controlModel;
     public GamepadState gamepadHistory;
 
@@ -39,16 +41,26 @@ public class InputManager extends FeatureManager {
         this.explosion = System.currentTimeMillis() + 60_000;
     }
 
+    public InputManager(Gamepad _gamepad, Gamepad _gamepad2, ControlMap _controlMap) {
+        this.gamepad = _gamepad;
+        this.gamepad2 = _gamepad2;
+
+        this.controlModel = new ControlModel(_controlMap);
+        this.gamepadHistory = new GamepadState(gamepad, null);
+
+        this.explosion = System.currentTimeMillis() + 60_000;
+    }
+
     public Gamepad getGamepad() {
         return this.gamepad;
     }
+    public Gamepad getGamepad2() {
+        return this.gamepad2;
+    }
 
     public void update() {
-        gamepadHistory = new GamepadState(gamepad, gamepadHistory);
-        /* EASTEREGG: */
-        FeatureManager.logger.log("Time until Explosion: ", "" + Math.max(0,(explosion - System.currentTimeMillis()) / 1000));
-        /* /EASTEREGG */
-
+        if(gamepad2 != null) gamepadHistory = new GamepadState(gamepad, gamepad2, gamepadHistory);
+        else gamepadHistory = new GamepadState(gamepad, gamepadHistory);
     }
 
     public float[] getVector(String name) {
