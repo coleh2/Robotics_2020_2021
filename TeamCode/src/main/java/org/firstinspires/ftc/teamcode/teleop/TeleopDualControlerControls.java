@@ -36,17 +36,17 @@ public class TeleopDualControlerControls extends OpMode {
         try {
         FeatureManager.logger.setBackend(telemetry.log());
 
-        FeatureManager.logger.log("if this doesn't print, something has gone very very wrong and we are not having a good time");
+
 
         driver = new MovementManager(hardwareMap.get(DcMotor.class, "fl"),
                 hardwareMap.get(DcMotor.class, "fr"),
                 hardwareMap.get(DcMotor.class, "br"),
                 hardwareMap.get(DcMotor.class, "bl"));
-        FeatureManager.logger.log("if this doesn't print, driver problems");
+
         input = new InputManager(gamepad1, gamepad2, new DualControllerContolMap());
-        FeatureManager.logger.log("if this doesn't print, input problems");
+
         imu = new ImuManager(hardwareMap.get(com.qualcomm.hardware.bosch.BNO055IMU.class, "imu"));
-        FeatureManager.logger.log("if this doesn't print, imu problems");
+
         limbs = new ManipulationManager(
                 new CRServo[] {
                         hardwareMap.get(CRServo.class, "shooterArm"),
@@ -81,26 +81,26 @@ public class TeleopDualControlerControls extends OpMode {
                 }
 
         );
-        FeatureManager.logger.log("if this doesn't print, limbs problems");
+
 
        // driver.resetEncoders();
       //  driver.runUsingEncoders();
 
         } catch (Exception e) {
-            FeatureManager.logger.log(e.getMessage());
-            FeatureManager.logger.log(Arrays.toString(e.getStackTrace()));
+            
+
         }
     }
 
     public void loop() {
         try {
-        FeatureManager.logger.log("this is albert");
+
             input.update();
 
-        FeatureManager.logger.log("if this doesn't print, input running problems");
+
 
         driver.driveOmni((input.getVector("drive")));
-        FeatureManager.logger.log("if this doesn't print, driver running problems");
+
 
         limbs.setMotorPower("intake", 0.5*input.getScalar("intake"));
         limbs.setServoPower("wobbleArmRight", input.getScalar("wobbleArmRight"));
@@ -149,7 +149,7 @@ public class TeleopDualControlerControls extends OpMode {
         telemetry.addData("controls://lt:", input.getScalar("lt"));
         } catch (Exception e) {
             if(!errorLogged) {
-                FeatureManager.logger.log(e.getMessage());
+
                 FeatureManager.logger.add(input.getControl("drive").toString());
             }
         }
