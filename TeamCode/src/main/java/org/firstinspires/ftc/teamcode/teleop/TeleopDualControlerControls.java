@@ -15,6 +15,8 @@ import org.firstinspires.ftc.teamcode.managers.InputManager;
 import org.firstinspires.ftc.teamcode.managers.ManipulationManager;
 import org.firstinspires.ftc.teamcode.managers.MovementManager;
 
+import java.util.Arrays;
+
 
 @TeleOp
 public class TeleopDualControlerControls extends OpMode {
@@ -26,9 +28,12 @@ public class TeleopDualControlerControls extends OpMode {
     Servo grab;
     ImuManager imu;
 
+    boolean errorLogged = false;
+
     private static boolean toggleSpeed = false;
 
     public void init() {
+        try {
         FeatureManager.logger.setBackend(telemetry.log());
 
         FeatureManager.logger.log("if this doesn't print, something has gone very very wrong and we are not having a good time");
@@ -81,11 +86,17 @@ public class TeleopDualControlerControls extends OpMode {
        // driver.resetEncoders();
       //  driver.runUsingEncoders();
 
-
+        } catch (Exception e) {
+            FeatureManager.logger.log(e.getMessage());
+            FeatureManager.logger.log(Arrays.toString(e.getStackTrace()));
+        }
     }
 
     public void loop() {
-        input.update();
+        try {
+        FeatureManager.logger.log("this is albert");
+            input.update();
+
         FeatureManager.logger.log("if this doesn't print, input running problems");
 
         driver.driveOmni((input.getVector("drive")));
@@ -136,6 +147,11 @@ public class TeleopDualControlerControls extends OpMode {
 
         telemetry.addData("controls://fullIntake:", input.getControl("fullIntake").toString());
         telemetry.addData("controls://lt:", input.getScalar("lt"));
-
+        } catch (Exception e) {
+            if(!errorLogged) {
+                FeatureManager.logger.log(e.getMessage());
+                FeatureManager.logger.add(input.getControl("drive").toString());
+            }
+        }
     }
 }

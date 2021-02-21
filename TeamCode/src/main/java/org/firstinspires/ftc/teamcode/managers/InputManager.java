@@ -59,8 +59,17 @@ public class InputManager extends FeatureManager {
     }
 
     public void update() {
-        if(gamepad2 != null) gamepadHistory = new GamepadState(gamepad, gamepad2, gamepadHistory);
-        else gamepadHistory = new GamepadState(gamepad, gamepadHistory);
+        if(gamepad2 != null) {
+            FeatureManager.logger.log("if this prints, input updating 2 gamepad");
+            gamepadHistory = new GamepadState(gamepad, gamepad2, gamepadHistory);
+            FeatureManager.logger.log("if this doesn't print, input not updating 2 gamepads problems");
+        }
+        else {
+            FeatureManager.logger.log("if this prints, input updating only 1 gamepad");
+            gamepadHistory = new GamepadState(gamepad, gamepadHistory);
+            FeatureManager.logger.log("if this doesn't prints, input updating only 1 gamepad problems");
+        }
+
     }
 
     public float[] getVector(String name) {
