@@ -64,7 +64,7 @@ public class ControlModel {
 
         Control result = new Control(this);
         result.setName(fieldName);
-        result.parse(fieldValue);
+        result.parseAdvanced(fieldValue, fieldName);
 
         return result;
     }
@@ -156,7 +156,7 @@ public class ControlModel {
             this.name = "";
             this.model = mdl;
 
-            this.parse(src);
+            this.parseAdvanced(src, name);
         }
 
         public boolean containsVariableAccess() {
@@ -247,6 +247,64 @@ public class ControlModel {
                     lastTopLevelParam = paramsToGo;
                     srcSoFar = new StringBuilder();
                 }
+            }
+        }
+
+        public void parseAdvanced(String src, String name) {
+
+            if(src.matches("^\\s*-?[\\d.]+\\s*$")) {
+                System.out.println("literal " + src);
+                this.type = ControlType.LITERAL;
+                this.setName(name);
+                this.children = new Control[0];
+                this.value = Float.parseFloat(src);
+                return;
+            }
+
+            String[] tokens = src.split("\\b");
+
+            int firstWordIdx = 0;
+            for(; firstWordIdx < tokens.length; firstWordIdx++) {
+                if (!tokens[firstWordIdx].equals("")) break;
+            }
+
+            this.type = ControlType.valueOf(PaulMath.camelToSnake(tokens[firstWordIdx]));
+            this.children = new Control[this.type.paramCount];
+
+            //if there are no parens, it's an inputMethod and doesn't need further parsing.
+            if(src.indexOf('(') == -1) return;
+
+            int parenDepth = 0, currentChildIndex = 0;
+            String argSrc = "";
+
+            for(int i = src.indexOf('(') + 1; i < src.length() - 1; i++) {
+                if(src.charAt(i) == '(') parenDepth++;
+                if(src.charAt(i) == ')') parenDepth--;
+
+                //ignore whitespace between arguments
+                if(parenDepth == 0 && src.substring(i, i+1).matches("\\s")) continue;
+
+                //yay, it's done aaaaaaaaa i sound like mr dinneen im so sorry.
+                //but anyway the argument we're parsing is Done. put it!! :D
+                if(parenDepth == 0 && (src.charAt(i) == ',' || i + 1 == src.length() - 1)) {
+
+                    if(i + 1 == src.length() - 1) argSrc += src.substring(i, i+1);
+                    System.out.println("making a child: " + argSrc);
+
+                    Control child = new Control();
+                    this.children[currentChildIndex] = child;
+                    child.parseAdvanced(argSrc, name);
+                    currentChildIndex++;
+                    argSrc = "";
+                    continue;
+                }
+
+                if(parenDepth < 0) {
+                    FeatureManager.logger.log("Error parsing control " + name + ": unbalanced parentheses (too many ending parens)");
+                    return;
+                }
+
+                argSrc += src.substring(i, i+1);
             }
         }
 
@@ -407,10 +465,12 @@ public class ControlModel {
 
             StringBuilder paramsAsStrings = new StringBuilder();
             for(int i = 0; i < children.length; i++) {
-                paramsAsStrings.append(children[i].toString());
+                if(children[i] == null) paramsAsStrings.append("<null>");
+                else paramsAsStrings.append(children[i].toString());
+
                 if(i + 1 < children.length) paramsAsStrings.append(", ");
             }
-            return this.type.toString() + "<" + this.value + "," + this.state + ">" + (this.type.paramCount > 0 ? "(" + paramsAsStrings + ")" : "");
+            return this.type.toString() /*+ "<" + this.value + "," + this.state + ">"*/ + (this.type.paramCount > 0 ? "(" + paramsAsStrings + ")" : "");
         }
     }
 
