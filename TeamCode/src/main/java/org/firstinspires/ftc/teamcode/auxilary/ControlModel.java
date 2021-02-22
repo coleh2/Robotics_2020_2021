@@ -253,7 +253,6 @@ public class ControlModel {
         public void parseAdvanced(String src, String name) {
 
             if(src.matches("^\\s*-?[\\d.]+\\s*$")) {
-                System.out.println("literal " + src);
                 this.type = ControlType.LITERAL;
                 this.setName(name);
                 this.children = new Control[0];
@@ -289,7 +288,6 @@ public class ControlModel {
                 if(parenDepth == 0 && (src.charAt(i) == ',' || i + 1 == src.length() - 1)) {
 
                     if(i + 1 == src.length() - 1) argSrc += src.substring(i, i+1);
-                    System.out.println("making a child: " + argSrc);
 
                     Control child = new Control();
                     this.children[currentChildIndex] = child;
