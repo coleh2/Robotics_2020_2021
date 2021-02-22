@@ -11,7 +11,7 @@ public class VariableSettingControlParsingTest {
     public void runTest() {
         ControlModel mdl = new ControlModel();
         String testContent = "setVariable(foo, vector3(leftStickY, leftStickX, RIGHT_STICK_X))";
-        String expectedOutput = "SET_VARIABLE(foo#0, VECTOR3(LEFT_STICK_Y, LEFT_STICK_X, RIGHT_STICK_X))";
+        String expectedOutput = "SET_VARIABLE(foo, VECTOR3(LEFT_STICK_Y, LEFT_STICK_X, RIGHT_STICK_X))";
 
         ControlModel.Control control = new ControlModel.Control(testContent,mdl);
         System.out.println("Result: " + control.toString());

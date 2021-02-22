@@ -8,6 +8,7 @@ import java.lang.reflect.Field;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Objects;
@@ -48,8 +49,9 @@ public class ControlModel {
     }
 
     private void updateVariables(GamepadState state) {
-        for(ControlModelVariables.ControlModelVariable variable : variables.values()) {
-            for(String setterName : variable.setters) this.get(setterName).res(state, false);
+        Collection<Control> ctrlArr = controls.values();
+        for(Control control : ctrlArr) {
+            if(control.containsVariableSetter()) control.res(state);
         }
     }
 
@@ -69,72 +71,29 @@ public class ControlModel {
         return result;
     }
 
-    public static class ControlModelVariables extends LinkedHashMap<String, ControlModelVariables.ControlModelVariable> {
-        private static class ControlModelVariable {
-            public float[] value;
-            public ArrayList<String> setters;
+    public static class ControlModelVariables {
+        private LinkedHashMap<String, float[]> hashMap;
 
-            public ControlModelVariable() {
-                this.setters = new ArrayList<String>();
-                this.value = new float[] {0f};
-            }
+        public ControlModelVariables() {
+            this.hashMap = new LinkedHashMap<String, float[]>();
+        }
+        public float[] get(float[] nameCode) {
+            //transform to a string so it won't have problems with strict equality
+            char[] name = new char[nameCode.length];
+            for(int i = name.length - 1; i >= 0; i--) name[i] = (char)nameCode[i];
+
+            return hashMap.get(new String(name));
         }
 
-        public int register(String variableName) {
-            if(!this.containsKey(variableName)) {
-                ControlModelVariables.ControlModelVariable var = new ControlModelVariables.ControlModelVariable();
-                this.put(variableName, var);
-            }
+        public void put(float[] nameCode, float[] value) {
+            //transform to a string so it won't have problems with strict equality
+            char[] name = new char[nameCode.length];
+            for(int i = name.length - 1; i >= 0; i--) name[i] = (char)nameCode[i];
 
-            return this.indexOf(variableName);
+            hashMap.put(new String(name), value);
         }
 
-        public int register(String variableName, String setterName) {
-            register(variableName);
-            ControlModelVariable c = this.get(variableName);
-            if(c != null) c.setters.add(setterName);
 
-            return this.indexOf(variableName);
-        }
-
-        public int indexOf(String variableName) {
-            String[] keys = this.keySet().toArray(new String[0]);
-            for(int i = 0; i < keys.length; i++) {
-                if(keys[i].equals(variableName)) return i;
-            }
-            return -1;
-        }
-        public void put(int idx, float[] val) {
-            if(idx >= this.size()) throw new IllegalArgumentException();
-
-            Set<String> entries = this.keySet();
-            String key = entries.toArray(new String[0])[idx];
-
-            ControlModelVariables.ControlModelVariable oldValue = this.get(key);
-
-            if(oldValue == null) throw new IllegalArgumentException("Unregistered index " + idx + "attempted to be set");
-            oldValue.value = val;
-
-            this.put(key, oldValue);
-        }
-
-        public String getName(int idx) {
-            Set<String> entries = this.keySet();
-            String key = entries.toArray(new String[0])[idx];
-            if(key == null) throw new IllegalArgumentException("Unregistered index " + idx);
-            return key;
-        }
-
-        public float[] get(int idx) {
-            if(idx >= this.size()) throw new IllegalArgumentException("Unregistered index in control variables");
-
-            Set<String> entries = this.keySet();
-            String key = entries.toArray(new String[0])[idx];
-
-            ControlModelVariables.ControlModelVariable value = this.get(key);
-            if(value == null) throw new IllegalArgumentException("Unregistered index " + idx + "attempted to be get");
-            return value.value;
-        }
     }
 
     public static class Control {
@@ -161,8 +120,20 @@ public class ControlModel {
 
         public boolean containsVariableAccess() {
             if(this.type.equals(ControlType.GET_VARIABLE)) return true;
-            for (Control child: children) {
-                if(child.containsVariableAccess()) return true;
+            if(this.children == null) return false;
+
+            for(int i = this.children.length - 1; i >= 0; i--) {
+                if(this.children[i].containsVariableAccess()) return true;
+            }
+            return false;
+        }
+        public boolean containsVariableSetter() {
+            if(this.type.equals(ControlType.SET_VARIABLE)) return true;
+
+            if(this.children == null) return false;
+
+            for(int i = this.children.length - 1; i >= 0; i--) {
+                if(this.children[i].containsVariableSetter()) return true;
             }
             return false;
         }
@@ -172,81 +143,6 @@ public class ControlModel {
 
             public TimeAwareHistory(int domain) {
 
-            }
-        }
-
-        public void parse(String src) {
-            String[] tokens = src.split("[^\\w\\d.]+");
-            int pointer = 0;
-            if(tokens[pointer].equals("")) pointer++;
-
-            if(tokens[pointer].matches("^[\\d.]+$")) {
-                this.type = ControlType.LITERAL;
-                //inline literals mean that it has to be stepped back 1 token in order to not skip
-                pointer--;
-            }
-            else this.type = ControlType.valueOf(PaulMath.camelToSnake(tokens[pointer]));
-
-            this.children = new Control[type.paramCount];
-
-            int paramsToGo = type.paramCount;
-            int lastTopLevelParam = type.paramCount;
-
-
-            //literals don't get all the parsing. Neither do variables.
-            if(type == ControlType.LITERAL) {
-                pointer++;
-                this.value = Float.parseFloat(tokens[pointer]);
-                return;
-            } else if(type == ControlType.GET_VARIABLE) {
-                pointer++;
-                String varName = tokens[pointer];
-                this.value = model.getVariables().register(varName);
-                return;
-            } else if(type == ControlType.SET_VARIABLE) {
-                pointer++;
-                String varName = tokens[pointer];
-                this.value = model.getVariables().register(varName, this.name);
-            }
-            StringBuilder srcSoFar = new StringBuilder();
-            //find the end of this method, with all variables
-            for(int i = pointer + 1; paramsToGo > 0; i++) {
-                //inline literals as arguments need to be parsed differently
-                if(tokens[i].matches("^[\\d.]+$")) {
-                    Control inlineLiteral = new Control(model);
-                    inlineLiteral.type = ControlType.LITERAL;
-                    inlineLiteral.setName(name);
-                    inlineLiteral.children = new Control[0];
-                    inlineLiteral.value = Float.parseFloat(tokens[i]);
-                    children[type.paramCount - lastTopLevelParam] = inlineLiteral;
-
-                    paramsToGo--;
-                    lastTopLevelParam = paramsToGo;
-                    srcSoFar = new StringBuilder();
-                    continue;
-                }
-
-                boolean hasType = false;
-                for(ControlType c : ControlType.values()) {
-                    if(c.name().equals(PaulMath.camelToSnake(tokens[i]))) hasType = true;
-                }
-
-                if(hasType) {
-                    ControlType thisTokenType = ControlType.valueOf(PaulMath.camelToSnake(tokens[i]));
-                    paramsToGo += thisTokenType.paramCount;
-                }
-                //if not, must be a variable, which gets passed in normally
-
-                paramsToGo--;
-                srcSoFar.append(" ").append(tokens[i]);
-                //if we're done with the parameter, parse the total source
-                if(paramsToGo < lastTopLevelParam) {
-                    children[type.paramCount - lastTopLevelParam] = new Control(srcSoFar.toString(), model);
-                    //inherit the name from parent
-                    children[type.paramCount - lastTopLevelParam].setName(name);
-                    lastTopLevelParam = paramsToGo;
-                    srcSoFar = new StringBuilder();
-                }
             }
         }
 
@@ -267,8 +163,19 @@ public class ControlModel {
                 if (!tokens[firstWordIdx].equals("")) break;
             }
 
-            this.type = ControlType.valueOf(PaulMath.camelToSnake(tokens[firstWordIdx]));
-            this.children = new Control[this.type.paramCount];
+            try {
+                this.type = ControlType.valueOf(PaulMath.camelToSnake(tokens[firstWordIdx]));
+                this.children = new Control[this.type.paramCount];
+            } catch(Exception e) {
+                //if there is an error at this point, it means the first word isn't a keyword, and we should just make it into an arbitrary name
+                initializeArbitraryName(src);
+                return;
+            }
+
+            if(this.type.isPrivate) {
+                FeatureManager.logger.log("Error parsing control " + name + ": illegal access to internal function " + this.type.name());
+                return;
+            }
 
             //if there are no parens, it's an inputMethod and doesn't need further parsing.
             if(src.indexOf('(') == -1) return;
@@ -306,13 +213,26 @@ public class ControlModel {
             }
         }
 
+        public void initializeArbitraryName(String str) {
+            this.children = new Control[str.length()];
+            this.type = ControlType.NAME;
+
+            for(int i = str.length() - 1; i >= 0; i--) {
+                Control lit = new Control(this.model);
+                lit.type = ControlType.LITERAL;
+                lit.value = (float)str.charAt(i);
+                this.children[i] = lit;
+            }
+        }
+
         public float[] res(GamepadState state) {
 
             try {
                 return res(state, true);
             } catch(Exception e) {
-                FeatureManager.logger.add("ERROR: Controls Error");
+                FeatureManager.logger.add("ERROR: Controls Error at " + name + " - " + this.type.name());
                 FeatureManager.logger.add(e.getMessage());
+                FeatureManager.logger.add(Arrays.toString(e.getStackTrace()));
             }
 
             return new float[] {0};
@@ -408,13 +328,17 @@ public class ControlModel {
                     case LITERAL:
                         return new float[]{this.value};
                     case SET_VARIABLE:
-                        float[] variableSetValue = children[0].res(state);
-                        model.getVariables().put((int)this.value, variableSetValue);
-                        return variableSetValue;
+                        float[] variableSetValue = children[1].res(state);
+                        model.getVariables().put(children[0].res(state), variableSetValue);
+                        return variableSetValue != null ? variableSetValue : new float[] {0f};
                     case GET_VARIABLE:
-                        return model.getVariables().get((int)this.value);
+                        float[] varVal = model.getVariables().get(children[0].res(state));
+                        return varVal != null ? varVal : new float[] {0f};
                     case DUMMY:
-                        return children[0].res(state);
+                    case NAME:
+                        float[] results = new float[children.length];
+                        for(int i = children.length - 1; i >= 0; i--) results[i] = children[i].res(state)[0];
+                        return results;
                     case GREATER_THAN:
                         return new float[] { children[0].res(state)[0] > children[1].res(state)[0] ? 1f : 0f};
                     case LESS_THAN:
@@ -458,8 +382,12 @@ public class ControlModel {
 
         public String toString() {
             if(this.type == ControlType.LITERAL) return this.value + "";
-            else if(this.type == ControlType.GET_VARIABLE) return "GET_VARIABLE(" + model.variables.getName((int)this.value) + "#" +(int)this.value + ")";
-            else if(this.type == ControlType.SET_VARIABLE) return "SET_VARIABLE(" + model.variables.getName((int)this.value) + "#" +(int)this.value + ", " + this.children[0].toString() + ")";
+
+            if(this.type == ControlType.NAME) {
+                char[] name = new char[this.children.length];
+                for(int i = name.length - 1; i >= 0; i--) name[i] = (char)this.children[i].value;
+                return new String(name);
+            }
 
             StringBuilder paramsAsStrings = new StringBuilder();
             for(int i = 0; i < children.length; i++) {
@@ -495,14 +423,23 @@ public class ControlModel {
         DUMMY("Middleware", 1), NULL("Middleware", 0), GREATER_THAN("Middleware", 2), LESS_THAN("Middleware", 2),
         AND("Middleware", 2), OR("Middleware", 2), DEADZONE("Middleware", 2),
 
-        SET_VARIABLE("Variable", 1), GET_VARIABLE("Variable", 1), LITERAL("Literal", 1);
+        SET_VARIABLE("Variable", 2), GET_VARIABLE("Variable", 1), LITERAL("Literal", 1), NAME("Literal", 1, true);
 
 
         public String subtype;
         public int paramCount;
         public boolean isTerminal;
+        public boolean isPrivate;
+
         ControlType(String subtype, int paramCount) {
             this.subtype = subtype;
+            this.paramCount = paramCount;
+            this.isTerminal = paramCount == 0;
+        }
+
+        ControlType(String subtype, int paramCount, boolean isPrivate) {
+            this.subtype = subtype;
+            this.isPrivate = isPrivate;
             this.paramCount = paramCount;
             this.isTerminal = paramCount == 0;
         }
