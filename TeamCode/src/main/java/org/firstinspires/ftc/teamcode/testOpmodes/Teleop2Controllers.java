@@ -71,18 +71,12 @@ public class Teleop2Controllers extends OpMode {
 
         driver.driveOmni(input.getVector("drive"));
 
-        if(gamepad2.right_trigger > 0.1){
-            limbs.setMotorPower("flywheelRight", -1);
-            limbs.setMotorPower("flywheelLeft", 1);
-        } else {
-            limbs.setMotorPower("flywheelRight", 0);
-            limbs.setMotorPower("flywheelLeft", 0);
-        }
+
 
         if(gamepad2.a) {
             limbs.setServoPower("shooterArm", 0);
         } else {
-            limbs.setServoPower("shooterArm", 0.57);
+            limbs.setServoPower("shooterArm", 0.63);
         }
 
         if(gamepad2.dpad_up){
@@ -91,17 +85,31 @@ public class Teleop2Controllers extends OpMode {
             limbs.setMotorPower("drum", 0.7);
         } else if (gamepad2.left_trigger > 0.1) {
             limbs.setMotorPower("drum", -0.7);
+        } else if(gamepad1.dpad_down) {
+            limbs.setMotorPower("drum", 0.7);
+        } else if (gamepad1.left_trigger > 0.1) {
+            limbs.setMotorPower("drum", -0.7);
         } else {
             limbs.setMotorPower("drum", 0);
         }
 
         if (gamepad2.left_trigger > 0.1) {
             limbs.setMotorPower("intake", -0.8);
-        } else {
+        } else if (gamepad1.left_trigger > 0.1) {
+            limbs.setMotorPower("intake", -0.8);
+        }else {
             limbs.setMotorPower("intake", 0);
         }
 
+        if(gamepad2.right_trigger > 0.1){
+            limbs.setMotorPower("flywheelRight", -1);
+            limbs.setMotorPower("flywheelLeft", 1);
+            limbs.setMotorPower("drum", -0.2);
 
+        } else {
+            limbs.setMotorPower("flywheelRight", 0);
+            limbs.setMotorPower("flywheelLeft", 0);
+        }
 
 //        telemetry.addData("FL Ticks:", driver.frontLeft.getCurrentPosition());
 //        telemetry.addData("FR Ticks:", driver.frontRight.getCurrentPosition());

@@ -5,8 +5,8 @@ public class DualControllerContolMap extends ControlMap {
     public static String intake = "ternary(cross, -1, ternary(triangle, 1, ternary(leftTrigger, -1, 0)))";
     public static String drum = "ternary(dpadUp, -1, ternary(dpadDown, 1, ternary(gamepad2DpadDown, 1, ternary(leftTrigger, -1, ternary(gamepad2LeftTrigger, -1, 0)))))";
     public static String shooterArm = "ternary(gamepad2Cross, 0, 0.63)";
-    public static String flywheelLeft = "scale(ternary(gamepad2DpadUp, -1, ternary(gamepad2RightTrigger, 1, 0)), -1)";
-    public static String flywheelRight = "scale(ternary(gamepad2DpadUp, -1, ternary(gamepad2RightTrigger, 1, 0)), 1)";
+    public static String flywheelRight = "scale(ternary(gamepad2DpadUp, -1, ternary(gamepad2RightTrigger, 1, 0)), -1)";
+    public static String flywheelLeft  = "scale(ternary(gamepad2DpadUp, -1, ternary(gamepad2RightTrigger, 1, 0)), 1)";
     public static String wobbleGrabRight = "togglebetween(greaterThan(rightTrigger, 0.2), 0, 1)";
     public static String wobbleGrabLeft = "togglebetween(greaterThan(rightTrigger, 0.2), 1, 0)";
     public static String wobbleArmRight = "togglebetween(or(leftBumper, rightBumper), 0, 1)";
