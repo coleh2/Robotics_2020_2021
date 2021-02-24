@@ -61,10 +61,8 @@ public class Teleop extends OpMode {
                         "flywheelLeft"
                 }
         );
-
-
-
-
+        driver.resetEncoders();
+        driver.runUsingEncoders();
     }
 
     public void loop() {
@@ -133,6 +131,9 @@ public class Teleop extends OpMode {
         telemetry.addData("Flywheel Right Power", limbs.getMotorPower("flywheelRight"));
         telemetry.addData("Flywheel Left Power", limbs.getMotorPower("flywheelLeft"));
         telemetry.addData("Orientation", imu.getOrientation().toString());
+
+        telemetry.addData("controls:drive", input.getControl("drive").toString());
+        telemetry.addData("controls:drive/result", Arrays.toString(input.getVector("drive")));
 
         telemetry.addData("speed: ", driver.getScale());
 

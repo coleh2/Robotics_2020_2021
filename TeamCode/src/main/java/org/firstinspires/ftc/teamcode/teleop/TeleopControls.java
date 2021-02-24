@@ -71,8 +71,8 @@ public class TeleopControls extends OpMode {
                 }
         );
 
-       // driver.resetEncoders();
-      //  driver.runUsingEncoders();
+        driver.resetEncoders();
+        driver.runUsingEncoders();
 
 
     }
