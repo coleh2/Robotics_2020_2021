@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.managers.*;
 import org.firstinspires.ftc.teamcode.teleop.*;
 
 @Autonomous
-public class GeneralAuto extends OpMode {
+public class SwitchAuto extends OpMode {
 
     MovementManager driver;
     ManipulationManager limbs;
