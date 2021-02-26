@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.auxilary.AutoState;
 import org.firstinspires.ftc.teamcode.auxilary.StateMachine;
-import org.firstinspires.ftc.teamcode.managers.ColorSensor;
+import org.firstinspires.ftc.teamcode.auxilary.ColorSensor;
 import org.firstinspires.ftc.teamcode.managers.ManipulationManager;
 import org.firstinspires.ftc.teamcode.managers.MovementManager;
 

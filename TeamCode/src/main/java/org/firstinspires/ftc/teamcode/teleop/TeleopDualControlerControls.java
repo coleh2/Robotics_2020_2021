@@ -7,15 +7,12 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.auxilary.controlmaps.DualControllerContolMap;
-import org.firstinspires.ftc.teamcode.auxilary.controlmaps.ShootingTogglesControlMap;
-import org.firstinspires.ftc.teamcode.managers.ColorSensor;
+import org.firstinspires.ftc.teamcode.auxilary.ColorSensor;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 import org.firstinspires.ftc.teamcode.managers.ImuManager;
 import org.firstinspires.ftc.teamcode.managers.InputManager;
 import org.firstinspires.ftc.teamcode.managers.ManipulationManager;
 import org.firstinspires.ftc.teamcode.managers.MovementManager;
-
-import java.util.Arrays;
 
 
 @TeleOp
