@@ -68,7 +68,7 @@ public class SwitchAuto extends OpMode {
 
 
     public void loop() {
-        limbs.setServoPower("shooterArm", 0.63);
+        limbs.setServoPosition("shooterArm", 0.63);
 
         switch(step){
             case 0:
@@ -125,7 +125,7 @@ public class SwitchAuto extends OpMode {
             case 6:
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 500) {
-                    limbs.setServoPower("servoArm", 0);
+                    limbs.setServoPosition("servoArm", 0);
                 } else {
                     step++;
                     break;
@@ -133,7 +133,7 @@ public class SwitchAuto extends OpMode {
             case 7:
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 500) {
-                    limbs.setServoPower("servoArm", 0.63);
+                    limbs.setServoPosition("servoArm", 0.63);
                 } else {
                     step++;
                     break;
@@ -141,7 +141,7 @@ public class SwitchAuto extends OpMode {
             case 8:
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 500) {
-                    limbs.setServoPower("servoArm", 0);
+                    limbs.setServoPosition("servoArm", 0);
                 } else {
                     step++;
                     break;
@@ -149,7 +149,7 @@ public class SwitchAuto extends OpMode {
             case 9:
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 500) {
-                    limbs.setServoPower("servoArm", 0.63);
+                    limbs.setServoPosition("servoArm", 0.63);
                 } else {
                     step++;
                     break;
@@ -157,7 +157,7 @@ public class SwitchAuto extends OpMode {
             case 10:
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 500) {
-                    limbs.setServoPower("servoArm", 0);
+                    limbs.setServoPosition("servoArm", 0);
                 } else {
                     step++;
                     break;
@@ -165,7 +165,7 @@ public class SwitchAuto extends OpMode {
             case 11:
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 500) {
-                    limbs.setServoPower("servoArm", 0.63);
+                    limbs.setServoPosition("servoArm", 0.63);
                 } else {
                     step++;
                     break;
