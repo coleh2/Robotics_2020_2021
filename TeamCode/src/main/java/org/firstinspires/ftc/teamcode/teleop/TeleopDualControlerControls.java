@@ -120,7 +120,10 @@ public class TeleopDualControlerControls extends OpMode {
 //                driver.backLeft.getCurrentPosition()+
 //                driver.backRight.getCurrentPosition())/4);
 
-        telemetry.addData("FL Power: ", driver.frontLeft.getPower());
+            telemetry.addData("wobble ", input.getControl("wobbleGrabLeft").toString());
+
+
+            telemetry.addData("FL Power: ", driver.frontLeft.getPower());
         telemetry.addData("FL Port: ", driver.frontLeft.getPortNumber());
 
         telemetry.addData("FR Power: ", driver.frontRight.getPower());

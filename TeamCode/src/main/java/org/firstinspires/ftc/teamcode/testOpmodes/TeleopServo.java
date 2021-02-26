@@ -38,10 +38,12 @@ public class TeleopServo extends OpMode {
                 new CRServo[] {
                         hardwareMap.get(CRServo.class, "shooterArm"),
                         hardwareMap.get(CRServo.class, "wobbleArmRight"),
-                        hardwareMap.get(CRServo.class, "wobbleArmLeft")
+                        hardwareMap.get(CRServo.class, "wobbleArmLeft"),
+                        hardwareMap.get(CRServo.class, "wobbleGrabRight"),
+                        hardwareMap.get(CRServo.class, "wobbleGrabLeft")
                 },
                 new String[]
-                        {"shooterArm", "wobbleArmRight","wobbleArmLeft"},
+                        {"shooterArm", "wobbleArmRight","wobbleArmLeft", "wobbleGrabRight","wobbleGrabLeft"},
                 new Servo[] {
 
                 },
@@ -82,17 +84,27 @@ public class TeleopServo extends OpMode {
             //limbs.setServoPosition("shooterArm", 0.7);
             limbs.setServoPower("shooterArm", 0.0);
         } else {
-            limbs.setServoPower("shooterArm", 0.75);
+            limbs.setServoPower("shooterArm", 0.63);
         }
-        if (input.getGamepad().x){
-            limbs.setServoPower("wobbleArmLeft", -target);
-            limbs.setServoPower("wobbleArmRight", target);
-            //45 degrees = ~0.065
 
-        }else{
-            limbs.setServoPower("wobbleArmLeft", 0);
-            limbs.setServoPower("wobbleArmRight", 0);
+
+        if (input.getGamepad().x){
+            limbs.setServoPower("wobbleArmLeft", -0.1);
+            limbs.setServoPower("wobbleArmRight", 0.1);
+            //45 degrees = ~0.065
+        }else {
+            limbs.setServoPower("wobbleArmLeft", -0.05);
+            limbs.setServoPower("wobbleArmRight", 0.05);
         }
+        if (input.getGamepad().b){
+            limbs.setServoPower("wobbleGrabLeft", 1);
+            limbs.setServoPower("wobbleGrabRight", 0);
+            //45 degrees = ~0.065
+        }else {
+            limbs.setServoPower("wobbleGrabLeft", 0);
+            limbs.setServoPower("wobbleGrabRight", 1);
+        }
+
         if(input.getGamepad().dpad_up ){
             target+=0.0001;
         }
