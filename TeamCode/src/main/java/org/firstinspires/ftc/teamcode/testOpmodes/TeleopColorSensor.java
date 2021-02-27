@@ -42,21 +42,23 @@ public class TeleopColorSensor extends OpMode {
                 new CRServo[] {
                         hardwareMap.get(CRServo.class, "shooterArm"),
                         hardwareMap.get(CRServo.class, "wobbleArmLeft"),
-                        hardwareMap.get(CRServo.class, "wobbleArmRight")
+                        hardwareMap.get(CRServo.class, "wobbleArmRight"),
+                        hardwareMap.get(CRServo.class, "wobbleGrabLeft"),
+                        hardwareMap.get(CRServo.class, "wobbleGrabRight")
                 },
                 new String[] {
                         "shooterArm",
                         "wobbleArmLeft",
-                        "wobbleArmRight"
+                        "wobbleArmRight",
+                        "wobbleGrabLeft",
+                        "wobbleGrabRight"
                 },
                 new Servo[] {
 
-                        hardwareMap.get(Servo.class, "wobbleGrabLeft"),
-                        hardwareMap.get(Servo.class, "wobbleGrabRight")
+
                 },
                 new String[] {
-                        "wobbleGrabLeft",
-                        "wobbleGrabRight"
+
                 },
                 new DcMotor[] {
                         hardwareMap.get(DcMotor.class, "drum"),
@@ -86,9 +88,9 @@ public class TeleopColorSensor extends OpMode {
 
         limbs.setMotorPower("intake", 0.5*input.getScalar("fullIntake"));
         limbs.setServoPower("wobbleArmRight", input.getScalar("wobbleGraber"));
-        limbs.setServoPosition("wobbleGrabRight", input.getScalar("wobbleGraberNegative"));
+        limbs.setServoPower("wobbleGrabRight", input.getScalar("wobbleGraberNegative"));
         limbs.setServoPower("wobbleArmLeft", -input.getScalar("wobbleGraber"));
-        limbs.setServoPosition("wobbleGrabLeft", -input.getScalar("wobbleGraberNegative"));
+        limbs.setServoPower("wobbleGrabLeft", -input.getScalar("wobbleGraberNegative"));
 
         sensorOne.runSample();
         sensorFour.runSample();
