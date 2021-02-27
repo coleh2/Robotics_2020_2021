@@ -80,8 +80,8 @@ public class DeltaVFrankenstein extends StepAuto {
 //                driver.driveRaw(0.4f,-0.4f,-0.4f, 0.4f);
 //                nextStepStop(2000);
 
-            default:
-                driver.driveRaw(0f, 0f, 0f, 0f);
+//            default:
+//                driver.driveRaw(0f, 0f, 0f, 0f);
 
         }
         telemetry.addData("Step:", currentStep);
