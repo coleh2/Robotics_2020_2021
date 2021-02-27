@@ -83,7 +83,7 @@ public class SwitchAuto extends OpMode {
                 //go forward
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 1000) {
-                    driver.driveOmni(new float[] {0.6f,0f,0f});
+                    driver.driveRaw( 0.6f, 0.6f, 0.6f, 0.6f);
                 } else {
                     driver.stopDrive();
                     step++;
@@ -93,7 +93,7 @@ public class SwitchAuto extends OpMode {
                 //strafe to rings
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 500) {
-                    driver.driveOmni(new float[] {0f,0.4f,0f});
+                    driver.driveRaw(0.4f,-0.4f,-0.4f, 0.4f);
                 } else {
                     driver.stopDrive();
                     step++;
@@ -114,7 +114,7 @@ public class SwitchAuto extends OpMode {
                 //strafe back to center
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 500) {
-                    driver.driveOmni(new float[] {0f,-0.4f,0f});
+                    driver.driveRaw(-0.4f,0.4f,0.4f, -0.4f);
                 } else {
                     driver.stopDrive();
                     step++;
@@ -124,7 +124,7 @@ public class SwitchAuto extends OpMode {
                 //drive to line
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 1000) {
-                    driver.driveOmni(new float[] {0.6f,0f,0f});
+                    driver.driveRaw( 0.6f, 0.6f, -0.6f, -0.6f);
                 } else {
                     driver.stopDrive();
                     step++;
@@ -193,7 +193,7 @@ public class SwitchAuto extends OpMode {
                 //If 0 rings go forward
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 500) {
-                    driver.driveOmni(new float[] {0.6f,0f,0f});
+                    driver.driveRaw( 0.6f, 0.6f, -0.6f, -0.6f);
                 } else {
                     driver.stopDrive();
                     step++;
@@ -223,7 +223,7 @@ public class SwitchAuto extends OpMode {
                 //go back to line and park
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 500) {
-                    driver.driveOmni(new float[] {-0.6f,0f,0f});
+                    driver.driveRaw(-0.6f, -0.6f, 0.6f, 0.6f);
                 } else {
                     driver.stopDrive();
                     step = 77;
@@ -233,7 +233,7 @@ public class SwitchAuto extends OpMode {
                 //If 1 ring drive forward more
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 1000) {
-                    driver.driveOmni(new float[] {0.6f,0f,0f});
+                    driver.driveRaw( 0.6f, 0.6f, -0.6f, -0.6f);
                 } else {
                     driver.stopDrive();
                     step++;
@@ -243,7 +243,7 @@ public class SwitchAuto extends OpMode {
                 //strafe to section 1
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 500) {
-                    driver.driveOmni(new float[] {0f,-0.4f,0f});
+                    driver.driveRaw(-0.4f,0.4f,0.4f, -0.4f);
                 } else {
                     driver.stopDrive();
                     step++;
@@ -273,7 +273,7 @@ public class SwitchAuto extends OpMode {
                 //drive back to line and park
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 1000) {
-                    driver.driveOmni(new float[] {-0.6f,0f,0f});
+                    driver.driveRaw(-0.6f, -0.6f, 0.6f, 0.6f);
                 } else {
                     driver.stopDrive();
                     step = 77;
@@ -282,7 +282,7 @@ public class SwitchAuto extends OpMode {
             case 40:
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 1500) {
-                    driver.driveOmni(new float[] {0.6f,0f,0f});
+                    driver.driveRaw( 0.6f, 0.6f, -0.6f, -0.6f);
                 } else {
                     driver.stopDrive();
                     step++;
@@ -292,7 +292,7 @@ public class SwitchAuto extends OpMode {
                 //If 4 rings drive to thirds section
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 1500) {
-                    driver.driveOmni(new float[] {-0.6f,0f,0f});
+                    driver.driveRaw(0.6f,0.6f,-0.6f, -0.6f);
                 } else {
                     driver.stopDrive();
                     step++;
@@ -304,7 +304,7 @@ public class SwitchAuto extends OpMode {
                 if(getRuntime()-startTime < 1000) {
                     imu.getPosition();
                     float proportional = PaulMath.proportionalPID(imu.getOrientation().thirdAngle, -90);
-                    driver.driveOmni(new float[] {0,0,-proportional});;
+                    driver.driveRaw(-proportional, proportional, -proportional, proportional);
                 } else {
                     driver.stopDrive();
                     step++;
@@ -334,7 +334,7 @@ public class SwitchAuto extends OpMode {
                 //drive back to the line and park
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 1500) {
-                    driver.driveOmni(new float[] {-0.6f,0f,0f});
+                    driver.driveRaw(-0.6f,-0.6f,0.6f, 0.6f);
                 } else {
                     driver.stopDrive();
                     step = 77;
