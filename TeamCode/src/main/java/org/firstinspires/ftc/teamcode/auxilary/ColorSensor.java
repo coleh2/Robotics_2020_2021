@@ -66,7 +66,7 @@ public class ColorSensor {
         return this.hsvValues;
     }
 
-  
+
 
     public boolean getReadState() {
 
