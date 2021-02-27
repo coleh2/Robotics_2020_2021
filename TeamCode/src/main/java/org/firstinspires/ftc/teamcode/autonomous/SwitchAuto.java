@@ -92,7 +92,7 @@ public class SwitchAuto extends OpMode {
             case 2:
                 //strafe to rings
                 startTime = getRuntime();
-                if(getRuntime()-startTime < 500) {
+                if(getRuntime()-startTime < 1000) {
                     driver.driveRaw(0.4f,-0.4f,-0.4f, 0.4f);
                 } else {
                     driver.stopDrive();
@@ -113,7 +113,7 @@ public class SwitchAuto extends OpMode {
             case 4:
                 //strafe back to center
                 startTime = getRuntime();
-                if(getRuntime()-startTime < 500) {
+                if(getRuntime()-startTime < 1000) {
                     driver.driveRaw(-0.4f,0.4f,0.4f, -0.4f);
                 } else {
                     driver.stopDrive();
@@ -192,7 +192,7 @@ public class SwitchAuto extends OpMode {
             case 20:
                 //If 0 rings go forward
                 startTime = getRuntime();
-                if(getRuntime()-startTime < 500) {
+                if(getRuntime()-startTime < 1000) {
                     driver.driveRaw( 0.6f, 0.6f, -0.6f, -0.6f);
                 } else {
                     driver.stopDrive();
@@ -222,7 +222,7 @@ public class SwitchAuto extends OpMode {
             case 23:
                 //go back to line and park
                 startTime = getRuntime();
-                if(getRuntime()-startTime < 500) {
+                if(getRuntime()-startTime < 1000) {
                     driver.driveRaw(-0.6f, -0.6f, 0.6f, 0.6f);
                 } else {
                     driver.stopDrive();
@@ -242,7 +242,7 @@ public class SwitchAuto extends OpMode {
             case 31:
                 //strafe to section 1
                 startTime = getRuntime();
-                if(getRuntime()-startTime < 500) {
+                if(getRuntime()-startTime < 1000) {
                     driver.driveRaw(-0.4f,0.4f,0.4f, -0.4f);
                 } else {
                     driver.stopDrive();
