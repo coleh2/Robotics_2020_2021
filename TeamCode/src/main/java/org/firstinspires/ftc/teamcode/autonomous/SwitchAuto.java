@@ -78,26 +78,24 @@ public class SwitchAuto extends OpMode {
                 limbs.setMotorPower("flywheelRight", -1);
                 limbs.setMotorPower("flywheelLeft", 1);
                 step++;
-                break;
+                startTime = getRuntime(); break;
             case 1:
                 //go forward
-                startTime = getRuntime();
-                if(getRuntime()-startTime < 1000) {
+                if(getRuntime()-startTime < 1) {
                     driver.driveRaw( 0.6f, 0.6f, 0.6f, 0.6f);
                 } else {
                     driver.stopDrive();
                     step++;
-                    break;
+                    startTime = getRuntime(); break;
                 }
             case 2:
                 //strafe to rings
-                startTime = getRuntime();
-                if(getRuntime()-startTime < 1000) {
+                if(getRuntime()-startTime < 1) {
                     driver.driveRaw(0.4f,-0.4f,-0.4f, 0.4f);
                 } else {
                     driver.stopDrive();
                     step++;
-                    break;
+                    startTime = getRuntime(); break;
                 }
             case 3:
                 //scan and set conditional
@@ -109,236 +107,213 @@ public class SwitchAuto extends OpMode {
                     } else conditional = 1;
                 } else conditional = 0;
                 step++;
-                break;
+                startTime = getRuntime(); break;
             case 4:
                 //strafe back to center
-                startTime = getRuntime();
-                if(getRuntime()-startTime < 1000) {
+                if(getRuntime()-startTime < 1) {
                     driver.driveRaw(-0.4f,0.4f,0.4f, -0.4f);
                 } else {
                     driver.stopDrive();
                     step++;
-                    break;
+                    startTime = getRuntime(); break;
                 }
             case 5:
                 //drive to line
-                startTime = getRuntime();
-                if(getRuntime()-startTime < 1000) {
+                if(getRuntime()-startTime < 1) {
                     driver.driveRaw( 0.6f, 0.6f, -0.6f, -0.6f);
                 } else {
                     driver.stopDrive();
                     step++;
-                    break;
+                    startTime = getRuntime(); break;
                 }
             case 6:
                 //shoot ring 1
-                startTime = getRuntime();
-                if(getRuntime()-startTime < 500) {
+                if(getRuntime()-startTime < .5) {
                     limbs.setServoPower("shooterArm", 0);
                 } else {
                     step++;
-                    break;
+                    startTime = getRuntime(); break;
                 }
             case 7:
                 //retract
-                startTime = getRuntime();
-                if(getRuntime()-startTime < 500) {
+                if(getRuntime()-startTime < .5) {
                     limbs.setServoPower("shooterArm", 0.63);
                 } else {
                     step++;
-                    break;
+                    startTime = getRuntime(); break;
                 }
             case 8:
                 //shoot ring 2
-                startTime = getRuntime();
-                if(getRuntime()-startTime < 500) {
+                if(getRuntime()-startTime < .5) {
                     limbs.setServoPower("shooterArm", 0);
                 } else {
                     step++;
-                    break;
+                    startTime = getRuntime(); break;
                 }
             case 9:
                 //retract
-                startTime = getRuntime();
-                if(getRuntime()-startTime < 500) {
+                if(getRuntime()-startTime < .5) {
                     limbs.setServoPower("shooterArm", 0.63);
                 } else {
                     step++;
-                    break;
+                    startTime = getRuntime(); break;
                 }
             case 10:
                 //shoot ring 3
-                startTime = getRuntime();
-                if(getRuntime()-startTime < 500) {
+                if(getRuntime()-startTime < .5) {
                     limbs.setServoPower("shooterArm", 0);
                 } else {
                     step++;
-                    break;
+                    startTime = getRuntime(); break;
                 }
             case 11:
                 //retract
-                startTime = getRuntime();
-                if(getRuntime()-startTime < 500) {
+                if(getRuntime()-startTime < .5) {
                     limbs.setServoPower("shooterArm", 0.63);
                 } else {
                     step++;
-                    break;
+                    startTime = getRuntime(); break;
                 }
             case 12:
                 //Choose one of three paths based on conditional. 20 = 0 rings, 30 = 1 ring, 40 = 4 rings
-                if(conditional == 0) {step = 20; break;}
-                    else if (conditional == 1) {step = 30; break;}
-                    else if (conditional == 4) {step = 40; break;}
+                if(conditional == 0) {step = 20; startTime = getRuntime(); break;}
+                    else if (conditional == 1) {step = 30; startTime = getRuntime(); break;}
+                    else if (conditional == 4) {step = 40; startTime = getRuntime(); break;}
             case 20:
                 //If 0 rings go forward
-                startTime = getRuntime();
-                if(getRuntime()-startTime < 1000) {
+                if(getRuntime()-startTime < 1) {
                     driver.driveRaw( 0.6f, 0.6f, -0.6f, -0.6f);
                 } else {
                     driver.stopDrive();
                     step++;
-                    break;
+                    startTime = getRuntime(); break;
                 }
             case 21:
                 //lower wobble goal
-                startTime = getRuntime();
-                if(getRuntime()-startTime < 500) {
+                if(getRuntime()-startTime < .5) {
 //                    limbs.setServoPower("wobleArmLeft", 1);
 //                    limbs.setServoPower("wobleArmRight", -1);
                 } else {
                     step++;
-                    break;
+                    startTime = getRuntime(); break;
                 }
             case 22:
                 //release wobble goal
-                startTime = getRuntime();
-                if(getRuntime()-startTime < 500) {
+                if(getRuntime()-startTime < .5) {
 //                    limbs.setServoPower("wobleClawLeft", 1);
 //                    limbs.setServoPower("wobleClawRight", -1);
                 } else {
                     step++;
-                    break;
+                    startTime = getRuntime(); break;
                 }
             case 23:
                 //go back to line and park
-                startTime = getRuntime();
-                if(getRuntime()-startTime < 1000) {
+                if(getRuntime()-startTime < 1) {
                     driver.driveRaw(-0.6f, -0.6f, 0.6f, 0.6f);
                 } else {
                     driver.stopDrive();
                     step = 77;
-                    break;
+                    startTime = getRuntime(); break;
                 }
             case 30:
                 //If 1 ring drive forward more
-                startTime = getRuntime();
-                if(getRuntime()-startTime < 1000) {
+                if(getRuntime()-startTime < 1) {
                     driver.driveRaw( 0.6f, 0.6f, -0.6f, -0.6f);
                 } else {
                     driver.stopDrive();
                     step++;
-                    break;
+                    startTime = getRuntime(); break;
                 }
             case 31:
                 //strafe to section 1
-                startTime = getRuntime();
-                if(getRuntime()-startTime < 1000) {
+                if(getRuntime()-startTime < 1) {
                     driver.driveRaw(-0.4f,0.4f,0.4f, -0.4f);
                 } else {
                     driver.stopDrive();
                     step++;
-                    break;
+                    startTime = getRuntime(); break;
                 }
             case 32:
                 //lower wobble goal
-                startTime = getRuntime();
-                if(getRuntime()-startTime < 500) {
+                if(getRuntime()-startTime < .5) {
 //                    limbs.setServoPower("wobleArmLeft", 1);
 //                    limbs.setServoPower("wobleArmRight", -1);
                 } else {
                     step++;
-                    break;
+                    startTime = getRuntime(); break;
                 }
             case 33:
                 //release wobble goal
-                startTime = getRuntime();
-                if(getRuntime()-startTime < 500) {
+                if(getRuntime()-startTime < .5) {
 //                    limbs.setServoPower("wobleClawLeft", 1);
 //                    limbs.setServoPower("wobleClawRight", -1);
                 } else {
                     step++;
-                    break;
+                    startTime = getRuntime(); break;
                 }
             case 34:
                 //drive back to line and park
-                startTime = getRuntime();
-                if(getRuntime()-startTime < 1000) {
+                if(getRuntime()-startTime < 1) {
                     driver.driveRaw(-0.6f, -0.6f, 0.6f, 0.6f);
                 } else {
                     driver.stopDrive();
                     step = 77;
-                    break;
+                    startTime = getRuntime(); break;
                 }
             case 40:
-                startTime = getRuntime();
-                if(getRuntime()-startTime < 1500) {
+                if(getRuntime()-startTime < 1.5) {
                     driver.driveRaw( 0.6f, 0.6f, -0.6f, -0.6f);
                 } else {
                     driver.stopDrive();
                     step++;
-                    break;
+                    startTime = getRuntime(); break;
                 }
             case 41:
                 //If 4 rings drive to thirds section
-                startTime = getRuntime();
-                if(getRuntime()-startTime < 1500) {
+                if(getRuntime()-startTime < 1.5) {
                     driver.driveRaw(0.6f,0.6f,-0.6f, -0.6f);
                 } else {
                     driver.stopDrive();
                     step++;
-                    break;
+                    startTime = getRuntime(); break;
                 }
             case 42:
                 //turn 90 degrees
-                startTime = getRuntime();
-                if(getRuntime()-startTime < 1000) {
+                if(getRuntime()-startTime < 1) {
                     imu.getPosition();
                     float proportional = PaulMath.proportionalPID(imu.getOrientation().thirdAngle, -90);
                     driver.driveRaw(-proportional, proportional, -proportional, proportional);
                 } else {
                     driver.stopDrive();
                     step++;
-                    break;
+                    startTime = getRuntime(); break;
                 }
             case 43:
                 //lower wobble goal
-                startTime = getRuntime();
-                if(getRuntime()-startTime < 500) {
+                if(getRuntime()-startTime < .5) {
 //                    limbs.setServoPower("wobleArmLeft", 1);
 //                    limbs.setServoPower("wobleArmRight", -1);
                 } else {
                     step++;
-                    break;
+                    startTime = getRuntime(); break;
                 }
             case 44:
                 //release wobble goal
-                startTime = getRuntime();
-                if(getRuntime()-startTime < 500) {
+                if(getRuntime()-startTime < .5) {
 //                    limbs.setServoPower("wobleClawLeft", 1);
 //                    limbs.setServoPower("wobleClawRight", -1);
                 } else {
                     step++;
-                    break;
+                    startTime = getRuntime(); break;
                 }
             case 45:
                 //drive back to the line and park
-                startTime = getRuntime();
-                if(getRuntime()-startTime < 1500) {
+                if(getRuntime()-startTime < 1.5) {
                     driver.driveRaw(-0.6f,-0.6f,0.6f, 0.6f);
                 } else {
                     driver.stopDrive();
                     step = 77;
-                    break;
+                    startTime = getRuntime(); break;
                 }
         }
 
@@ -347,6 +322,8 @@ public class SwitchAuto extends OpMode {
         telemetry.addData("IMU Acceleration: ", imu.getLinearAcceleration().toString());
         telemetry.addData("IMU Position: ", imu.getPosition().toString());
         telemetry.addData("Time:", getRuntime());
+        telemetry.addData("StartTime: ", startTime);
+        telemetry.addData("Step Run Time:", getRuntime()-startTime);
         telemetry.addData("Drum Power", limbs.getMotorPower("drum"));
         telemetry.addData("Intake Power", limbs.getMotorPower("intake"));
         telemetry.addData("Flywheel Right Power", limbs.getMotorPower("flywheelRight"));
