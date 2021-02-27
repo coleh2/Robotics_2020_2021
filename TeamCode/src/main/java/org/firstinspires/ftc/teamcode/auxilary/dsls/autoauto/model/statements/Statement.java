@@ -10,6 +10,10 @@ public class Statement {
 
     public Statement() {}
 
+    public void loop() {}
+    public void stepInit() {}
+    public void init() {}
+
     public static Statement createProperStatementType(String src) {
         String tr = src.trim();
 
