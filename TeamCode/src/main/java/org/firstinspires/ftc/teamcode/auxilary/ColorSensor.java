@@ -20,7 +20,6 @@ public class ColorSensor {
     int colorReturned;
     Thread updateLoopThread;
     float[] hsvValues = new float[3];
-
     public int runCount = 0;
 
     public ColorSensor(NormalizedColorSensor sensor) {
@@ -67,13 +66,19 @@ public class ColorSensor {
         return this.hsvValues;
     }
 
+  
+
     public boolean getReadState() {
 
         return this.weShouldRead;
+       // Color.alpha(this.colorReturned);
+    }
+    public int getAlpha(){
+       return Color.alpha(this.colorReturned);
     }
 
     public boolean isSpecial1() {
-        return this.hsvValues[1] > 0.65 ;
+        return Color.alpha(this.colorReturned) >= 200;
 
     }
 
@@ -118,5 +123,7 @@ public class ColorSensor {
                 runSample();
             }
         }
+
+
     }
 }
