@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.auxilary.AutoState;
 import org.firstinspires.ftc.teamcode.auxilary.ColorSensor;
@@ -67,9 +68,7 @@ public class SwitchAuto extends OpMode {
         step = 0;
     }
 
-
     public void loop() {
-
 
         switch(step){
             case 0:
@@ -84,7 +83,7 @@ public class SwitchAuto extends OpMode {
                 if(getRuntime()-startTime < 1) {
                     driver.driveRaw( 0.6f, 0.6f, 0.6f, 0.6f);
                 } else {
-                    driver.stopDrive();
+                    driver.driveRaw(0f, 0f, 0f, 0f);
                     step++;
                     startTime = getRuntime(); break;
                 }
@@ -93,7 +92,7 @@ public class SwitchAuto extends OpMode {
                 if(getRuntime()-startTime < 1) {
                     driver.driveRaw(0.4f,-0.4f,-0.4f, 0.4f);
                 } else {
-                    driver.stopDrive();
+                    driver.driveRaw(0f, 0f, 0f, 0f);
                     step++;
                     startTime = getRuntime(); break;
                 }
@@ -113,7 +112,7 @@ public class SwitchAuto extends OpMode {
                 if(getRuntime()-startTime < 1) {
                     driver.driveRaw(-0.4f,0.4f,0.4f, -0.4f);
                 } else {
-                    driver.stopDrive();
+                    driver.driveRaw(0f, 0f, 0f, 0f);
                     step++;
                     startTime = getRuntime(); break;
                 }
@@ -122,7 +121,7 @@ public class SwitchAuto extends OpMode {
                 if(getRuntime()-startTime < 1) {
                     driver.driveRaw( 0.6f, 0.6f, -0.6f, -0.6f);
                 } else {
-                    driver.stopDrive();
+                    driver.driveRaw(0f, 0f, 0f, 0f);
                     step++;
                     startTime = getRuntime(); break;
                 }
@@ -184,7 +183,7 @@ public class SwitchAuto extends OpMode {
                 if(getRuntime()-startTime < 1) {
                     driver.driveRaw( 0.6f, 0.6f, -0.6f, -0.6f);
                 } else {
-                    driver.stopDrive();
+                    driver.driveRaw(0f, 0f, 0f, 0f);
                     step++;
                     startTime = getRuntime(); break;
                 }
@@ -211,7 +210,7 @@ public class SwitchAuto extends OpMode {
                 if(getRuntime()-startTime < 1) {
                     driver.driveRaw(-0.6f, -0.6f, 0.6f, 0.6f);
                 } else {
-                    driver.stopDrive();
+                    driver.driveRaw(0f, 0f, 0f, 0f);
                     step = 77;
                     startTime = getRuntime(); break;
                 }
@@ -220,7 +219,7 @@ public class SwitchAuto extends OpMode {
                 if(getRuntime()-startTime < 1) {
                     driver.driveRaw( 0.6f, 0.6f, -0.6f, -0.6f);
                 } else {
-                    driver.stopDrive();
+                    driver.driveRaw(0f, 0f, 0f, 0f);
                     step++;
                     startTime = getRuntime(); break;
                 }
@@ -229,7 +228,7 @@ public class SwitchAuto extends OpMode {
                 if(getRuntime()-startTime < 1) {
                     driver.driveRaw(-0.4f,0.4f,0.4f, -0.4f);
                 } else {
-                    driver.stopDrive();
+                    driver.driveRaw(0f, 0f, 0f, 0f);
                     step++;
                     startTime = getRuntime(); break;
                 }
@@ -256,7 +255,7 @@ public class SwitchAuto extends OpMode {
                 if(getRuntime()-startTime < 1) {
                     driver.driveRaw(-0.6f, -0.6f, 0.6f, 0.6f);
                 } else {
-                    driver.stopDrive();
+                    driver.driveRaw(0f, 0f, 0f, 0f);
                     step = 77;
                     startTime = getRuntime(); break;
                 }
@@ -264,7 +263,7 @@ public class SwitchAuto extends OpMode {
                 if(getRuntime()-startTime < 1.5) {
                     driver.driveRaw( 0.6f, 0.6f, -0.6f, -0.6f);
                 } else {
-                    driver.stopDrive();
+                    driver.driveRaw(0f, 0f, 0f, 0f);
                     step++;
                     startTime = getRuntime(); break;
                 }
@@ -273,7 +272,7 @@ public class SwitchAuto extends OpMode {
                 if(getRuntime()-startTime < 1.5) {
                     driver.driveRaw(0.6f,0.6f,-0.6f, -0.6f);
                 } else {
-                    driver.stopDrive();
+                    driver.driveRaw(0f, 0f, 0f, 0f);
                     step++;
                     startTime = getRuntime(); break;
                 }
@@ -284,7 +283,7 @@ public class SwitchAuto extends OpMode {
                     float proportional = PaulMath.proportionalPID(imu.getOrientation().thirdAngle, -90);
                     driver.driveRaw(-proportional, proportional, -proportional, proportional);
                 } else {
-                    driver.stopDrive();
+                    driver.driveRaw(0f, 0f, 0f, 0f);
                     step++;
                     startTime = getRuntime(); break;
                 }
@@ -311,7 +310,7 @@ public class SwitchAuto extends OpMode {
                 if(getRuntime()-startTime < 1.5) {
                     driver.driveRaw(-0.6f,-0.6f,0.6f, 0.6f);
                 } else {
-                    driver.stopDrive();
+                    driver.driveRaw(0f, 0f, 0f, 0f);
                     step = 77;
                     startTime = getRuntime(); break;
                 }
