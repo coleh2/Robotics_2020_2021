@@ -63,18 +63,35 @@ public class DeltaVFrankenstein extends StepAuto {
     public void loop() {
         switch(currentStep){
             case START:
-                driver.driveRaw(0f, 0f, 0f, 0f);
-                nextStep(20000);
+                //Flywheels startup + set shooterArm
+//                limbs.setServoPower("shooterArm", 0.63);
+//                limbs.setMotorPower("flywheelRight", -1);
+//                limbs.setMotorPower("flywheelLeft", 1);
+                nextStep(500);
                 break;
             case MOVE1:
-                driver.driveRaw(0.5f, 0.5f, -0.5f, -0.5f);
-                nextStep(1000);
-                break;
+                //go forward
+                driver.driveRaw( 0.6f, 0.6f, -0.6f, -0.6f);
+                nextStep(20000);
+
+
+//            case MOVE2:
+//                //strafe to rings
+//                driver.driveRaw(0.4f,-0.4f,-0.4f, 0.4f);
+//                nextStepStop(2000);
 
             default:
                 driver.driveRaw(0f, 0f, 0f, 0f);
 
         }
+        telemetry.addData("Step:", currentStep);
+        telemetry.addData("IMU Orientation: ", imu.getOrientation().thirdAngle);
+        telemetry.addData("IMU Acceleration: ", imu.getLinearAcceleration().toString());
+        telemetry.addData("IMU Position: ", imu.getPosition().toString());
+        telemetry.addData("Drum Power", limbs.getMotorPower("drum"));
+        telemetry.addData("Intake Power", limbs.getMotorPower("intake"));
+        telemetry.addData("Flywheel Right Power", limbs.getMotorPower("flywheelRight"));
+        telemetry.addData("Flywheel Left Power", limbs.getMotorPower("flywheelLeft"));
         telemetry.addData("FL Power: ", driver.frontLeft.getPower());
         telemetry.addData("FR Power: ", driver.frontRight.getPower());
         telemetry.addData("BL Power: ", driver.backLeft.getPower());
