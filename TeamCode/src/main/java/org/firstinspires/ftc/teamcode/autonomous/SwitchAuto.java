@@ -73,12 +73,14 @@ public class SwitchAuto extends OpMode {
 
         switch(step){
             case 0:
+                //set shooterArm and turn on Flywheels
                 limbs.setServoPower("shooterArm", 0.63);
                 limbs.setMotorPower("flywheelRight", -1);
                 limbs.setMotorPower("flywheelLeft", 1);
                 step++;
                 break;
             case 1:
+                //go forward
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 1000) {
                     driver.driveOmni(new float[] {0.6f,0f,0f});
@@ -88,6 +90,7 @@ public class SwitchAuto extends OpMode {
                     break;
                 }
             case 2:
+                //strafe to rings
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 500) {
                     driver.driveOmni(new float[] {0f,0.4f,0f});
@@ -97,6 +100,7 @@ public class SwitchAuto extends OpMode {
                     break;
                 }
             case 3:
+                //scan and set conditional
                 sensorOne.runSample();
                 sensorFour.runSample();
                 if(sensorOne.isSpecial1()) {
@@ -107,6 +111,7 @@ public class SwitchAuto extends OpMode {
                 step++;
                 break;
             case 4:
+                //strafe back to center
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 500) {
                     driver.driveOmni(new float[] {0f,-0.4f,0f});
@@ -116,6 +121,7 @@ public class SwitchAuto extends OpMode {
                     break;
                 }
             case 5:
+                //drive to line
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 1000) {
                     driver.driveOmni(new float[] {0.6f,0f,0f});
@@ -125,6 +131,7 @@ public class SwitchAuto extends OpMode {
                     break;
                 }
             case 6:
+                //shoot ring 1
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 500) {
                     limbs.setServoPower("shooterArm", 0);
@@ -133,6 +140,7 @@ public class SwitchAuto extends OpMode {
                     break;
                 }
             case 7:
+                //retract
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 500) {
                     limbs.setServoPower("shooterArm", 0.63);
@@ -141,6 +149,7 @@ public class SwitchAuto extends OpMode {
                     break;
                 }
             case 8:
+                //shoot ring 2
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 500) {
                     limbs.setServoPower("shooterArm", 0);
@@ -149,6 +158,7 @@ public class SwitchAuto extends OpMode {
                     break;
                 }
             case 9:
+                //retract
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 500) {
                     limbs.setServoPower("shooterArm", 0.63);
@@ -157,6 +167,7 @@ public class SwitchAuto extends OpMode {
                     break;
                 }
             case 10:
+                //shoot ring 3
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 500) {
                     limbs.setServoPower("shooterArm", 0);
@@ -165,6 +176,7 @@ public class SwitchAuto extends OpMode {
                     break;
                 }
             case 11:
+                //retract
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 500) {
                     limbs.setServoPower("shooterArm", 0.63);
@@ -173,10 +185,12 @@ public class SwitchAuto extends OpMode {
                     break;
                 }
             case 12:
+                //Choose one of three paths based on conditional. 20 = 0 rings, 30 = 1 ring, 40 = 4 rings
                 if(conditional == 0) {step = 20; break;}
                     else if (conditional == 1) {step = 30; break;}
                     else if (conditional == 4) {step = 40; break;}
             case 20:
+                //If 0 rings go forward
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 500) {
                     driver.driveOmni(new float[] {0.6f,0f,0f});
@@ -186,6 +200,7 @@ public class SwitchAuto extends OpMode {
                     break;
                 }
             case 21:
+                //lower wobble goal
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 500) {
 //                    limbs.setServoPower("wobleArmLeft", 1);
@@ -195,6 +210,7 @@ public class SwitchAuto extends OpMode {
                     break;
                 }
             case 22:
+                //release wobble goal
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 500) {
 //                    limbs.setServoPower("wobleClawLeft", 1);
@@ -204,6 +220,7 @@ public class SwitchAuto extends OpMode {
                     break;
                 }
             case 23:
+                //go back to line and park
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 500) {
                     driver.driveOmni(new float[] {-0.6f,0f,0f});
@@ -213,6 +230,7 @@ public class SwitchAuto extends OpMode {
                     break;
                 }
             case 30:
+                //If 1 ring drive forward more
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 1000) {
                     driver.driveOmni(new float[] {0.6f,0f,0f});
@@ -222,6 +240,7 @@ public class SwitchAuto extends OpMode {
                     break;
                 }
             case 31:
+                //strafe to section 1
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 500) {
                     driver.driveOmni(new float[] {0f,-0.4f,0f});
@@ -231,15 +250,7 @@ public class SwitchAuto extends OpMode {
                     break;
                 }
             case 32:
-                startTime = getRuntime();
-                if(getRuntime()-startTime < 500) {
-                    driver.driveOmni(new float[] {0f,0f,0f});
-                } else {
-                    driver.stopDrive();
-                    step++;
-                    break;
-                }
-            case 33:
+                //lower wobble goal
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 500) {
 //                    limbs.setServoPower("wobleArmLeft", 1);
@@ -248,7 +259,8 @@ public class SwitchAuto extends OpMode {
                     step++;
                     break;
                 }
-            case 34:
+            case 33:
+                //release wobble goal
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 500) {
 //                    limbs.setServoPower("wobleClawLeft", 1);
@@ -257,7 +269,8 @@ public class SwitchAuto extends OpMode {
                     step++;
                     break;
                 }
-            case 35:
+            case 34:
+                //drive back to line and park
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 1000) {
                     driver.driveOmni(new float[] {-0.6f,0f,0f});
@@ -276,6 +289,17 @@ public class SwitchAuto extends OpMode {
                     break;
                 }
             case 41:
+                //If 4 rings drive to thirds section
+                startTime = getRuntime();
+                if(getRuntime()-startTime < 1500) {
+                    driver.driveOmni(new float[] {-0.6f,0f,0f});
+                } else {
+                    driver.stopDrive();
+                    step++;
+                    break;
+                }
+            case 42:
+                //turn 90 degrees
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 1000) {
                     imu.getPosition();
@@ -286,7 +310,8 @@ public class SwitchAuto extends OpMode {
                     step++;
                     break;
                 }
-            case 42:
+            case 43:
+                //lower wobble goal
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 500) {
 //                    limbs.setServoPower("wobleArmLeft", 1);
@@ -295,7 +320,8 @@ public class SwitchAuto extends OpMode {
                     step++;
                     break;
                 }
-            case 43:
+            case 44:
+                //release wobble goal
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 500) {
 //                    limbs.setServoPower("wobleClawLeft", 1);
@@ -304,7 +330,8 @@ public class SwitchAuto extends OpMode {
                     step++;
                     break;
                 }
-            case 44:
+            case 45:
+                //drive back to the line and park
                 startTime = getRuntime();
                 if(getRuntime()-startTime < 1500) {
                     driver.driveOmni(new float[] {-0.6f,0f,0f});
