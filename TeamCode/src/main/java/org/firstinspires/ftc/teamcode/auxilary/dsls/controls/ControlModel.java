@@ -1,19 +1,14 @@
-package org.firstinspires.ftc.teamcode.auxilary;
+package org.firstinspires.ftc.teamcode.auxilary.dsls.controls;
 
-import org.firstinspires.ftc.teamcode.auxilary.controlmaps.ControlMap;
+import org.firstinspires.ftc.teamcode.auxilary.PaulMath;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.controls.controlmaps.ControlMap;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
-import java.sql.Time;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Objects;
-import java.util.Set;
-import java.util.regex.Pattern;
 
 public class ControlModel {
     public HashMap<String, Control> controls;

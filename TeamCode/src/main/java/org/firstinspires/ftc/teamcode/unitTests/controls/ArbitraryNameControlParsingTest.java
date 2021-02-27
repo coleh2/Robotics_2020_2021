@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.unitTests.controls;
 
-import org.firstinspires.ftc.teamcode.auxilary.ControlModel;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.controls.ControlModel;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

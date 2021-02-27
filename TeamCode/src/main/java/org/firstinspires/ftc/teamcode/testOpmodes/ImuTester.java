@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.auxilary.PaulMath;
-import org.firstinspires.ftc.teamcode.auxilary.controlmaps.BasicDrivingControlMap;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.controls.controlmaps.BasicDrivingControlMap;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 import org.firstinspires.ftc.teamcode.managers.ImuManager;
 import org.firstinspires.ftc.teamcode.managers.InputManager;

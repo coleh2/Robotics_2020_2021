@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.auxilary;
+package org.firstinspires.ftc.teamcode.auxilary.dsls.controls;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 

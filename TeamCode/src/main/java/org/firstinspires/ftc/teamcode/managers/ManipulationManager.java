@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ManipulationManager {
+public class ManipulationManager extends FeatureManager {
     public CRServo[] crservos;
     public DcMotor[] motors;
     public Servo[] servos;

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.auxilary.controlmaps;
+package org.firstinspires.ftc.teamcode.auxilary.dsls.controls.controlmaps;
 
 public class DualControllerContolMap extends ControlMap {
     public static String drive = "ternary( or(or(leftStickY, leftStickX), rightStickX),vector3(deadzone(leftStickY, 0.1), deadzone(leftStickX, 0.05), rightStickX),vector3(scale(deadzone(gamepad2LeftStickY, 0.1), 0.2), scale(deadzone(gamepad2LeftStickX, 0.05), 0.2), scale(gamepad2RightStickX, 0.2)))";

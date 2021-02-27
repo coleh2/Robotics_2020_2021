@@ -2,12 +2,10 @@ package org.firstinspires.ftc.teamcode.managers;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-import org.firstinspires.ftc.teamcode.auxilary.ControlModel;
-import org.firstinspires.ftc.teamcode.auxilary.GamepadState;
-import org.firstinspires.ftc.teamcode.auxilary.controlmaps.ControlMap;
-import org.firstinspires.ftc.teamcode.teleop.*;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.controls.ControlModel;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.controls.GamepadState;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.controls.controlmaps.ControlMap;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
