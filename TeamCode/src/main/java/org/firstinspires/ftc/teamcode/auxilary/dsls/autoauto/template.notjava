@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.AutoautoRun
 import org.firstinspires.ftc.teamcode.managers.ManipulationManager;
 import org.firstinspires.ftc.teamcode.managers.MovementManager;
 import org.firstinspires.ftc.teamcode.managers.SensorManager;
+import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 
 @Autonomous
 public class {{className}} extends OpMode {
@@ -22,6 +23,7 @@ public class {{className}} extends OpMode {
 
     AutoautoRuntime runtime;
     public void init() {
+        FeatureManager.logger.setBackend(telemetry.log());
         driver = new MovementManager(hardwareMap.get(DcMotor.class, "fl"),
                 hardwareMap.get(DcMotor.class, "fr"),
                 hardwareMap.get(DcMotor.class, "bl"),

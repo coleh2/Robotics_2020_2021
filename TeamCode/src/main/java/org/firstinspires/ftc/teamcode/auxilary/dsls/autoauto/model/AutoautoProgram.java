@@ -41,6 +41,7 @@ public class AutoautoProgram {
             if(colonIndex < 0) {
                 FeatureManager.logger.log("[AUTOAUTO ERROR] Unlabelled statepath `" + LSPs[i] + "`, defaulting to " + i);
                 lspName = "" + i;
+                colonIndex = LSPs[i].indexOf(' ');
             } else {
                 lspName = LSPs[i].substring(0, colonIndex);
             }
