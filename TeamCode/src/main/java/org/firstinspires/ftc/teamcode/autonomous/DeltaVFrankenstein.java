@@ -23,6 +23,7 @@ public class DeltaVFrankenstein extends StepAuto {
     ColorSensor sensorFour;
     ImuManager imu;
     int stepTime=0;
+    int conditional;
 
 
 
@@ -88,8 +89,129 @@ public class DeltaVFrankenstein extends StepAuto {
                 driver.driveRaw(0.4f,-0.4f,-0.4f, 0.4f);
                 nextStepStop(2000);
                 break;
+            case MOVE3:
+                //scan and set conditional
+                sensorOne.runSample();
+                sensorFour.runSample();
+                if(sensorOne.isSpecial1()) {
+                    if(sensorFour.isSpecial1()){
+                        conditional = 4;
+                    } else conditional = 1;
+                } else conditional = 0;
+                nextStep(500);
+                break;
+            case MOVE4:
+                //strafe back to center
+                driver.driveRaw(-0.4f,0.4f,0.4f, -0.4f);
+                nextStepStop(2000);
+                break;
+            case MOVE5:
+                //drive to line
+                driver.driveRaw( 0.6f, 0.6f, -0.6f, -0.6f);
+                nextStepStop(2000);
+                break;
+            case MOVE6:
+            case MOVE8:
+            case MOVE10:
+                //shoot ring 1
+                limbs.setServoPower("shooterArm", 0);
+                nextStep(500);
+                break;
+            case MOVE7:
+            case MOVE9:
+            case MOVE11:
+                //retract
+                limbs.setServoPower("shooterArm", 0.63);
+                nextStep(500);
+                break;
+            case MOVE12:
+                //Choose one of three paths based on conditional. 20 = 0 rings, 30 = 1 ring, 40 = 4 rings
+                if(conditional == 4) {currentStep = step.THREADTHREE1; break;}
+                else if (conditional == 1) {currentStep = step.THREADTWO1; break;}
+                else {currentStep = step.THREADONE1; break;}
+            case THREADONE1:
+                //If 0 rings go forward
+                driver.driveRaw( 0.6f, 0.6f, -0.6f, -0.6f);
+                nextStepStop(2000);
+                break;
+            case THREADONE2:
+                //lower wobble goal
+//              limbs.setServoPower("wobleArmLeft", 1);
+//              limbs.setServoPower("wobleArmRight", -1);
+                nextStep(500);
+                break;
+            case THREADONE3:
+//              limbs.setServoPower("wobleClawLeft", 1);
+//              limbs.setServoPower("wobleClawRight", -1);
+                nextStep(500);
+                break;
+            case THREADONE4:
+                driver.driveRaw(-0.6f, -0.6f, 0.6f, 0.6f);
+                nextStepStop(2000);
+                break;
+            case THREADTWO1:
+                //If 1 ring drive forward more
+                driver.driveRaw( 0.6f, 0.6f, -0.6f, -0.6f);
+                nextStepStop(2000);
+                break;
+            case THREADTWO2:
+                //strafe to section 1
+                driver.driveRaw(-0.4f,0.4f,0.4f, -0.4f);
+                nextStepStop(1000);
+                break;
+            case THREADTWO3:
+                //lower wobble goal
+//              limbs.setServoPower("wobleArmLeft", 1);
+//              limbs.setServoPower("wobleArmRight", -1);
+                nextStep(500);
+                break;
+            case THREADTWO4:
+                //release wobble goal
+//              limbs.setServoPower("wobleClawLeft", 1);
+//              limbs.setServoPower("wobleClawRight", -1);
+                nextStep(500);
+                break;
+            case THREADTWO5:
+                //drive back to line and park
+                driver.driveRaw(-0.6f, -0.6f, 0.6f, 0.6f);
+                nextStepStop(2000);
+                break;
+            case THREADTHREE1:
+                driver.driveRaw( 0.6f, 0.6f, -0.6f, -0.6f);
+                nextStepStop(2000);
+                break;
+            case THREADTHREE2:
+                //If 4 rings drive to thirds section
+                driver.driveRaw(0.6f,0.6f,-0.6f, -0.6f);
+                nextStepStop(2000);
+                break;
+            case THREADTHREE3:
+                imu.getPosition();
+                float proportional = PaulMath.proportionalPID(imu.getOrientation().thirdAngle, -90);
+                driver.driveRaw(-proportional, proportional, -proportional, proportional);
+                nextStepStop(2000);
+                break;
+            case THREADTHREE4:
+                //lower wobble goal
+//              limbs.setServoPower("wobleArmLeft", 1);
+//              limbs.setServoPower("wobleArmRight", -1);
+                nextStep(500);
+                break;
+            case THREADTHREE5:
+//              limbs.setServoPower("wobleClawLeft", 1);
+//              limbs.setServoPower("wobleClawRight", -1);
+                nextStep(500);
+                break;
+            case THREADTHREE6:
+                driver.driveRaw(-0.6f,-0.6f,0.6f, 0.6f);
+                nextStepStop(2000);
+                break;
+
             default:
                 driver.driveRaw(0f, 0f, 0f, 0f);
+                limbs.setMotorPower("flywheelRight", 0);
+                limbs.setMotorPower("flywheelLeft", 0);
+                limbs.setServoPower("shooterArm", 0.63);
                 break;
 
         }
