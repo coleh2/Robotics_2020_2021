@@ -49,6 +49,8 @@ public class State {
 
     public void loop() {
         for(Statement s : statements) {
+            if(this.statepath != this.program.currentPath) break;
+            if(this.statepath.states[this.statepath.currentState] != this) break;
             if(s != null) s.loop();
         }
     }
