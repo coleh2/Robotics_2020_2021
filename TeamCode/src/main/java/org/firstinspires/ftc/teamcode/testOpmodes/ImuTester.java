@@ -45,7 +45,8 @@ public class ImuTester extends OpMode {
         driver.driveOmni(new float[] {0,0,-proportional});
 
         float[] manualDrivingControls = input.getVector("drive");
-        if(manualDrivingControls[0] + manualDrivingControls[1] + manualDrivingControls[2] != 0) driver.driveOmni(manualDrivingControls);
+        if(manualDrivingControls[0] + manualDrivingControls[1] + manualDrivingControls[2] != 0)
+            driver.driveOmni(manualDrivingControls);
 
         telemetry.addData("IMU Orientation: ", imu.getOrientation().thirdAngle);
 

@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.managers.*;
 import org.firstinspires.ftc.teamcode.auxilary.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Timer;
 
 @Autonomous(group = "Step")
@@ -29,6 +30,7 @@ public class DeltaVFrankenstein extends StepAuto {
 
 
     public void init() {
+        FeatureManager.logger.setBackend(telemetry.log());
         driver = new MovementManager(hardwareMap.get(DcMotor.class, "fl"),
                 hardwareMap.get(DcMotor.class, "fr"),
                 hardwareMap.get(DcMotor.class, "bl"),
@@ -57,9 +59,10 @@ public class DeltaVFrankenstein extends StepAuto {
                 }
         );
         driver.resetEncoders();
-        driver.runUsingEncoders();
-        driver.getMotor()[2].setDirection(DcMotorSimple.Direction.REVERSE);
-        driver.getMotor()[3].setDirection(DcMotorSimple.Direction.FORWARD);
+        driver.runWithOutEncoders();
+//        driver.runUsingEncoders();
+//        driver.getMotor()[2].setDirection(DcMotorSimple.Direction.REVERSE);
+//        driver.getMotor()[3].setDirection(DcMotorSimple.Direction.FORWARD);
 
 
         imu = new ImuManager(hardwareMap.get(com.qualcomm.hardware.bosch.BNO055IMU.class, "imu"));
@@ -77,20 +80,29 @@ public class DeltaVFrankenstein extends StepAuto {
                 limbs.setServoPower("shooterArm", 0.63);
                // limbs.setMotorPower("flywheelRight", -1);
                // limbs.setMotorPower("flywheelLeft", 1);
-                nextStep(1000);
+                    nextStep(500);
+
+
                 break;
             case MOVE1:
                 //go forward
-                driver.driveRaw( 0.3f, 0.3f, 0.3f, 0.3f);
-                nextStep(3000);
+                driver.driveRaw( 0.3f, 0.3f, -0.3f, -0.3f);
+                if(driver.frontRight.getCurrentPosition() >= 1730){
+                    FeatureManager.logger.log("MY name is Sir Jerry Steve and I am ACTIVATED WOOO!!!!");
+       currentStep = getNext();
+                }
                 break;
             case MOVE2:
                 //strafe to rings
-                driver.driveRaw(0.2f,-0.2f,-0.2f, 0.2f);
-                nextStepStop(2000);
+                driver.driveRaw(0.2f,-0.2f,0.2f, -0.2f);
+                if(driver.frontRight.getCurrentPosition() <= 1699){
+                    currentStep = getNext();
+                }
                 break;
             case MOVE3:
                 //scan and set conditional
+                driver.driveRaw(0f,0f,0f, 0f);
+
                 sensorOne.runSample();
                 sensorFour.runSample();
                 if(sensorOne.isSpecial1()) {
@@ -98,35 +110,55 @@ public class DeltaVFrankenstein extends StepAuto {
                         conditional = 4;
                     } else conditional = 1;
                 } else conditional = 0;
-                nextStep(500);
+                currentStep = getNext();
                 break;
             case MOVE4:
-                //strafe back to center
-                driver.driveRaw(-0.4f,0.4f,0.4f, -0.4f);
-                nextStepStop(2000);
-                break;
-            case MOVE5:
                 //drive to line
                 limbs.setMotorPower("flywheelRight", -1);
                 limbs.setMotorPower("flywheelLeft", 1);
-                driver.driveRaw( 0.6f, 0.6f, -0.6f, -0.6f);
-                nextStepStop(2000);
+                driver.driveRaw( 0.3f, 0.3f, -0.3f, -0.3f);
+                if(driver.frontRight.getCurrentPosition() >= 2937){
+                    currentStep = getNext();
+                }                           // driver.driveRaw(-0.4f,0.4f,0.4f, -0.4f);
+                break;
+            case MOVE5:
+                //strafe back to center
+
+                driver.driveRaw(0.2f,-0.2f,0.2f, -0.2f);
+                if(driver.frontRight.getCurrentPosition() <= 2378){
+                    currentStep = getNext();
+                }
+                break;
+            case MOVE5and5:
+                //Turn to center
+
+                imu.getPosition();
+                float proportional = PaulMath.proportionalPID(imu.getOrientation().thirdAngle, 0);
+                driver.driveOmni(new float[] {0,0,-proportional});
+                driver.driveRaw(proportional, -proportional, -proportional, proportional);
+
                 break;
             case MOVE6:
             case MOVE8:
             case MOVE10:
                 //shoot ring 1
+                driver.driveRaw(0f,0f,0f, 0f);
+
                 limbs.setServoPower("shooterArm", 0);
-                nextStep(500);
+                limbs.setMotorPower("drum", -0.3);
+
+                nextStep(800);
                 break;
             case MOVE7:
             case MOVE9:
             case MOVE11:
                 //retract
                 limbs.setServoPower("shooterArm", 0.63);
-                nextStep(500);
+                nextStep(800);
                 break;
             case MOVE12:
+                limbs.setMotorPower("drum", 0);
+
                 //Choose one of three paths based on conditional. 20 = 0 rings, 30 = 1 ring, 40 = 4 rings
                 limbs.setMotorPower("flywheelRight", 0);
                 limbs.setMotorPower("flywheelLeft", 0);
@@ -220,6 +252,9 @@ public class DeltaVFrankenstein extends StepAuto {
 
         }
         telemetry.addData("Step:", currentStep);
+        telemetry.addData("Conditional:", conditional+"");
+        telemetry.addData("ticks", Arrays.toString(driver.getMotorPositions()));
+
         telemetry.addData("IMU Orientation: ", imu.getOrientation().thirdAngle);
         telemetry.addData("IMU Acceleration: ", imu.getLinearAcceleration().toString());
         telemetry.addData("IMU Position: ", imu.getPosition().toString());

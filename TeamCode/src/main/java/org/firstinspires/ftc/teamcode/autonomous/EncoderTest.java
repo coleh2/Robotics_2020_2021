@@ -56,13 +56,17 @@ public class EncoderTest extends StepAuto {
                 }
         );
         driver.resetEncoders();
-driver.setTargetPositions(0, 0, 0,0 );
-        driver.frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        driver.frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        driver.backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        driver.backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        driver.runUsingEncoders();
+//driver.setTargetPositions(0, 0, 0,0 );
+//        driver.frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        driver.frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        driver.backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        driver.backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         //driver.frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        driver.backRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        driver.backRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        driver.frontRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        driver.frontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+        driver.backLeft.setDirection(DcMotorSimple.Direction.FORWARD);
 
 
         imu = new ImuManager(hardwareMap.get(com.qualcomm.hardware.bosch.BNO055IMU.class, "imu"));
@@ -85,7 +89,7 @@ driver.setTargetPositions(0, 0, 0,0 );
             case MOVE1:
                 //go forward
                 driver.driveRaw( 0.3f, 0.3f, 0.3f, 0.3f);
-                driver.setTargetPositions(5000,50000,50000,50000);
+                //driver.setTargetPositions(50000,50000,50000,50000);
 
                 nextStep(10000);
                 break;

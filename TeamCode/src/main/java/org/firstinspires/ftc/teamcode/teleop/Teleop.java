@@ -61,7 +61,8 @@ public class Teleop extends OpMode {
                 }
         );
         driver.resetEncoders();
-        driver.runUsingEncoders();
+        driver.runWithOutEncoders();
+//        driver.runUsingEncoders();
     }
 
     public void loop() {
