@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -21,6 +22,9 @@ public class DeltaVFrankenstein extends StepAuto {
     ColorSensor sensorOne;
     ColorSensor sensorFour;
     ImuManager imu;
+    int stepTime=0;
+
+
 
 
     public void init() {
@@ -51,6 +55,11 @@ public class DeltaVFrankenstein extends StepAuto {
                         "flywheelLeft"
                 }
         );
+//        driver.resetEncoders();
+//        driver.runUsingEncoders();
+        driver.getMotor()[2].setDirection(DcMotorSimple.Direction.REVERSE);
+        driver.getMotor()[3].setDirection(DcMotorSimple.Direction.REVERSE);
+
 
         imu = new ImuManager(hardwareMap.get(com.qualcomm.hardware.bosch.BNO055IMU.class, "imu"));
         sensorOne = new ColorSensor(hardwareMap.get(NormalizedColorSensor.class, "sensorOne"));
@@ -64,24 +73,24 @@ public class DeltaVFrankenstein extends StepAuto {
         switch(currentStep){
             case START:
                 //Flywheels startup + set shooterArm
-//                limbs.setServoPower("shooterArm", 0.63);
-//                limbs.setMotorPower("flywheelRight", -1);
-//                limbs.setMotorPower("flywheelLeft", 1);
-                nextStep(500);
+                limbs.setServoPower("shooterArm", 0.63);
+                limbs.setMotorPower("flywheelRight", -1);
+                limbs.setMotorPower("flywheelLeft", 1);
+                nextStep(1000);
                 break;
             case MOVE1:
                 //go forward
-                driver.driveRaw( 0.6f, 0.6f, -0.6f, -0.6f);
-                nextStep(20000);
-
-
-//            case MOVE2:
-//                //strafe to rings
-//                driver.driveRaw(0.4f,-0.4f,-0.4f, 0.4f);
-//                nextStepStop(2000);
-
-//            default:
-//                driver.driveRaw(0f, 0f, 0f, 0f);
+                driver.driveRaw( 0.3f, 0.3f, 0.3f, 0.3f);
+                nextStep(10000);
+                break;
+            case MOVE2:
+                //strafe to rings
+                driver.driveRaw(0.4f,-0.4f,-0.4f, 0.4f);
+                nextStepStop(2000);
+                break;
+            default:
+                driver.driveRaw(0f, 0f, 0f, 0f);
+                break;
 
         }
         telemetry.addData("Step:", currentStep);

@@ -79,14 +79,7 @@ public class StepAuto extends OpMode {
         }
 
         if (timer.milliseconds() - referPoint >= milliseconds) {
-
-            driver = new MovementManager(hardwareMap.get(DcMotor.class, "fl"),
-                    hardwareMap.get(DcMotor.class, "fr"),
-                    hardwareMap.get(DcMotor.class, "bl"),
-                    hardwareMap.get(DcMotor.class, "br"));
-
             numberCalled = 0;
-            driver.driveRaw(0f, 0f, 0f, 0f);
             currentStep = getNext();
         }
     }

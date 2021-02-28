@@ -43,17 +43,11 @@ public class TeleopColorSensor extends OpMode {
         limbs = new ManipulationManager(
                 new CRServo[] {
                         hardwareMap.get(CRServo.class, "shooterArm"),
-                        hardwareMap.get(CRServo.class, "wobbleArmLeft"),
-                        hardwareMap.get(CRServo.class, "wobbleArmRight"),
-                        hardwareMap.get(CRServo.class, "wobbleGrabLeft"),
-                        hardwareMap.get(CRServo.class, "wobbleGrabRight")
+
                 },
                 new String[] {
                         "shooterArm",
-                        "wobbleArmLeft",
-                        "wobbleArmRight",
-                        "wobbleGrabLeft",
-                        "wobbleGrabRight"
+
                 },
                 new Servo[] {
 

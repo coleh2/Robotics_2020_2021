@@ -62,6 +62,12 @@ public class ManipulationManager extends FeatureManager {
         if(index == -1) throw new IllegalArgumentException("Servo " + name + " does not exist or is not registered");
         crservos[index].setPower(power);
     }
+    public Servo getServo(String name) {
+        int index = (Arrays.asList(servoNames)).indexOf(name);
+        if(index == -1) throw new IllegalArgumentException("Servo " + name + " does not exist or is not registered");
+
+        return servos[index];
+    }
 
     public void setMotorPower(String name, double power) {
         int index = (Arrays.asList(motorNames)).indexOf(name);
