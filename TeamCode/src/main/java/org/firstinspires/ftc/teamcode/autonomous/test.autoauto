@@ -1,0 +1,3 @@
+#init:
+    driveOmni(0, 1, 0), after 1s next;
+    log(4.0)
