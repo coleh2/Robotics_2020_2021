@@ -1,0 +1,10 @@
+#init
+    driveOmni(0, 1, 0), next;
+    let color = getHSV(sensor4), next;
+    if(color > 64) goto fourRings, if (color > 30) goto twoRings, goto zeroRings
+#fourRings
+    log(4.0)
+#twoRings
+    log(2.0)
+#zeroRings
+    log(0.0)

@@ -1,0 +1,65 @@
+package {{packageName}};
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.ColorRangeSensor;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
+import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.Autoauto;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.AutoautoRuntime;
+import org.firstinspires.ftc.teamcode.managers.ManipulationManager;
+import org.firstinspires.ftc.teamcode.managers.MovementManager;
+import org.firstinspires.ftc.teamcode.managers.SensorManager;
+
+@Autonomous
+public class {{className}} extends OpMode {
+    MovementManager driver;
+    ManipulationManager limbs;
+    SensorManager sense;
+
+    AutoautoRuntime runtime;
+    public void init() {
+        driver = new MovementManager(hardwareMap.get(DcMotor.class, "fl"),
+                hardwareMap.get(DcMotor.class, "fr"),
+                hardwareMap.get(DcMotor.class, "bl"),
+                hardwareMap.get(DcMotor.class, "br"));
+        limbs = new ManipulationManager(
+                new CRServo[] {
+                        hardwareMap.get(CRServo.class, "shooterArm")
+                },
+                new String[] {
+                        "shooterArm"
+                },
+                new Servo[] {},
+                new String[] {},
+                new DcMotor[] {
+                        hardwareMap.get(DcMotor.class, "drum"),
+                        hardwareMap.get(DcMotor.class, "intake"),
+                        hardwareMap.get(DcMotor.class, "flywheelRight"),
+                        hardwareMap.get(DcMotor.class, "flywheelLeft")
+                },
+                new String[] {
+                        "drum",
+                        "intake",
+                        "flywheelRight",
+                        "flywheelLeft"
+                }
+        );
+
+        sense = new SensorManager(
+                new NormalizedColorSensor[] {},
+                new String[] {},
+                new ColorRangeSensor[] {},
+                new String[] {});
+
+
+        runtime = Autoauto.executeAutoautoProgram("{{javaStringFileSource}}", driver, limbs, sense);
+    }
+
+    public void loop() {
+        runtime.loop();
+    }
+}
