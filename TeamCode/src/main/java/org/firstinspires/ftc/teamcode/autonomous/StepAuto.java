@@ -25,6 +25,8 @@ public class StepAuto extends OpMode {
 
     MovementManager driver;
     ManipulationManager limbs;
+    private int ticksNumberCalled;
+    private long ticksReferPoint;
 
     public step getNext() {
         step[] x = step.values();
@@ -43,6 +45,23 @@ public class StepAuto extends OpMode {
     }
     public void loop() {
 
+    }
+
+    void nextStepTicks(int ticks) {
+        if(currentStep == null)
+            currentStep = step.START;
+
+
+
+        ticksNumberCalled++;
+        if(ticksNumberCalled == 1) {
+            ticksReferPoint = driver.frontRight.getCurrentPosition();
+        }
+
+        if (driver.frontRight.getCurrentPosition() - ticksReferPoint >= ticks) {
+            ticksNumberCalled = 0;
+            currentStep = getNext();
+        }
     }
 
     void nextStep(int milliseconds) {

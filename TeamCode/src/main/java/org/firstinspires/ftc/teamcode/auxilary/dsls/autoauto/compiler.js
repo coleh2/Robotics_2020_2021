@@ -8,26 +8,24 @@ console.log(directory);
 var template = fs.readFileSync(__dirname + path.sep + "template.notjava").toString();
 
 var srcDirectory = directory.slice(0, directory.indexOf("src") + 1);
-
-console.log("srcdirectory", srcDirectory);
+var compiledResultDirectory = path.join(srcDirectory.join(path.sep), "main/java/org/firstinspires/ftc/teamcode/__compiledautoauto");
+if(!fs.existsSync(compiledResultDirectory)) fs.mkdirSync(compiledResultDirectory);
 
 var autoautoFiles = loadAutoautoFilesFromFolder(srcDirectory.join(path.sep));
 
 for(var i = 0; i < autoautoFiles.length; i++) {
     var fileSource = fs.readFileSync(autoautoFiles[i]).toString();
     var fileName = autoautoFiles[i].substring(autoautoFiles[i].lastIndexOf(path.sep) + 1);
-    var folder = autoautoFiles[i].replace(path.sep + fileName, "");
-    var packageName = folder.substring(folder.indexOf("org")).replace(new RegExp(path.sep.replace("\\", "\\\\"), "g"), ".");
-    var className = "__" + fileName.replace(".autoauto", "__autoauto");
-    var javaFileName = autoautoFiles[i].replace(fileName, className) + ".java";
+    var className = fileName.replace(".autoauto", "__autoauto");
+    var javaFileName = className + ".java";
 
     var javaStringFileSource = fileSource.replace(/\r?\n/g, " ").replace(/"/g, "\\\"");
 
-    fs.writeFileSync(javaFileName, processTemplate(template, className, packageName, javaStringFileSource));
+    fs.writeFileSync(compiledResultDirectory + "/" + javaFileName, processTemplate(template, className, javaStringFileSource));
 }
 
-function processTemplate(template, className, packageName, javaStringFileSource) {
-    return template.replace("{{className}}", className).replace("{{packageName}}", packageName).replace("{{javaStringFileSource}}", javaStringFileSource);
+function processTemplate(template, className, javaStringFileSource) {
+    return template.replace("{{className}}", className).replace("{{javaStringFileSource}}", javaStringFileSource);
 }
 
 function loadAutoautoFilesFromFolder(folder) {
