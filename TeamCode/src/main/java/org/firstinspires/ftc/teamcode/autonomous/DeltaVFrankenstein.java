@@ -56,10 +56,10 @@ public class DeltaVFrankenstein extends StepAuto {
                         "flywheelLeft"
                 }
         );
-//        driver.resetEncoders();
-//        driver.runUsingEncoders();
+        driver.resetEncoders();
+        driver.runUsingEncoders();
         driver.getMotor()[2].setDirection(DcMotorSimple.Direction.REVERSE);
-        driver.getMotor()[3].setDirection(DcMotorSimple.Direction.REVERSE);
+        driver.getMotor()[3].setDirection(DcMotorSimple.Direction.FORWARD);
 
 
         imu = new ImuManager(hardwareMap.get(com.qualcomm.hardware.bosch.BNO055IMU.class, "imu"));
@@ -75,18 +75,18 @@ public class DeltaVFrankenstein extends StepAuto {
             case START:
                 //Flywheels startup + set shooterArm
                 limbs.setServoPower("shooterArm", 0.63);
-                limbs.setMotorPower("flywheelRight", -1);
-                limbs.setMotorPower("flywheelLeft", 1);
+               // limbs.setMotorPower("flywheelRight", -1);
+               // limbs.setMotorPower("flywheelLeft", 1);
                 nextStep(1000);
                 break;
             case MOVE1:
                 //go forward
                 driver.driveRaw( 0.3f, 0.3f, 0.3f, 0.3f);
-                nextStep(10000);
+                nextStep(3000);
                 break;
             case MOVE2:
                 //strafe to rings
-                driver.driveRaw(0.4f,-0.4f,-0.4f, 0.4f);
+                driver.driveRaw(0.2f,-0.2f,-0.2f, 0.2f);
                 nextStepStop(2000);
                 break;
             case MOVE3:
@@ -107,6 +107,8 @@ public class DeltaVFrankenstein extends StepAuto {
                 break;
             case MOVE5:
                 //drive to line
+                limbs.setMotorPower("flywheelRight", -1);
+                limbs.setMotorPower("flywheelLeft", 1);
                 driver.driveRaw( 0.6f, 0.6f, -0.6f, -0.6f);
                 nextStepStop(2000);
                 break;
@@ -126,12 +128,14 @@ public class DeltaVFrankenstein extends StepAuto {
                 break;
             case MOVE12:
                 //Choose one of three paths based on conditional. 20 = 0 rings, 30 = 1 ring, 40 = 4 rings
+                limbs.setMotorPower("flywheelRight", 0);
+                limbs.setMotorPower("flywheelLeft", 0);
                 if(conditional == 4) {currentStep = step.THREADTHREE1; break;}
                 else if (conditional == 1) {currentStep = step.THREADTWO1; break;}
                 else {currentStep = step.THREADONE1; break;}
             case THREADONE1:
                 //If 0 rings go forward
-                driver.driveRaw( 0.6f, 0.6f, -0.6f, -0.6f);
+                driver.driveRaw( 0.3f, 0.3f, -0.3f, -0.3f);
                 nextStepStop(2000);
                 break;
             case THREADONE2:
