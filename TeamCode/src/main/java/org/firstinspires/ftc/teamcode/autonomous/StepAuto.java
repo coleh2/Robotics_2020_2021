@@ -47,7 +47,8 @@ public class StepAuto extends OpMode {
 
     }
 
-    void nextStepTicks(int ticks) {
+    void nextStepTicks(int tarTicks, int cTicks) {
+
         if(currentStep == null)
             currentStep = step.START;
 
@@ -55,10 +56,10 @@ public class StepAuto extends OpMode {
 
         ticksNumberCalled++;
         if(ticksNumberCalled == 1) {
-            ticksReferPoint = driver.frontRight.getCurrentPosition();
+            ticksReferPoint = cTicks;
         }
 
-        if (driver.frontRight.getCurrentPosition() - ticksReferPoint >= ticks) {
+        if (Math.abs(cTicks) - ticksReferPoint >= Math.abs(tarTicks)) {
             ticksNumberCalled = 0;
             currentStep = getNext();
         }
