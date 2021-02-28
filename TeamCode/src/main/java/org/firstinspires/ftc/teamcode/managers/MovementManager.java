@@ -63,6 +63,11 @@ public class MovementManager extends FeatureManager {
                 (float)Math.pow(powers[2], EXPONENTIAL_SCALAR));
         driveRaw(sum[0], sum[1], sum[2], sum[3]);
     }
+    public DcMotor[] getMotor(){
+        DcMotor[] motors = {frontLeft, frontRight, backRight, backLeft};
+
+        return motors;
+    }
 
     public void resetEncoders() {
         frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

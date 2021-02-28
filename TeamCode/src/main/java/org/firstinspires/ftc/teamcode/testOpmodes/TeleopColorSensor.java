@@ -27,7 +27,9 @@ public class TeleopColorSensor extends OpMode {
     Servo grab;
     ImuManager imu;
 
+
     private static boolean toggleSpeed = false;
+  //  private Object;
 
     public void init() {
         FeatureManager.logger.setBackend(telemetry.log());
@@ -41,17 +43,11 @@ public class TeleopColorSensor extends OpMode {
         limbs = new ManipulationManager(
                 new CRServo[] {
                         hardwareMap.get(CRServo.class, "shooterArm"),
-                        hardwareMap.get(CRServo.class, "wobbleArmLeft"),
-                        hardwareMap.get(CRServo.class, "wobbleArmRight"),
-                        hardwareMap.get(CRServo.class, "wobbleGrabLeft"),
-                        hardwareMap.get(CRServo.class, "wobbleGrabRight")
+
                 },
                 new String[] {
                         "shooterArm",
-                        "wobbleArmLeft",
-                        "wobbleArmRight",
-                        "wobbleGrabLeft",
-                        "wobbleGrabRight"
+
                 },
                 new Servo[] {
 
@@ -81,19 +77,34 @@ public class TeleopColorSensor extends OpMode {
         sensorFour = new ColorSensor(hardwareMap.get(NormalizedColorSensor.class, "sensorFour"));
     }
 
+    //determine and return the number of rings
+    public int ReturnRingNumber(){
+        int num = 0;
+        if(sensorOne.isSpecial1()){
+            num = 1;
+        }
+        if(sensorFour.isSpecial1()){
+            num = 4;
+        }
+        return num;
+    }
+
     public void loop() {
         input.update();
 
         driver.driveOmni((input.getVector("drive")));
 
-        limbs.setMotorPower("intake", 0.5*input.getScalar("fullIntake"));
-        limbs.setServoPower("wobbleArmRight", input.getScalar("wobbleGraber"));
-        limbs.setServoPower("wobbleGrabRight", input.getScalar("wobbleGraberNegative"));
-        limbs.setServoPower("wobbleArmLeft", -input.getScalar("wobbleGraber"));
-        limbs.setServoPower("wobbleGrabLeft", -input.getScalar("wobbleGraberNegative"));
+//        limbs.setMotorPower("intake", 0.5*input.getScalar("fullIntake"));
+//        limbs.setServoPower("wobbleArmRight", input.getScalar("wobbleGraber"));
+//        limbs.setServoPower("wobbleGrabRight", input.getScalar("wobbleGraberNegative"));
+//        limbs.setServoPower("wobbleArmLeft", -input.getScalar("wobbleGraber"));
+//        limbs.setServoPower("wobbleGrabLeft", -input.getScalar("wobbleGraberNegative"));
 
         sensorOne.runSample();
         sensorFour.runSample();
+
+
+
 
         if(input.getGamepad().right_trigger > 0.1) {
             limbs.setMotorPower("flywheelRight", -1);
@@ -128,8 +139,21 @@ public class TeleopColorSensor extends OpMode {
 //                driver.backLeft.getCurrentPosition()+
 //                driver.backRight.getCurrentPosition())/4);
 
-        telemetry.addData("colorhsv_one",sensorOne.getHsv()[0] + "," + sensorOne.getHsv()[1] + "," + sensorOne.getHsv()[2]);
-        telemetry.addData("colorhsv_four",sensorFour.getHsv()[0] + "," + sensorFour.getHsv()[1] + "," + sensorFour.getHsv()[2]);
+        telemetry.addData("rings:",ReturnRingNumber());
+
+
+        telemetry.addData("colorhsv_oneHue",sensorOne.getHsv()[0]);
+        telemetry.addData("colorhsv_SAT",sensorOne.getHsv()[1]);
+        telemetry.addData("colorhsv_VALUE", sensorOne.getHsv()[2]);
+        telemetry.addData("isSpelical1", sensorOne.isSpecial1());
+
+
+        telemetry.addData("colorhsv_fourHue",sensorFour.getHsv()[0]);
+        telemetry.addData("colorhsv_SAT",sensorFour.getHsv()[1]);
+        telemetry.addData("colorhsv_VALUE", sensorFour.getHsv()[2]);
+        telemetry.addData("isSpecial1", sensorFour.isSpecial1());
+
+
         telemetry.addData("Color Code", sensorOne.getHexCode());
         telemetry.addData("Color Code", sensorFour.getHexCode());
 

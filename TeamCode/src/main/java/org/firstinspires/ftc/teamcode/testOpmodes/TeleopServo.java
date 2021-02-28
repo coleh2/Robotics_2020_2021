@@ -37,17 +37,18 @@ public class TeleopServo extends OpMode {
         limbs = new ManipulationManager(
                 new CRServo[] {
                         hardwareMap.get(CRServo.class, "shooterArm"),
-                        hardwareMap.get(CRServo.class, "wobbleArmRight"),
-                        hardwareMap.get(CRServo.class, "wobbleArmLeft"),
-                        hardwareMap.get(CRServo.class, "wobbleGrabRight"),
-                        hardwareMap.get(CRServo.class, "wobbleGrabLeft")
-                },
-                new String[]
-                        {"shooterArm", "wobbleArmRight","wobbleArmLeft", "wobbleGrabRight","wobbleGrabLeft"},
-                new Servo[] {
 
                 },
+                new String[]
+                        {"shooterArm"},
+                new Servo[] {
+                        hardwareMap.get(Servo.class, "wobbleArmRight"),
+                        hardwareMap.get(Servo.class, "wobbleArmLeft"),
+                        hardwareMap.get(Servo.class, "wobbleGrabRight"),
+                        hardwareMap.get(Servo.class, "wobbleGrabLeft")
+                },
                 new String[] {
+                        "wobbleArmRight","wobbleArmLeft" , "wobbleGrabRight","wobbleGrabLeft"
 
                 },
                 new DcMotor[] {
@@ -59,6 +60,8 @@ public class TeleopServo extends OpMode {
                         "flywheelLeft"
                 }
             );
+        limbs.getServo("wobbleArmLeft").setDirection(Servo.Direction.REVERSE);
+        limbs.getServo("wobbleGrabRight").setDirection(Servo.Direction.REVERSE);
        // driver.resetEncoders();
       //  driver.runUsingEncoders();
 
@@ -89,20 +92,20 @@ public class TeleopServo extends OpMode {
 
 
         if (input.getGamepad().x){
-            limbs.setServoPower("wobbleArmLeft", -0.1);
-            limbs.setServoPower("wobbleArmRight", 0.1);
+            limbs.setServoPosition("wobbleArmLeft", 0.1);
+            limbs.setServoPosition("wobbleArmRight", 0.1);
             //45 degrees = ~0.065
         }else {
-            limbs.setServoPower("wobbleArmLeft", -0.05);
-            limbs.setServoPower("wobbleArmRight", 0.05);
+            limbs.setServoPosition("wobbleArmLeft", 0.05);
+            limbs.setServoPosition("wobbleArmRight", 0.05);
         }
         if (input.getGamepad().b){
-            limbs.setServoPower("wobbleGrabLeft", 1);
-            limbs.setServoPower("wobbleGrabRight", 0);
+            limbs.setServoPosition("wobbleGrabLeft", 1);
+            limbs.setServoPosition("wobbleGrabRight", 1);
             //45 degrees = ~0.065
         }else {
-            limbs.setServoPower("wobbleGrabLeft", 0);
-            limbs.setServoPower("wobbleGrabRight", 1);
+            limbs.setServoPosition("wobbleGrabLeft", 0);
+            limbs.setServoPosition("wobbleGrabRight", 0);
         }
 
         if(input.getGamepad().dpad_up ){
@@ -137,7 +140,12 @@ public class TeleopServo extends OpMode {
 
         telemetry.addData("Orientation", imu.getOrientation().toString());
         telemetry.addData("Servo Power", limbs.getServoPower("shooterArm"));
-        telemetry.addData("Servo Target", target);
+        telemetry.addData("wobbleGrabRight", limbs.getServo("wobbleGrabRight").getPosition());
+        telemetry.addData("wobbleGrabLeft", limbs.getServo("wobbleGrabLeft").getPosition());
+        telemetry.addData("wobbleArmRight", limbs.getServo("wobbleArmRight").getPosition());
+        telemetry.addData("wobbleArmLeft", limbs.getServo("wobbleArmLeft").getPosition());
+
+
 
     }
 }
