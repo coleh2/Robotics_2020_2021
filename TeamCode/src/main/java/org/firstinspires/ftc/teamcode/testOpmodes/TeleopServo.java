@@ -92,8 +92,8 @@ public class TeleopServo extends OpMode {
 
 
         if (input.getGamepad().x){
-            limbs.setServoPosition("wobbleArmLeft", 0.1);
-            limbs.setServoPosition("wobbleArmRight", 0.1);
+            limbs.setServoPosition("wobbleArmLeft", 0.2);
+            limbs.setServoPosition("wobbleArmRight", 0.2);
             //45 degrees = ~0.065
         }else {
             limbs.setServoPosition("wobbleArmLeft", 0.05);
