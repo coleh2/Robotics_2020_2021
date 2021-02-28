@@ -1,24 +1,41 @@
 package org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model;
 
 import org.firstinspires.ftc.teamcode.auxilary.dsls.ParserTools;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.AutoautoRuntime;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class AutoautoProgram {
     public HashMap<String, Statepath> paths;
-    String initialPath;
+    public Statepath currentPath;
+    String currentPathName;
+    int currentPathIndex;
+
+    public AutoautoRuntime autoautoRuntime;
+
+    public void setCurrentPath(String newPath) {
+        if(!paths.containsKey(newPath)) FeatureManager.logger.add("[AUTOAUTO ERROR] No such path `" + newPath + "`");
+        this.currentPath = paths.get(newPath);
+        this.currentPathName = newPath;
+        this.currentPath.stepInit();
+    }
 
     public AutoautoProgram(String src) {
         //split into the program's labeled statepaths
-        String[] LSPs = ParserTools.groupAwareSplit(src, '.', false);
+        String[] LSPs = ParserTools.groupAwareSplit(src, '#', true);
 
         paths = new HashMap<String, Statepath>();
 
+        this.currentPathIndex = LSPs.length + 1;
+
         //process each labeled statepath, one by one
         for(int i = LSPs.length - 1; i >= 0; i--) {
+            if(LSPs[i].equals("")) continue;
+
             int colonIndex = LSPs[i].indexOf(':');
             String lspName = "";
             if(colonIndex < 0) {
@@ -27,10 +44,27 @@ public class AutoautoProgram {
             } else {
                 lspName = LSPs[i].substring(0, colonIndex);
             }
-            paths.put(lspName, new Statepath(LSPs[i].substring(colonIndex + 1)));
+            Statepath newPath = new Statepath(LSPs[i].substring(colonIndex + 1), this);
+            paths.put(lspName, newPath);
 
-            if(i == 0) initialPath = lspName;
+            if(i < currentPathIndex) {
+                this.currentPath = newPath;
+                this.currentPathName = lspName;
+            }
         }
+    }
+
+    public void loop() {
+        if(this.currentPath == null) FeatureManager.logger.log("current path is null");
+        this.currentPath.loop();
+    }
+
+    public void init() {
+        for(Statepath p : this.paths.values()) p.init();
+    }
+
+    public void stepInit() {
+        for(Statepath p : this.paths.values()) p.stepInit();
     }
 
     @NotNull
@@ -40,5 +74,9 @@ public class AutoautoProgram {
             pathsStr.append(entry.getKey()).append(": ").append(entry.getValue().toString()).append("\n.\n");
         }
         return pathsStr.toString();
+    }
+
+    public String getCurrentPathName() {
+        return this.currentPathName;
     }
 }

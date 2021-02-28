@@ -1,19 +1,25 @@
 package org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values;
 
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.FunctionStore;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.VariableStore;
+
 public class Value {
-    public float returnValue = 0;
+    public float returnValue[] = new float[0];
+    public FunctionStore runtimeFunctionStore;
+    public VariableStore runtimeVariableStore;
 
-    public void loop() {
-
-    }
 
     public static Value createProperValueType(String src) {
         String trimmed = src.trim();
-        if(trimmed.matches("^-?[0-9]+\\.?[0-9]+$")) return new NumericValue(trimmed);
+        if(trimmed.matches("-?[0-9]*\\.?[0-9]+?$")) return new NumericValue(trimmed);
         else if(trimmed.matches("^-?[0-9]+\\.?[0-9]+[a-z]+$")) return new TimeUnit(trimmed);
+        else if(trimmed.startsWith("[") && trimmed.endsWith("]")) return new ArrayLiteral(trimmed);
         else if(trimmed.indexOf('(') > -1) return new FunctionCall(trimmed);
         else if(trimmed.matches("^\\w+$")) return new VariableReference(trimmed);
 
         return null;
     }
+
+    public void init() {}
+    public void loop() {}
 }

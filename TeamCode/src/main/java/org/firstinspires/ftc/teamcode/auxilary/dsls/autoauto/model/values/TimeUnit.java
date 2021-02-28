@@ -6,8 +6,6 @@ public class TimeUnit extends Value {
     public long ms;
     public String unit;
 
-    public float returnValue;
-
     public TimeUnit(String src) {
         String timeNumber = "";
         int unitIndex = 0;
@@ -21,22 +19,22 @@ public class TimeUnit extends Value {
 
         float timeParsedMs = Float.parseFloat(timeNumber);
 
-        this.unit = src.substring(unitIndex);
+        this.unit = src.substring(unitIndex - 1);
 
-        if(src.startsWith("ms", unitIndex)) {
+        if(unit.startsWith("ms")) {
             timeParsedMs *= 1;
-        } else if(src.startsWith("s", unitIndex)) {
+        } else if(unit.startsWith("s")) {
             timeParsedMs *= 1000;
-        } else if (src.startsWith("m", unitIndex)) {
+        } else if (unit.startsWith("m")) {
             timeParsedMs *= 60 * 1000;
-        } else if(src.startsWith("h", unitIndex)) {
+        } else if(unit.startsWith("h")) {
             timeParsedMs *= 60 * 60 * 1000;
-        } else if (src.startsWith("d", unitIndex)) {
+        } else if (unit.startsWith("d")) {
             timeParsedMs *= 24 * 60 * 60 * 1000;
         }
 
         this.ms = (long)timeParsedMs;
-        this.returnValue = (float)timeParsedMs;
+        this.returnValue = new float[] { timeParsedMs };
     }
 
     @NonNull

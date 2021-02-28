@@ -7,4 +7,12 @@ public class VariableReference extends Value {
     public VariableReference(String n) {
         this.name = n;
     }
+
+    public void loop() {
+        this.returnValue = runtimeVariableStore.get(this.name);
+    }
+
+    public String toString() {
+        return "var<" + this.name + ">";
+    }
 }

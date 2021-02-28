@@ -19,6 +19,29 @@ public abstract class PaulMath extends FeatureManager {
         return highest;
     }
 
+    public static float[] rgbToHsl(float r, float g, float b) {
+        r /= 255; g /= 255; b /= 255;
+
+        float max = Math.max(r, Math.max(g, b));
+        float min = Math.min(r, Math.min(g, b));
+        float h, s, l = (max + min) / 2;
+
+        if (max == min) {
+            h = s = 0; // achromatic
+        } else {
+            float d = max - min;
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+
+            if(max == r) h = (g - b) / d + (g < b ? 6 : 0);
+            else if(max == g) h = (b - r) / d + 2;
+            else h = (r - g) / d + 4;
+
+            h /= 6;
+        }
+
+        return new float[] { h, s, l };
+    }
+
     public static float[] normalizeArray(float[] array) {
         int arrayLength = array.length;
         float highest = highestValue(array);
