@@ -18,8 +18,8 @@ for(var i = 0; i < autoautoFiles.length; i++) {
     var fileName = autoautoFiles[i].substring(autoautoFiles[i].lastIndexOf(path.sep) + 1);
     var folder = autoautoFiles[i].replace(path.sep + fileName, "");
     var packageName = folder.substring(folder.indexOf("org")).replace(new RegExp(path.sep.replace("\\", "\\\\"), "g"), ".");
-    var className = fileName.replace(".autoauto", "__autoauto");
-    var javaFileName = autoautoFiles[i].replace(/\.autoauto$/, "__autoauto.java");
+    var className = "__" + fileName.replace(".autoauto", "__autoauto");
+    var javaFileName = autoautoFiles[i].replace(fileName, className) + ".java";
 
     var javaStringFileSource = fileSource.replace(/\r?\n/g, " ").replace(/"/g, "\\\"");
 
