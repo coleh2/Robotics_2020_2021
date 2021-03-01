@@ -59,7 +59,7 @@ public class StepAuto extends OpMode {
             ticksReferPoint = cTicks;
         }
 
-        if (Math.abs(cTicks) - ticksReferPoint >= Math.abs(tarTicks)) {
+        if (Math.abs(cTicks - ticksReferPoint) >= Math.abs(tarTicks)) {
             ticksNumberCalled = 0;
             currentStep = getNext();
         }

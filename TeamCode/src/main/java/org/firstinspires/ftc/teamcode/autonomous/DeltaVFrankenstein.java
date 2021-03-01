@@ -87,7 +87,7 @@ public class DeltaVFrankenstein extends StepAuto {
             case MOVE1:
                 //go forward
                 driver.driveRaw( 0.3f, 0.3f, -0.3f, -0.3f);
-                nextStepTicks(1600, driver.frontRight.getCurrentPosition());
+                nextStepTicks(1680, driver.frontRight.getCurrentPosition());
                 break;
             case MOVE2:
                 //strafe to rings
@@ -112,7 +112,7 @@ public class DeltaVFrankenstein extends StepAuto {
                 limbs.setMotorPower("flywheelRight", -1);
                 limbs.setMotorPower("flywheelLeft", 1);
                 driver.driveRaw( 0.3f, 0.3f, -0.3f, -0.3f);
-                nextStepTicks(1238, driver.frontRight.getCurrentPosition());
+                nextStepTicks(1130, driver.frontRight.getCurrentPosition());
                 break;
             case MOVE5:
                 //strafe back to center
@@ -124,19 +124,18 @@ public class DeltaVFrankenstein extends StepAuto {
                 //Turn to center
 
                 imu.getPosition();
-                float proportional = PaulMath.proportionalPID(imu.getOrientation().thirdAngle, 0);
-                driver.driveOmni(new float[] {0,0,-proportional});
+                float proportional = PaulMath.proportionalPID(imu.getOrientation().thirdAngle, 180, 0.001f);
                 driver.driveRaw(proportional, -proportional, -proportional, proportional);
+                nextStep(500);
 
                 break;
             case MOVE6:
             case MOVE8:
             case MOVE10:
                 //shoot ring 1
-                driver.driveRaw(0f,0f,0f, 0f);
 
                 limbs.setServoPower("shooterArm", 0);
-                limbs.setMotorPower("drum", -0.3);
+                limbs.setMotorPower("drum", -0.5);
 
                 nextStep(800);
                 break;
@@ -144,11 +143,26 @@ public class DeltaVFrankenstein extends StepAuto {
             case MOVE9:
             case MOVE11:
                 //retract
+                limbs.setMotorPower("drum", 0);
+
                 limbs.setServoPower("shooterArm", 0.63);
+                limbs.setMotorPower("flywheelRight", -1);
+                limbs.setMotorPower("flywheelLeft", 1);
                 nextStep(800);
                 break;
+
             case MOVE12:
+            case MOVE13:
+            case MOVE14:
+                //retract
                 limbs.setMotorPower("drum", 0);
+
+                limbs.setServoPower("shooterArm", 0.63);
+                limbs.setMotorPower("flywheelRight", -1);
+                limbs.setMotorPower("flywheelLeft", 1);
+                nextStep(800);
+                break;
+            case MOVE15:
 
                 //Choose one of three paths based on conditional. 20 = 0 rings, 30 = 1 ring, 40 = 4 rings
                 limbs.setMotorPower("flywheelRight", 0);
