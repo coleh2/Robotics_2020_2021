@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 import org.firstinspires.ftc.teamcode.managers.ImuManager;
 import org.firstinspires.ftc.teamcode.managers.InputManager;
 import org.firstinspires.ftc.teamcode.managers.ManipulationManager;
+import org.firstinspires.ftc.teamcode.managers.MovementManager;
 
 
 @TeleOp
@@ -22,16 +23,17 @@ public class TeleopServo extends OpMode {
     Servo grab;
     ImuManager imu;
     ManipulationManager limbs;
+    MovementManager driver;
 
     private static boolean toggleSpeed = false;
 
     public void init() {
         FeatureManager.logger.setBackend(telemetry.log());
 
-//        driver = new MovementManager(hardwareMap.get(DcMotor.class, "fl"),
-//                hardwareMap.get(DcMotor.class, "fr"),
-//                hardwareMap.get(DcMotor.class, "br"),
-//                hardwareMap.get(DcMotor.class, "bl"));
+        driver = new MovementManager(hardwareMap.get(DcMotor.class, "fl"),
+                hardwareMap.get(DcMotor.class, "fr"),
+                hardwareMap.get(DcMotor.class, "br"),
+                hardwareMap.get(DcMotor.class, "bl"));
         input = new InputManager(gamepad1, new BasicDrivingControlMap());
         imu = new ImuManager(hardwareMap.get(com.qualcomm.hardware.bosch.BNO055IMU.class, "imu"));
         limbs = new ManipulationManager(
@@ -71,8 +73,9 @@ public class TeleopServo extends OpMode {
     boolean uped = false;
     public void loop() {
         input.update();
+                   driver.driveOmni(input.getVector("drive"));
+
 //        if(!input.getGamepad().left_bumper) {
-//            driver.driveOmni(input.getVector("drive"));
 //        } else {
 //            driver.driveOmniExponential(input.getVector("drive"));
 //        }
@@ -92,12 +95,12 @@ public class TeleopServo extends OpMode {
 
 
         if (input.getGamepad().x){
-            limbs.setServoPosition("wobbleArmLeft", 0.2);
-            limbs.setServoPosition("wobbleArmRight", 0.2);
+            limbs.setServoPosition("wobbleArmLeft", 0.086);
+            limbs.setServoPosition("wobbleArmRight", 0.086);
             //45 degrees = ~0.065
         }else {
-            limbs.setServoPosition("wobbleArmLeft", 0.05);
-            limbs.setServoPosition("wobbleArmRight", 0.05);
+            limbs.setServoPosition("wobbleArmLeft", 0.055);
+            limbs.setServoPosition("wobbleArmRight", 0.055);
         }
         if (input.getGamepad().b){
             limbs.setServoPosition("wobbleGrabLeft", 1);
