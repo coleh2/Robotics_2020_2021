@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.managers.*;
 import org.firstinspires.ftc.teamcode.auxilary.*;
@@ -76,8 +77,8 @@ public class DeltaVFrankenstein extends StepAuto {
         imu = new ImuManager(hardwareMap.get(com.qualcomm.hardware.bosch.BNO055IMU.class, "imu"));
         sensorOne = new ColorSensor(hardwareMap.get(NormalizedColorSensor.class, "sensorOne"));
         sensorFour = new ColorSensor(hardwareMap.get(NormalizedColorSensor.class, "sensorFour"));
-        limbs.setServoPosition("wobbleArmLeft", 0.055);
-        limbs.setServoPosition("wobbleArmRight", 0.055);
+        limbs.getServo("wobbleArmLeft").setDirection(Servo.Direction.REVERSE);
+        limbs.getServo("wobbleGrabRight").setDirection(Servo.Direction.REVERSE);
     }
 
 
@@ -90,7 +91,11 @@ public class DeltaVFrankenstein extends StepAuto {
                // limbs.setMotorPower("flywheelRight", -1);
                // limbs.setMotorPower("flywheelLeft", 1);
                     nextStep(500);
-
+                //engage serovs to release the wobble
+                limbs.setServoPosition("wobbleArmLeft", 0.055);
+                limbs.setServoPosition("wobbleArmRight", 0.055);
+                limbs.setServoPosition("wobbleGrabLeft", 1);
+                limbs.setServoPosition("wobbleGrabRight", 1);
 
                 break;
             case MOVE1:
@@ -120,7 +125,7 @@ public class DeltaVFrankenstein extends StepAuto {
                 //drive to line
 
                 driver.driveRaw( 0.3f, 0.3f, -0.3f, -0.3f);
-                nextStepTicks(1080, driver.frontRight.getCurrentPosition());
+                nextStepTicks(900, driver.frontRight.getCurrentPosition());
                 break;
             case MOVE5:
                 //strafe back to center
@@ -134,8 +139,10 @@ public class DeltaVFrankenstein extends StepAuto {
 
                 imu.getPosition();
                 float proportional = PaulMath.proportionalPID(imu.getOrientation().thirdAngle, 180, 0.001f);
+                double driveProp = (proportional/Math.abs(proportional)) * Range.clip(Math.abs(proportional), 0.06f, 0.3f);
+
                 driver.driveRaw(proportional, -proportional, -proportional, proportional);
-                nextStep(300);
+                nextStep(1000);
 
                 break;
             case MOVE6:
@@ -180,50 +187,79 @@ public class DeltaVFrankenstein extends StepAuto {
             case THREADONE1:
                 //If 0 rings go forward
                 driver.driveRaw( 0.3f, 0.3f, -0.3f, -0.3f);
-                nextStepStop(2000);
-                break;
+                nextStepTicks(1300, driver.frontRight.getCurrentPosition());
+            break;
             case THREADONE2:
-                //lower wobble goal
-//              limbs.setServoPower("wobleArmLeft", 1);
-//              limbs.setServoPower("wobleArmRight", -1);
-                nextStep(500);
+               //strafe to the side
+                driver.driveRaw(-0.4f, 0.4f,-0.4f, 0.4f);
+
+                nextStepTicks(1500, driver.frontRight.getCurrentPosition());
                 break;
             case THREADONE3:
-//              limbs.setServoPower("wobleClawLeft", 1);
-//              limbs.setServoPower("wobleClawRight", -1);
-                nextStep(500);
+            case THREADTWO3:
+            case THREADTHREE3:
+                driver.driveRaw(0,0,0, 0);
+//lowe rarm
+                limbs.setServoPosition("wobbleArmLeft", 0.086);
+                limbs.setServoPosition("wobbleArmRight", 0.086);
+                nextStep(1000);
                 break;
             case THREADONE4:
-                driver.driveRaw(-0.6f, -0.6f, 0.6f, 0.6f);
-                nextStepStop(2000);
+            case THREADTWO4:
+            case THREADTHREE4:
+                //lower grabber
+                limbs.setServoPosition("wobbleGrabLeft", 0.2);
+                limbs.setServoPosition("wobbleGrabRight", 0.2);
+                nextStep(2000);
+                break;
+
+            case THREADONE41:
+            case THREADTWO41:
+            case THREADTHREE41:
+
+                //raise arm
+                limbs.setServoPosition("wobbleArmLeft", 0.055);
+                limbs.setServoPosition("wobbleArmRight", 0.055);
+//strafe back
+                driver.driveRaw(0.4f, -0.4f,0.4f, -0.4f);
+                nextStepTicks(1300, driver.frontRight.getCurrentPosition());
+
+                break;
+            case THREADONE42:
+
+               //drive back
+
+                driver.driveRaw( -0.3f, -0.3f, 0.3f, 0.3f);
+                nextStepTicks(1000, driver.frontRight.getCurrentPosition());
+
                 break;
             case THREADTWO1:
-                //If 1 ring drive forward more
-                driver.driveRaw( 0.6f, 0.6f, -0.6f, -0.6f);
-                nextStepStop(2000);
-                break;
+                //If 1 rings go forward
+                driver.driveRaw( 0.3f, 0.3f, -0.3f, -0.3f);
+                nextStepTicks(2000, driver.frontRight.getCurrentPosition());
             case THREADTWO2:
-                //strafe to section 1
-                driver.driveRaw(-0.4f,0.4f,0.4f, -0.4f);
-                nextStepStop(1000);
+                //strafe to the side
+                driver.driveRaw(-0.4f, 0.4f,-0.4f, 0.4f);
+                nextStepTicks(1500, driver.frontRight.getCurrentPosition());
                 break;
-            case THREADTWO3:
-                //lower wobble goal
-//              limbs.setServoPower("wobleArmLeft", 1);
-//              limbs.setServoPower("wobleArmRight", -1);
-                nextStep(500);
-                break;
-            case THREADTWO4:
+//            case THREADTWO3:
+//                //lower wobble goal
+//                driver.driveRaw(0,0,0, 0);
+//                limbs.setServoPosition("wobbleArmLeft", 0.086);
+//                limbs.setServoPosition("wobbleArmRight", 0.086);
+//                nextStep(1000);
+//                break;
+            case THREADTWO42:
                 //release wobble goal
-//              limbs.setServoPower("wobleClawLeft", 1);
-//              limbs.setServoPower("wobleClawRight", -1);
-                nextStep(500);
+                driver.driveRaw( -0.3f, -0.3f, 0.3f, 0.3f);
+                nextStepTicks(2000, driver.frontRight.getCurrentPosition());
+
                 break;
-            case THREADTWO5:
-                //drive back to line and park
-                driver.driveRaw(-0.6f, -0.6f, 0.6f, 0.6f);
-                nextStepStop(2000);
-                break;
+//            case THREADTWO5:
+//                //drive back to line and park
+//                driver.driveRaw(-0.6f, -0.6f, 0.6f, 0.6f);
+//                nextStepStop(2000);
+//                break;
             case THREADTHREE1:
                 driver.driveRaw( 0.6f, 0.6f, -0.6f, -0.6f);
                 nextStepStop(2000);
@@ -233,27 +269,11 @@ public class DeltaVFrankenstein extends StepAuto {
                 driver.driveRaw(0.6f,0.6f,-0.6f, -0.6f);
                 nextStepStop(2000);
                 break;
-            case THREADTHREE3:
-                imu.getPosition();
-                 proportional = PaulMath.proportionalPID(imu.getOrientation().thirdAngle, -90);
-                driver.driveRaw(-proportional, proportional, -proportional, proportional);
-                nextStepStop(2000);
-                break;
-            case THREADTHREE4:
-                //lower wobble goal
-//              limbs.setServoPower("wobleArmLeft", 1);
-//              limbs.setServoPower("wobleArmRight", -1);
-                nextStep(500);
-                break;
-            case THREADTHREE5:
-//              limbs.setServoPower("wobleClawLeft", 1);
-//              limbs.setServoPower("wobleClawRight", -1);
-                nextStep(500);
-                break;
-            case THREADTHREE6:
-                driver.driveRaw(-0.6f,-0.6f,0.6f, 0.6f);
-                nextStepStop(2000);
-                break;
+            case THREADTHREE42:
+                //release wobble goal
+                driver.driveRaw( -0.3f, -0.3f, 0.3f, 0.3f);
+                nextStepTicks(2000, driver.frontRight.getCurrentPosition());
+          break;
 
             default:
                 driver.driveRaw(0f, 0f, 0f, 0f);
