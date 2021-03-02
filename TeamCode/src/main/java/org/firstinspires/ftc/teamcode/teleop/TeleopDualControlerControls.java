@@ -46,23 +46,19 @@ public class TeleopDualControlerControls extends OpMode {
 
         limbs = new ManipulationManager(
                 new CRServo[] {
-                        hardwareMap.get(CRServo.class, "shooterArm"),
-                        hardwareMap.get(CRServo.class, "wobbleArmLeft"),
-                        hardwareMap.get(CRServo.class, "wobbleArmRight")
+                        hardwareMap.get(CRServo.class, "shooterArm")
                 },
                 new String[] {
                         "shooterArm",
-                        "wobbleArmLeft",
-                        "wobbleArmRight"
                 },
                 new Servo[] {
-
-                        hardwareMap.get(Servo.class, "wobbleGrabLeft"),
-                        hardwareMap.get(Servo.class, "wobbleGrabRight")
+                        hardwareMap.get(Servo.class, "wobbleArmRight"),
+                        hardwareMap.get(Servo.class, "wobbleArmLeft"),
+                        hardwareMap.get(Servo.class, "wobbleGrabRight"),
+                        hardwareMap.get(Servo.class, "wobbleGrabLeft")
                 },
                 new String[] {
-                        "wobbleGrabLeft",
-                        "wobbleGrabRight"
+                        "wobbleArmRight","wobbleArmLeft" , "wobbleGrabRight","wobbleGrabLeft"
                 },
                 new DcMotor[] {
                         hardwareMap.get(DcMotor.class, "drum"),
@@ -88,6 +84,8 @@ public class TeleopDualControlerControls extends OpMode {
 
         }
     }
+    float target = 0.1f;
+    boolean uped = false;
 
     public void loop() {
         try {
@@ -100,16 +98,46 @@ public class TeleopDualControlerControls extends OpMode {
 
 
         limbs.setMotorPower("intake", 0.5*input.getScalar("intake"));
-        limbs.setServoPower("wobbleArmRight", input.getScalar("wobbleArmRight"));
-        limbs.setServoPosition("wobbleGrabRight", input.getScalar("wobbleGrabRight"));
-        limbs.setServoPower("wobbleArmLeft", input.getScalar("wobbleArmLeft"));
-        limbs.setServoPosition("wobbleGrabLeft", input.getScalar("wobbleGrabLeft"));
+//        limbs.setServoPower("wobbleArmRight", input.getScalar("wobbleArmRight"));
+//        limbs.setServoPosition("wobbleGrabRight", input.getScalar("wobbleGrabRight"));
+//        limbs.setServoPower("wobbleArmLeft", input.getScalar("wobbleArmLeft"));
+//        limbs.setServoPosition("wobbleGrabLeft", input.getScalar("wobbleGrabLeft"));
         limbs.setMotorPower("drum", input.getScalar("drum"));
         limbs.setMotorPower("flywheelRight", input.getScalar("flywheelRight"));
         limbs.setMotorPower("flywheelLeft", input.getScalar("flywheelLeft"));
         limbs.setServoPower("shooterArm", input.getScalar("shooterArm"));
 
+//            if(input.getGamepad().a) {
+//                //limbs.setServoPosition("shooterArm", 0.7);
+//                limbs.setServoPower("shooterArm", 0.0);
+//            } else {
+//                limbs.setServoPower("shooterArm", 0.63);
+//            }
 
+
+            if (input.getGamepad().x){
+                limbs.setServoPosition("wobbleArmLeft", 0.086);
+                limbs.setServoPosition("wobbleArmRight", 0.086);
+                //45 degrees = ~0.065
+            }else {
+                limbs.setServoPosition("wobbleArmLeft", 0.055);
+                limbs.setServoPosition("wobbleArmRight", 0.055);
+            }
+            if (input.getGamepad().b){
+                limbs.setServoPosition("wobbleGrabLeft", 1);
+                limbs.setServoPosition("wobbleGrabRight", 1);
+                //45 degrees = ~0.065
+            }else {
+                limbs.setServoPosition("wobbleGrabLeft", 0);
+                limbs.setServoPosition("wobbleGrabRight", 0);
+            }
+
+            if(input.getGamepad().dpad_up ){
+                target+=0.0001;
+            }
+            if(input.getGamepad().dpad_down ){
+                target-=0.0001;
+            }
 
 //        telemetry.addData("FL Ticks:", driver.frontLeft.getCurrentPosition());
 //        telemetry.addData("FR Ticks:", driver.frontRight.getCurrentPosition());
@@ -120,7 +148,10 @@ public class TeleopDualControlerControls extends OpMode {
 //                driver.backLeft.getCurrentPosition()+
 //                driver.backRight.getCurrentPosition())/4);
 
-            telemetry.addData("wobble ", input.getControl("wobbleGrabLeft").toString());
+            telemetry.addData("wobbleGrabRight", limbs.getServo("wobbleGrabRight").getPosition());
+            telemetry.addData("wobbleGrabLeft", limbs.getServo("wobbleGrabLeft").getPosition());
+            telemetry.addData("wobbleArmRight", limbs.getServo("wobbleArmRight").getPosition());
+            telemetry.addData("wobbleArmLeft", limbs.getServo("wobbleArmLeft").getPosition());g
 
 
             telemetry.addData("FL Power: ", driver.frontLeft.getPower());
