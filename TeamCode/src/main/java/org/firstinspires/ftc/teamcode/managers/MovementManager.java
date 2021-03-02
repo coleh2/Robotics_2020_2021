@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.managers;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.auxilary.*;
 import org.firstinspires.ftc.teamcode.teleop.*;
@@ -15,6 +16,7 @@ public class MovementManager extends FeatureManager {
     public DcMotor frontRight;
     public DcMotor backLeft;
     public DcMotor backRight;
+    private ElapsedTime timer;
 
     private static float scale = 0.5f;
 
@@ -30,6 +32,18 @@ public class MovementManager extends FeatureManager {
         this.frontRight = fr;
         this.backRight = br;
         this.backLeft = bl;
+
+        frontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+        frontRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        backRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+    }
+    public MovementManager(DcMotor fl, DcMotor fr, DcMotor br, DcMotor bl, ElapsedTime timer) {
+        this.frontLeft = fl;
+        this.frontRight = fr;
+        this.backRight = br;
+        this.backLeft = bl;
+        this.timer = timer;
 
         frontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         frontRight.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -68,6 +82,7 @@ public class MovementManager extends FeatureManager {
 
         return motors;
     }
+
 
     public void resetEncoders() {
         frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

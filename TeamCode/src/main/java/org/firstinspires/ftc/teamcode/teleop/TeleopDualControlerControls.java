@@ -25,6 +25,7 @@ public class TeleopDualControlerControls extends OpMode {
     Servo grab;
     ImuManager imu;
 
+
     boolean errorLogged = false;
 
     private static boolean toggleSpeed = false;
@@ -97,11 +98,11 @@ public class TeleopDualControlerControls extends OpMode {
         driver.driveOmni((input.getVector("drive")));
 
 
-        limbs.setMotorPower("intake", 0.5*input.getScalar("intake"));
-//        limbs.setServoPower("wobbleArmRight", input.getScalar("wobbleArmRight"));
-//        limbs.setServoPosition("wobbleGrabRight", input.getScalar("wobbleGrabRight"));
-//        limbs.setServoPower("wobbleArmLeft", input.getScalar("wobbleArmLeft"));
-//        limbs.setServoPosition("wobbleGrabLeft", input.getScalar("wobbleGrabLeft"));
+        limbs.setMotorPower("intake", 0.8*input.getScalar("intake"));
+        limbs.setServoPower("wobbleArmRight", input.getScalar("wobbleArmRight"));
+        limbs.setServoPosition("wobbleGrabRight", input.getScalar("wobbleGrabRight"));
+        limbs.setServoPower("wobbleArmLeft", input.getScalar("wobbleArmLeft"));
+        limbs.setServoPosition("wobbleGrabLeft", input.getScalar("wobbleGrabLeft"));
         limbs.setMotorPower("drum", input.getScalar("drum"));
         limbs.setMotorPower("flywheelRight", input.getScalar("flywheelRight"));
         limbs.setMotorPower("flywheelLeft", input.getScalar("flywheelLeft"));
@@ -114,30 +115,30 @@ public class TeleopDualControlerControls extends OpMode {
 //                limbs.setServoPower("shooterArm", 0.63);
 //            }
 
-
-            if (input.getGamepad().x){
-                limbs.setServoPosition("wobbleArmLeft", 0.086);
-                limbs.setServoPosition("wobbleArmRight", 0.086);
-                //45 degrees = ~0.065
-            }else {
-                limbs.setServoPosition("wobbleArmLeft", 0.055);
-                limbs.setServoPosition("wobbleArmRight", 0.055);
-            }
-            if (input.getGamepad().b){
-                limbs.setServoPosition("wobbleGrabLeft", 1);
-                limbs.setServoPosition("wobbleGrabRight", 1);
-                //45 degrees = ~0.065
-            }else {
-                limbs.setServoPosition("wobbleGrabLeft", 0);
-                limbs.setServoPosition("wobbleGrabRight", 0);
-            }
-
-            if(input.getGamepad().dpad_up ){
-                target+=0.0001;
-            }
-            if(input.getGamepad().dpad_down ){
-                target-=0.0001;
-            }
+//
+//            if (input.getGamepad().x){
+//                limbs.setServoPosition("wobbleArmLeft", 0.086);
+//                limbs.setServoPosition("wobbleArmRight", 0.086);
+//                //45 degrees = ~0.065
+//            }else {
+//                limbs.setServoPosition("wobbleArmLeft", 0.055);
+//                limbs.setServoPosition("wobbleArmRight", 0.055);
+//            }
+//            if (input.getGamepad().b){
+//                limbs.setServoPosition("wobbleGrabLeft", 1);
+//                limbs.setServoPosition("wobbleGrabRight", 1);
+//                //45 degrees = ~0.065
+//            }else {
+//                limbs.setServoPosition("wobbleGrabLeft", 0);
+//                limbs.setServoPosition("wobbleGrabRight", 0);
+//            }
+//
+//            if(input.getGamepad().dpad_up ){
+//                target+=0.0001;
+//            }
+//            if(input.getGamepad().dpad_down ){
+//                target-=0.0001;
+//            }
 
 //        telemetry.addData("FL Ticks:", driver.frontLeft.getCurrentPosition());
 //        telemetry.addData("FR Ticks:", driver.frontRight.getCurrentPosition());
@@ -151,7 +152,7 @@ public class TeleopDualControlerControls extends OpMode {
             telemetry.addData("wobbleGrabRight", limbs.getServo("wobbleGrabRight").getPosition());
             telemetry.addData("wobbleGrabLeft", limbs.getServo("wobbleGrabLeft").getPosition());
             telemetry.addData("wobbleArmRight", limbs.getServo("wobbleArmRight").getPosition());
-            telemetry.addData("wobbleArmLeft", limbs.getServo("wobbleArmLeft").getPosition());g
+            telemetry.addData("wobbleArmLeft", limbs.getServo("wobbleArmLeft").getPosition());
 
 
             telemetry.addData("FL Power: ", driver.frontLeft.getPower());
