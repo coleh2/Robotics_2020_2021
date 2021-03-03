@@ -164,7 +164,7 @@ public class EncodedMotor implements DcMotor {
     private class MotorUpdateLooper implements Runnable {
         @Override
         public void run() {
-            while(running) {
+            while(true) {
                 int currentMotorPosition = motor.getCurrentPosition();
                 long currentMotorPositionRecordingTime = System.currentTimeMillis();
                 float velocityPerMillisecond = (currentMotorPosition - lastMotorPosition) / (currentMotorPositionRecordingTime - lastMotorPositionRecordingTime);
