@@ -5,7 +5,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.auxilary.PaulMath;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.controls.controlmaps.BasicDrivingControlMap;
 import org.firstinspires.ftc.teamcode.auxilary.ColorSensor;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
@@ -130,7 +132,9 @@ public class Teleop extends OpMode {
         }
 
         if(gamepad2.a){
-
+            float proportional = PaulMath.proportionalPID(imu.getOrientation().thirdAngle, 180, 0.001f);
+            double driveProp = (proportional/Math.abs(proportional)) * Range.clip(Math.abs(proportional), 0.06f, 0.3f);
+            driver.driveRaw(proportional, -proportional, -proportional, proportional);
         }
 
 //        telemetry.addData("FL Ticks:", driver.frontLeft.getCurrentPosition());
