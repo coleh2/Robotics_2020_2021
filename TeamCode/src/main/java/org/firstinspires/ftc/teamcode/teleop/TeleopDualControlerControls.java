@@ -47,20 +47,21 @@ public class TeleopDualControlerControls extends OpMode {
 
         limbs = new ManipulationManager(
                 new CRServo[] {
-                        hardwareMap.get(CRServo.class, "shooterArm")
+                        hardwareMap.get(CRServo.class, "shooterArm"),
+                        hardwareMap.get(CRServo.class, "wobbleArmRight"),
+                        hardwareMap.get(CRServo.class, "wobbleArmLeft"),
+                        hardwareMap.get(CRServo.class, "wobbleGrabRight"),
+                        hardwareMap.get(CRServo.class, "wobbleGrabLeft")
                 },
                 new String[] {
                         "shooterArm",
+                        "wobbleArmRight",
+                        "wobbleArmLeft" ,
+                        "wobbleGrabRight",
+                        "wobbleGrabLeft"
                 },
-                new Servo[] {
-                        hardwareMap.get(Servo.class, "wobbleArmRight"),
-                        hardwareMap.get(Servo.class, "wobbleArmLeft"),
-                        hardwareMap.get(Servo.class, "wobbleGrabRight"),
-                        hardwareMap.get(Servo.class, "wobbleGrabLeft")
-                },
-                new String[] {
-                        "wobbleArmRight","wobbleArmLeft" , "wobbleGrabRight","wobbleGrabLeft"
-                },
+                new Servo[] { },
+                new String[] { },
                 new DcMotor[] {
                         hardwareMap.get(DcMotor.class, "drum"),
                         hardwareMap.get(DcMotor.class, "intake"),
@@ -93,20 +94,19 @@ public class TeleopDualControlerControls extends OpMode {
 
             input.update();
 
+            driver.driveOmni((input.getVector("drive")));
 
+            limbs.setMotorPower("intake", 0.8*input.getScalar("intake"));
 
-        driver.driveOmni((input.getVector("drive")));
+            limbs.setMotorPower("drum", input.getScalar("drum"));
+            limbs.setMotorPower("flywheelRight", input.getScalar("flywheelRight"));
+            limbs.setMotorPower("flywheelLeft", input.getScalar("flywheelLeft"));
+            limbs.setServoPower("shooterArm", input.getScalar("shooterArm"));
 
-
-        limbs.setMotorPower("intake", 0.8*input.getScalar("intake"));
-        limbs.setServoPower("wobbleArmRight", input.getScalar("wobbleArmRight"));
-        limbs.setServoPosition("wobbleGrabRight", input.getScalar("wobbleGrabRight"));
-        limbs.setServoPower("wobbleArmLeft", input.getScalar("wobbleArmLeft"));
-        limbs.setServoPosition("wobbleGrabLeft", input.getScalar("wobbleGrabLeft"));
-        limbs.setMotorPower("drum", input.getScalar("drum"));
-        limbs.setMotorPower("flywheelRight", input.getScalar("flywheelRight"));
-        limbs.setMotorPower("flywheelLeft", input.getScalar("flywheelLeft"));
-        limbs.setServoPower("shooterArm", input.getScalar("shooterArm"));
+            limbs.setServoPower("wobbleGrabRight", input.getScalar("wobbleGrabRight"));
+            limbs.setServoPower("wobbleGrabLeft", input.getScalar("wobbleGrabLeft"));
+            limbs.setServoPower("wobbleArmRight", input.getScalar("wobbleArmRight"));
+            limbs.setServoPower("wobbleArmLeft", input.getScalar("wobbleArmLeft"));
 
 //            if(input.getGamepad().a) {
 //                //limbs.setServoPosition("shooterArm", 0.7);
