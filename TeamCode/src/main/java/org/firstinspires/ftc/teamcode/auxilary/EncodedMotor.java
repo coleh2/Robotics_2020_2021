@@ -24,7 +24,7 @@ public class EncodedMotor implements DcMotor {
         this.rawPower = motor.getPower();
         this.lastMotorPosition = motor.getCurrentPosition();
         this.lastMotorPositionRecordingTime = System.currentTimeMillis();
-        this.maxTicksPerSecond = maxTicksPerSecond;
+        this.maxTicksPerSecond = _ticksPerSecond;
 
         this.updateLoop = new Thread(new MotorUpdateLooper());
         updateLoop.start();
