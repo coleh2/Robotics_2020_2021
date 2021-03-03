@@ -45,8 +45,16 @@ public class Teleop extends OpMode {
                 new String[] {
                         "shooterArm"
                 },
-                new Servo[] {},
-                new String[] {},
+                new Servo[] {
+                        hardwareMap.get(Servo.class, "wobbleArmRight"),
+                        hardwareMap.get(Servo.class, "wobbleArmLeft"),
+                        hardwareMap.get(Servo.class, "wobbleGrabRight"),
+                        hardwareMap.get(Servo.class, "wobbleGrabLeft")
+                },
+                new String[] {
+                        "wobbleArmRight","wobbleArmLeft" , "wobbleGrabRight","wobbleGrabLeft"
+
+                },
                 new DcMotor[] {
                         hardwareMap.get(DcMotor.class, "drum"),
                         hardwareMap.get(DcMotor.class, "intake"),
@@ -62,45 +70,68 @@ public class Teleop extends OpMode {
         );
         driver.resetEncoders();
         driver.runWithOutEncoders();
+        limbs.getServo("wobbleArmLeft").setDirection(Servo.Direction.REVERSE);
+        limbs.getServo("wobbleGrabRight").setDirection(Servo.Direction.REVERSE);
 //        driver.runUsingEncoders();
     }
 
     public void loop() {
         input.update();
-
+        //gamepad 1 fast drive HIGH priortiy
         driver.driveOmni(input.getVector("drive"));
-
-        if(input.getGamepad().right_trigger > 0.1){
+        //BOTH gamepad fly wheel privlidges = prioity
+        if(input.getGamepad().right_trigger > 0.1 || input.getGamepad2().right_trigger > 0.1){
             limbs.setMotorPower("flywheelRight", -1);
             limbs.setMotorPower("flywheelLeft", 1);
         } else {
             limbs.setMotorPower("flywheelRight", 0);
             limbs.setMotorPower("flywheelLeft", 0);
         }
-
+        //also giving both = prioity
         if(input.getGamepad().a) {
             limbs.setServoPower("shooterArm", 0);
         } else {
             limbs.setServoPower("shooterArm", 0.57);
         }
-
-        if(input.getGamepad().dpad_up){
-            limbs.setMotorPower("drum", -0.4);
+        //gamepad 1 drum, LOW priority
+            //well actually, we want gamepads to be = unless 2 is spinning backwards
+        if(input.getGamepad().dpad_up || input.getGamepad2().dpad_up){
+            limbs.setMotorPower("drum", -0.6);
         } else if(input.getGamepad().dpad_down) {
-            limbs.setMotorPower("drum", 0.4);
-        } else if (input.getGamepad().left_trigger > 0.1) {
-            limbs.setMotorPower("drum", -0.4);
+            limbs.setMotorPower("drum", 0.6);
+        } else if (input.getGamepad().left_trigger > 0.1 || input.getGamepad2().x) {
+            limbs.setMotorPower("drum", -0.6);
         } else {
             limbs.setMotorPower("drum", 0);
         }
-
-        if (input.getGamepad().left_trigger > 0.1) {
+        //both =
+        if (input.getGamepad().left_trigger > 0.1 || input.getGamepad().left_trigger > 0.1) {
             limbs.setMotorPower("intake", -0.8);
         } else {
             limbs.setMotorPower("intake", 0);
         }
 
+        //wobble grabber thing - gamepad2 only?
+        if (input.getGamepad2().left_bumper){
+            limbs.setServoPosition("wobbleArmLeft", 0.086);
+            limbs.setServoPosition("wobbleArmRight", 0.086);
+            //45 degrees = ~0.065
+        }else {
+            limbs.setServoPosition("wobbleArmLeft", 0.055);
+            limbs.setServoPosition("wobbleArmRight", 0.055);
+        }
+        if (input.getGamepad2().right_bumper){
+            limbs.setServoPosition("wobbleGrabLeft", 1);
+            limbs.setServoPosition("wobbleGrabRight", 1);
+            //45 degrees = ~0.065
+        }else {
+            limbs.setServoPosition("wobbleGrabLeft", 0);
+            limbs.setServoPosition("wobbleGrabRight", 0);
+        }
 
+        if(gamepad2.a){
+
+        }
 
 //        telemetry.addData("FL Ticks:", driver.frontLeft.getCurrentPosition());
 //        telemetry.addData("FR Ticks:", driver.frontRight.getCurrentPosition());
