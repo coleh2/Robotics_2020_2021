@@ -21,7 +21,7 @@ public class RobotFunctionLoader {
     public static Function[] loadFunctions(MovementManager driver, ManipulationManager manip, SensorManager sense) {
         ArrayList<Function> functions = new ArrayList<>();
 
-        DriveOmniFunction driveOmni = new DriveOmniFunction(driver); driveOmni.setName("driveOmni"); driveOmni.setArgCount(1); functions.add(driveOmni);
+        DriveOmniFunction driveOmni = new DriveOmniFunction(driver); driveOmni.setName("driveOmni"); driveOmni.setArgCount(3); functions.add(driveOmni);
         StopDriveFunction stopDrive = new StopDriveFunction(driver); stopDrive.setName("stopDrive"); stopDrive.setArgCount(0); functions.add(stopDrive);
         GetScaleFunction getScale = new GetScaleFunction(driver); getScale.setName("getScale"); getScale.setArgCount(0); functions.add(getScale);
         DownScaleFunction downScale = new DownScaleFunction(driver); downScale.setName("downScale"); downScale.setArgCount(0); functions.add(downScale);

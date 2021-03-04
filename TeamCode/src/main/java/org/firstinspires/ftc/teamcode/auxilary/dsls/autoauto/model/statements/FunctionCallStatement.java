@@ -32,6 +32,5 @@ public class FunctionCallStatement extends Statement {
 
     @Override
     public void stepInit() {
-        function.loop();
     }
 }

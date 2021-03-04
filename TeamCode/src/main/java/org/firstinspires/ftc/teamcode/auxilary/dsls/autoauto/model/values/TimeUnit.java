@@ -37,6 +37,11 @@ public class TimeUnit extends Value {
         this.returnValue = new float[] { timeParsedMs };
     }
 
+    @Override
+    public float[] getReturnValue() {
+        return this.returnValue;
+    }
+
     @NonNull
     public String toString() {
         return this.ms + "ms";

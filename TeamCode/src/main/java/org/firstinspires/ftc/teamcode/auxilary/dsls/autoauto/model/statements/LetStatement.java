@@ -38,7 +38,7 @@ public class LetStatement extends Statement {
 
     public void loop() {
         this.value.loop();
-        this.program.autoautoRuntime.variables.put(this.variable, this.value.returnValue);
+        this.program.autoautoRuntime.variables.put(this.variable, this.value.getReturnValue());
     }
 
     public String toString() {

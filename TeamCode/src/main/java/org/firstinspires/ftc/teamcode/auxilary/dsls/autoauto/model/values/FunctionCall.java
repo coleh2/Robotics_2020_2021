@@ -56,12 +56,17 @@ public class FunctionCall extends Value {
 
             for(int i = this.args.length - 1; i >= 0; i--) {
                 this.args[i].loop();
-                argsResolved[i] = this.args[i].returnValue;
+                argsResolved[i] = this.args[i].getReturnValue();
             }
 
             this.returnValue = fn.call(argsResolved);
         };
 
+    }
+
+    @Override
+    public float[] getReturnValue() {
+        return this.returnValue;
     }
 
     public void resolveWithArray(Function fn) {

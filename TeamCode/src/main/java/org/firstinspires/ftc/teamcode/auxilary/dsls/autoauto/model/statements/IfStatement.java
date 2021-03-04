@@ -24,6 +24,6 @@ public class IfStatement extends Statement {
 
     public void loop() {
         conditional.loop();
-        if(conditional.returnValue[0] > 0) subject.loop();
+        if(conditional.getReturnValue()[0] > 0) subject.loop();
     }
 }

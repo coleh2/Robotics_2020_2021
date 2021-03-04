@@ -4,7 +4,7 @@ import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.FunctionSto
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.VariableStore;
 
 public class Value {
-    public float returnValue[] = new float[0];
+    protected float[] returnValue = new float[0];
     public FunctionStore runtimeFunctionStore;
     public VariableStore runtimeVariableStore;
 
@@ -22,4 +22,8 @@ public class Value {
 
     public void init() {}
     public void loop() {}
+
+    public float[] getReturnValue() {
+        return this.returnValue;
+    }
 }

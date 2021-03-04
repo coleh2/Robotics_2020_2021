@@ -12,6 +12,11 @@ public class VariableReference extends Value {
         this.returnValue = runtimeVariableStore.get(this.name);
     }
 
+    @Override
+    public float[] getReturnValue() {
+        return this.returnValue;
+    }
+
     public String toString() {
         return "var<" + this.name + ">";
     }

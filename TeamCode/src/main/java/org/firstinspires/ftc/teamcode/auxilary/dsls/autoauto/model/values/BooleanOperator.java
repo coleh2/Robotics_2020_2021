@@ -52,6 +52,11 @@ public class BooleanOperator extends Value {
         this.b = Value.createProperValueType(src.substring(operatorEndIndex + 1));
     }
 
+    @Override
+    public float[] getReturnValue() {
+        return this.returnValue;
+    }
+
     public void loop() {
         a.loop();
         b.loop();

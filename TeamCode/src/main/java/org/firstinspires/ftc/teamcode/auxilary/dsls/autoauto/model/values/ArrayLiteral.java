@@ -29,6 +29,11 @@ public class ArrayLiteral extends Value {
         }
     }
 
+    @Override
+    public float[] getReturnValue() {
+        return this.returnValue;
+    }
+
     public String toString() {
         StringBuilder s = new StringBuilder("[");
         for(Value v : this.elems) s.append(v.toString()).append(",");

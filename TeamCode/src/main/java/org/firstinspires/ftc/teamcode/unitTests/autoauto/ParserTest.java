@@ -6,7 +6,7 @@ import org.junit.Test;
 public class ParserTest {
     @Test
     public void runTest() {
-        String testContent = "#test: doFunctionStep1(); doFunctionStepTwo(3); doFunctionStepThree(), after 30s skip -2";
+        String testContent = "#init:     driveOmni(0, 1, 0), after 1s next;     log(4.0)";
         AutoautoProgram program = new AutoautoProgram(testContent);
         System.out.println(program.toString());
     }
