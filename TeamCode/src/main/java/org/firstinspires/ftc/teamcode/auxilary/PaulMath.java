@@ -181,4 +181,25 @@ public abstract class PaulMath extends FeatureManager {
             return 0;
         }
     }
+
+    /**
+     * Counts proportional error for PID control.
+     *
+     * @param currentValue  the value we are currently at
+     * @param expectedValue the value we want
+     * @param Kp proportional coefficient. 0.007 by default
+     * @param clipMin Minimum absolute value that the output can be. 0.2 by default.
+     * @param clipMax Maximum absolute value that the output can be. 0.5 by default.
+     * @return a constant times the difference between the paramaters
+     */
+    public static float generalProportionalPID(float currentValue, float expectedValue, float Kp, float clipMin, float clipMax) {
+        float difference = (expectedValue - currentValue);
+
+        if(FeatureManager.debug) FeatureManager.logger.log("diffraw " + difference);
+
+        if(FeatureManager.debug) FeatureManager.logger.log("diffadded " + difference);
+
+            //abs val then multiply by sign of difference; easier than two ifs for positive clip and negative clip
+            return (Range.clip((Kp * Math.abs(difference)), clipMin, clipMax)) * (difference<=0?-1:1);
+    }
 }

@@ -34,6 +34,7 @@ public class AfterStatement extends Statement {
     }
 
     public void loop() {
+        FeatureManager.logger.log("now: " + System.currentTimeMillis() + "\n    " + wait.ms);
         if(System.currentTimeMillis() >= stepStart + wait.ms) action.loop();
     }
 }
