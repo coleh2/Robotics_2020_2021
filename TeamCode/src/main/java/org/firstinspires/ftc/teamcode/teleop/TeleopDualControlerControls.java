@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.auxilary.dsls.controls.controlmaps.DualControllerContolMap;
+import org.firstinspires.ftc.teamcode.auxilary.controlmaps.DualControllerContolMap;
 import org.firstinspires.ftc.teamcode.auxilary.ColorSensor;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 import org.firstinspires.ftc.teamcode.managers.ImuManager;
@@ -77,8 +77,14 @@ public class TeleopDualControlerControls extends OpMode {
         );
 
 
+            limbs.getServo("wobbleArmLeft").setDirection(Servo.Direction.REVERSE);
+            limbs.getServo("wobbleGrabRight").setDirection(Servo.Direction.REVERSE);
+
        // driver.resetEncoders();
       //  driver.runUsingEncoders();
+
+            limbs.setMotorModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            limbs.setMotorModes(DcMotor.RunMode.RUN_USING_ENCODER);
 
         } catch (Exception e) {
             

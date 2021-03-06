@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.auxilary.dsls.controls.controlmaps;
+package org.firstinspires.ftc.teamcode.auxilary.controlmaps;
 
 public class ShootingTogglesControlMap extends ControlMap {
     public static String drive = "vector3(leftStickY, leftStickX, rightStickX)";

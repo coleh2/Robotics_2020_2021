@@ -4,6 +4,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
+import org.firstinspires.ftc.teamcode.managers.FeatureManager;
+
 public class EncodedMotor implements DcMotor {
 
     public static final float DEFAULT_MAX_TICKS_PER_SECOND = 1f;
@@ -11,6 +13,8 @@ public class EncodedMotor implements DcMotor {
     private float maxTicksPerSecond;
 
     private DcMotor motor;
+
+    private boolean runLoop;
 
     private double rawPower;
 
@@ -26,6 +30,8 @@ public class EncodedMotor implements DcMotor {
         this.lastMotorPositionRecordingTime = System.currentTimeMillis();
         this.maxTicksPerSecond = _ticksPerSecond;
 
+        this.runLoop = true;
+
         this.updateLoop = new Thread(new MotorUpdateLooper());
         updateLoop.start();
     }
@@ -36,6 +42,8 @@ public class EncodedMotor implements DcMotor {
         this.lastMotorPosition = motor.getCurrentPosition();
         this.lastMotorPositionRecordingTime = System.currentTimeMillis();
         this.maxTicksPerSecond = DEFAULT_MAX_TICKS_PER_SECOND;
+
+        this.runLoop = true;
 
         this.updateLoop = new Thread(new MotorUpdateLooper());
         updateLoop.start();
@@ -159,19 +167,22 @@ public class EncodedMotor implements DcMotor {
     @Override
     public void close() {
         motor.close();
+        this.runLoop = false;
     }
 
     private class MotorUpdateLooper implements Runnable {
         @Override
         public void run() {
-            while(true) {
+            while(runLoop) {
                 int currentMotorPosition = motor.getCurrentPosition();
                 long currentMotorPositionRecordingTime = System.currentTimeMillis();
                 float velocityPerMillisecond = (currentMotorPosition - lastMotorPosition) / (currentMotorPositionRecordingTime - lastMotorPositionRecordingTime);
 
-                float currentPercentageOfMaxVelocity = velocityPerMillisecond / maxTicksPerSecond;
+                float currentPercentageOfMaxVelocity = velocityPerMillisecond / (maxTicksPerSecond*1000);
 
-                float changePower = PaulMath.proportionalPID(currentMotorPosition, (float)rawPower, 0.005f, 0, 1);
+                float changePower = PaulMath.generalProportionalPID(currentPercentageOfMaxVelocity, (float)rawPower, 0.05f, -1f, 0.2f);
+
+                FeatureManager.logger.log("encodedmotor moving by " + changePower + ", desired raw power is " + rawPower + ", current velocity is " + velocityPerMillisecond);
 
                 double oldPower = motor.getPower();
                 double newPower = oldPower + changePower;
