@@ -237,10 +237,11 @@ public class DeltaVFrankenstein extends StepAuto {
                 //If 1 rings go forward
                 driver.driveRaw( 0.3f, 0.3f, -0.3f, -0.3f);
                 nextStepTicks(2000, driver.frontRight.getCurrentPosition());
+                break;
             case THREADTWO2:
                 //strafe to the side
-                driver.driveRaw(-0.4f, 0.4f,-0.4f, 0.4f);
-                nextStepTicks(1500, driver.frontRight.getCurrentPosition());
+              //  driver.driveRaw(-0.4f, 0.4f,-0.4f, 0.4f);
+                nextStepTicks(100, driver.frontRight.getCurrentPosition());
                 break;
 //            case THREADTWO3:
 //                //lower wobble goal
@@ -250,9 +251,9 @@ public class DeltaVFrankenstein extends StepAuto {
 //                nextStep(1000);
 //                break;
             case THREADTWO42:
-                //release wobble goal
+                //come back to park
                 driver.driveRaw( -0.3f, -0.3f, 0.3f, 0.3f);
-                nextStepTicks(2000, driver.frontRight.getCurrentPosition());
+                nextStepTicks(1500, driver.frontRight.getCurrentPosition());
 
                 break;
 //            case THREADTWO5:
@@ -261,19 +262,29 @@ public class DeltaVFrankenstein extends StepAuto {
 //                nextStepStop(2000);
 //                break;
             case THREADTHREE1:
-                driver.driveRaw( 0.6f, 0.6f, -0.6f, -0.6f);
-                nextStepStop(2000);
+                driver.driveRaw( 0.4f, 0.4f, -0.4f, -0.4f);
+                nextStepStop(2800);
                 break;
             case THREADTHREE2:
-                //If 4 rings drive to thirds section
-                driver.driveRaw(0.6f,0.6f,-0.6f, -0.6f);
-                nextStepStop(2000);
+
+                imu.getPosition();
+                 proportional = PaulMath.proportionalPID(imu.getOrientation().thirdAngle, 90, 0.004f);
+                 driveProp = (proportional/Math.abs(proportional)) * Range.clip(Math.abs(proportional), 0.001f, 0.3f);
+
+                driver.driveRaw(proportional, -proportional, -proportional, proportional);
+                nextStep(2000);
+
+                break;
+            case THREADTHREE2and2:
+                driver.driveRaw(-0.4f, -0.4f, 0.4f, 0.4f);
+
+                nextStepTicks(700, driver.frontRight.getCurrentPosition());
                 break;
             case THREADTHREE42:
-                //release wobble goal
-                driver.driveRaw( -0.3f, -0.3f, 0.3f, 0.3f);
-                nextStepTicks(2000, driver.frontRight.getCurrentPosition());
-          break;
+                driver.driveRaw(0.4f, -0.4f,0.4f, -0.4f);
+                nextStepTicks(800, driver.frontRight.getCurrentPosition());
+
+                break;
 
             default:
                 driver.driveRaw(0f, 0f, 0f, 0f);

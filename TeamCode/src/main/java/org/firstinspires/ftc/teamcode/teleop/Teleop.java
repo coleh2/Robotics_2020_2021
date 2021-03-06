@@ -38,7 +38,7 @@ public class Teleop extends OpMode {
                 hardwareMap.get(DcMotor.class, "fr"),
                 hardwareMap.get(DcMotor.class, "br"),
                 hardwareMap.get(DcMotor.class, "bl"));
-        input = new InputManager(gamepad1, new BasicDrivingControlMap());
+        input = new InputManager(gamepad1, gamepad2, new BasicDrivingControlMap());
         imu = new ImuManager(hardwareMap.get(com.qualcomm.hardware.bosch.BNO055IMU.class, "imu"));
         limbs = new ManipulationManager(
                 new CRServo[] {
