@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.unitTests.largerModules;
 
-import org.firstinspires.ftc.teamcode.auxilary.dsls.controls.controlmaps.ControlMap;
+import org.firstinspires.ftc.teamcode.auxilary.controlmaps.ControlMap;
 import org.firstinspires.ftc.teamcode.managers.InputManager;
 import org.firstinspires.ftc.teamcode.managers.MovementManager;
 import org.firstinspires.ftc.teamcode.unitTests.dummy.DummyDcMotor;

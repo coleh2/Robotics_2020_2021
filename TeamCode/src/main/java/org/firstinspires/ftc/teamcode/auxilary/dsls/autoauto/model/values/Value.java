@@ -15,6 +15,7 @@ public class Value {
         else if(trimmed.matches("^-?[0-9]+\\.?[0-9]+[a-z]+$")) return new TimeUnit(trimmed);
         else if(trimmed.startsWith("[") && trimmed.endsWith("]")) return new ArrayLiteral(trimmed);
         else if(trimmed.indexOf('(') > -1) return new FunctionCall(trimmed);
+        else if(trimmed.startsWith("\"") && trimmed.endsWith("\"")) return new StringLiteral(trimmed);
         else if(trimmed.matches("^\\w+$")) return new VariableReference(trimmed);
 
         return null;

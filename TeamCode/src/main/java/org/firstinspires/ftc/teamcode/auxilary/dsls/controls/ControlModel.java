@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.auxilary.dsls.controls;
 
 import org.firstinspires.ftc.teamcode.auxilary.PaulMath;
-import org.firstinspires.ftc.teamcode.auxilary.dsls.controls.controlmaps.ControlMap;
+import org.firstinspires.ftc.teamcode.auxilary.controlmaps.ControlMap;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 
 import java.lang.reflect.Field;

@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.unitTests.controls;
 
 import org.firstinspires.ftc.teamcode.auxilary.dsls.controls.ControlModel;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.controls.GamepadState;
-import org.firstinspires.ftc.teamcode.auxilary.dsls.controls.controlmaps.ControlMap;
+import org.firstinspires.ftc.teamcode.auxilary.controlmaps.ControlMap;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 import org.firstinspires.ftc.teamcode.unitTests.dummy.DummyGamepad;
 import org.junit.Test;
