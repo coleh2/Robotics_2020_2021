@@ -15,7 +15,14 @@ public class LogFunction extends Function {
     }
 
     public float[] call(float[][] args) {
-        FeatureManager.logger.log(Arrays.toString(args[0]));
+        if(args[0][0] == '"' && args[0][args[0].length - 1] == '"') logString(args[0]);
+        else FeatureManager.logger.log(Arrays.toString(args[0]));
         return new float[0];
+    }
+
+    public void logString(float[] str) {
+        StringBuilder res = new StringBuilder();
+        for(float v : str) res.append((char) v);
+        FeatureManager.logger.log(res.toString());
     }
 }

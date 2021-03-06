@@ -23,7 +23,7 @@ public class OpmodeTest {
 
     @Test
     public void runTest() {
-        String programSource = "#init:     driveOmni(0, 1, 0), after 1s next;     log(4.0)";
+        String programSource = "#init:     driveOmni(0, 1, 0), after 0.5s next;     log(4.0)";
         MovementManager driver = new MovementManager(new DummyDcMotor(), new DummyDcMotor(), new DummyDcMotor(), new DummyDcMotor());
         ManipulationManager manip = new ManipulationManager(
                 new CRServo[] {
@@ -60,9 +60,9 @@ public class OpmodeTest {
         FeatureManager.logger.log("Starting State: \n    On path #" + runner.program.getCurrentPathName() +"\n    In State " + runner.program.currentPath.currentState);
 
         long start = System.currentTimeMillis();
-        for(int i = 0; i < 100; i++) {
+        while(System.currentTimeMillis() < start + 1000) {
             runner.loop();
-            FeatureManager.logger.log("Running State: \n    On path #" + runner.program.getCurrentPathName() +"\n    In State " + runner.program.currentPath.currentState+"\n    Time: " + (System.currentTimeMillis() - start) + "ms");
+            FeatureManager.logger.log("===\nRunning State: \n    On path #" + runner.program.getCurrentPathName() +"\n    In State " + runner.program.currentPath.currentState+"\n    Time: " + (System.currentTimeMillis() - start) + "ms");
         }
         FeatureManager.logger.log("Final State: \n    On path #" + runner.program.getCurrentPathName() +"\n    In State " + runner.program.currentPath.currentState);
     }
