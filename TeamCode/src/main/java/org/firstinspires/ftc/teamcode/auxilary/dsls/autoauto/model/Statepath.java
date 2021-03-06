@@ -43,7 +43,10 @@ public class Statepath {
 
     public void loop() {
         //if steps have changed, init the new one
-        if(this.currentState != this.oldCurrentState) this.states[this.currentState].stepInit();
+        if(this.currentState != this.oldCurrentState) {
+            this.states[this.currentState].stepInit();
+            this.oldCurrentState = this.currentState;
+        }
 
         this.states[this.currentState].loop();
     }
