@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.auxilary.dsls.controls.ControlModel;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.controls.GamepadState;
-import org.firstinspires.ftc.teamcode.auxilary.dsls.controls.controlmaps.ControlMap;
+import org.firstinspires.ftc.teamcode.auxilary.controlmaps.ControlMap;
 
 import java.util.HashMap;
 
