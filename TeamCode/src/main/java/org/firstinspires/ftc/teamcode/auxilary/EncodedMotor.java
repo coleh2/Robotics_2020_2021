@@ -180,12 +180,17 @@ public class EncodedMotor implements DcMotor {
 
                 float currentPercentageOfMaxVelocity = velocityPerMillisecond / (maxTicksPerSecond*1000);
 
-                float changePower = PaulMath.generalProportionalPID(currentPercentageOfMaxVelocity, (float)rawPower, 0.05f, -1f, 0.2f);
-
-                FeatureManager.logger.log("encodedmotor moving by " + changePower + ", desired raw power is " + rawPower + ", current velocity is " + velocityPerMillisecond);
+                float changePower = ((float)rawPower - currentPercentageOfMaxVelocity) * 0.005f;
 
                 double oldPower = motor.getPower();
                 double newPower = oldPower + changePower;
+
+                FeatureManager.logger.log("\ndeltpowr:      " + changePower
+                        + "\ndesired powr:  " + rawPower
+                        + "\ncur velo:      " + velocityPerMillisecond
+                        + "\nvelo %:        " + currentPercentageOfMaxVelocity
+                        + "\nmtrRawPowr:    " + oldPower
+                        + "\nnewMtrRawPowr: " + newPower);
 
                 motor.setPower(newPower);
 

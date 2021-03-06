@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.auxilary.EncodedMotor;
 import org.firstinspires.ftc.teamcode.auxilary.controlmaps.DualControllerContolMap;
 import org.firstinspires.ftc.teamcode.auxilary.ColorSensor;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
@@ -64,8 +65,8 @@ public class TeleopDualControlerControls extends OpMode {
                 new DcMotor[] {
                         hardwareMap.get(DcMotor.class, "drum"),
                         hardwareMap.get(DcMotor.class, "intake"),
-                        hardwareMap.get(DcMotor.class, "flywheelRight"),
-                        hardwareMap.get(DcMotor.class, "flywheelLeft")
+                        new EncodedMotor(hardwareMap.get(DcMotor.class, "flywheelRight"), 64 * 60 ),
+                        new EncodedMotor(hardwareMap.get(DcMotor.class, "flywheelLeft"), 64 * 60)
                 },
                 new String[] {
                         "drum",
@@ -185,10 +186,7 @@ public class TeleopDualControlerControls extends OpMode {
         telemetry.addData("controls://fullIntake:", input.getControl("fullIntake").toString());
         telemetry.addData("controls://lt:", input.getScalar("lt"));
         } catch (Exception e) {
-            if(!errorLogged) {
-
-                FeatureManager.logger.add(input.getControl("drive").toString());
-            }
+            FeatureManager.logger.log(e.toString());
         }
     }
 }
