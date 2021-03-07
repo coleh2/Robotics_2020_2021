@@ -73,6 +73,17 @@ public class DeltaVFrankenstein extends StepAuto {
 //        driver.getMotor()[2].setDirection(DcMotorSimple.Direction.REVERSE);
 //        driver.getMotor()[3].setDirection(DcMotorSimple.Direction.FORWARD);
 
+        SensorManager sense = new SensorManager(
+                new ColorSensor[] {
+                        new ColorSensor(hardwareMap.get(NormalizedColorSensor.class, "sensorOne")),
+                        new ColorSensor(hardwareMap.get(NormalizedColorSensor.class, "sensorFour"))
+                },
+                new String[] {
+                        "sensorOne",
+                        "sensorFour"
+                }
+        );
+
 
         imu = new ImuManager(hardwareMap.get(com.qualcomm.hardware.bosch.BNO055IMU.class, "imu"));
         sensorOne = new ColorSensor(hardwareMap.get(NormalizedColorSensor.class, "sensorOne"));

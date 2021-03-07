@@ -116,6 +116,10 @@ public class ColorSensor {
         this.colorReturned = colors.toColor();
     }
 
+    public NormalizedRGBA getNormalizedColors() {
+        return colorSensor.getNormalizedColors();
+    }
+
     public class UpdateLoopThread implements Runnable {
         @Override
         public void run() {

@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.auxilary.ColorSensor;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.Autoauto;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.AutoautoRuntime;
 import org.firstinspires.ftc.teamcode.managers.ManipulationManager;
@@ -51,11 +52,16 @@ public class {{className}} extends OpMode {
                 }
         );
 
-        sense = new SensorManager(
-                new NormalizedColorSensor[] {},
-                new String[] {},
-                new ColorRangeSensor[] {},
-                new String[] {});
+         sense = new SensorManager(
+                    new ColorSensor[] {
+                            new ColorSensor(hardwareMap.get(NormalizedColorSensor.class, "sensorOne")),
+                            new ColorSensor(hardwareMap.get(NormalizedColorSensor.class, "sensorFour"))
+                    },
+                    new String[] {
+                            "sensorOne",
+                            "sensorFour"
+                    }
+            );
 
 
         runtime = Autoauto.executeAutoautoProgram("{{javaStringFileSource}}", driver, limbs, sense);

@@ -9,7 +9,6 @@ public class ManagerDeviceScanner {
         for(int i = manip.crservoNames.length - 1; i >= 0; i--) store.put(manip.crservoNames[i], new float[] {i});
         for(int i = manip.motorNames.length - 1; i >= 0; i--) store.put(manip.motorNames[i], new float[] {i});
 
-        for(int i = sense.sensorsNames.length - 1; i >= 0; i--) store.put(sense.sensorsNames[i], new float[] {i});
-        for(int i = sense.rangeSensorsNames.length - 1; i >= 0; i--) store.put(sense.rangeSensorsNames[i], new float[] {i});
+        for(int i = sense.sensorNames.length - 1; i >= 0; i--) store.put(sense.sensorNames[i], new float[] {i});
     }
 }
