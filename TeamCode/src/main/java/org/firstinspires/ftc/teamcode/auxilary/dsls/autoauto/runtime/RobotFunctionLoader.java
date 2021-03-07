@@ -36,6 +36,7 @@ public class RobotFunctionLoader {
         SetTargetPositionsFunction setTargetPositions = new SetTargetPositionsFunction(driver); setTargetPositions.setName("setTargetPositions"); setTargetPositions.setArgCount(4); functions.add(setTargetPositions);
         GetMotorPositionsFunction getMotorPositions = new GetMotorPositionsFunction(driver); getMotorPositions.setName("getMotorPositions"); getMotorPositions.setArgCount(0); functions.add(getMotorPositions);
         DriveWithVerticalFunction driveWithVertical = new DriveWithVerticalFunction(driver); driveWithVertical.setName("driveWithVertical"); driveWithVertical.setArgCount(2); functions.add(driveWithVertical);
+        GetTicksFunction getTicks = new GetTicksFunction(driver); getTicks.setName("getTicks"); getTicks.setArgCount(0); functions.add(getTicks);
 
         SetMotorPowerFunction setMotorPower = new SetMotorPowerFunction(manip); setMotorPower.setName("setMotorPower"); setMotorPower.setArgCount(2); functions.add(setMotorPower);
         SetServoPositionFunction setServoPosition = new SetServoPositionFunction(manip); setServoPosition.setName("setServoPosition"); setServoPosition.setArgCount(2); functions.add(setServoPosition);

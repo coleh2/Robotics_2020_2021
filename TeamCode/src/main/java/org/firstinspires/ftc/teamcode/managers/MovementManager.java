@@ -170,4 +170,8 @@ public class MovementManager extends FeatureManager {
 
     }
 
+    public int getTicks() {
+        return frontLeft.getCurrentPosition();
+    }
+
 }

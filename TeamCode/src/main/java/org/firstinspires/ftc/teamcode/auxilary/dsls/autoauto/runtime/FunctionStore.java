@@ -19,6 +19,13 @@ public class FunctionStore {
         this.variables.put(s, f);
     }
 
+    public Function get(String name, int argLength) {
+        String s = name + "(" + argLength + ")";
+
+        if(this.variables.containsKey(s)) return this.variables.get(s);
+        else return null;
+    }
+
     public Function get(FunctionCall c) {
         String s = c.name + "(" + c.args.length + ")";
 

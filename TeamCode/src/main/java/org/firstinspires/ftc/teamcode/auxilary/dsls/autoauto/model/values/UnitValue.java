@@ -2,11 +2,14 @@ package org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values;
 
 import androidx.annotation.NonNull;
 
-public class TimeUnit extends Value {
-    public long ms;
+public class UnitValue extends Value {
+    public static enum UnitType { TIME, DISTANCE };
+
+    public UnitType unitType;
+    public long baseAmount;
     public String unit;
 
-    public TimeUnit(String src) {
+    public UnitValue(String src) {
         String timeNumber = "";
         int unitIndex = 0;
 
@@ -23,17 +26,30 @@ public class TimeUnit extends Value {
 
         if(unit.startsWith("ms")) {
             timeParsedMs *= 1;
+            unitType = UnitType.TIME;
         } else if(unit.startsWith("s")) {
             timeParsedMs *= 1000;
+            unitType = UnitType.TIME;
         } else if (unit.startsWith("m")) {
             timeParsedMs *= 60 * 1000;
+            unitType = UnitType.TIME;
         } else if(unit.startsWith("h")) {
             timeParsedMs *= 60 * 60 * 1000;
+            unitType = UnitType.TIME;
         } else if (unit.startsWith("d")) {
             timeParsedMs *= 24 * 60 * 60 * 1000;
+            unitType = UnitType.TIME;
         }
 
-        this.ms = (long)timeParsedMs;
+        if(unit.startsWith("ticks")) {
+            timeParsedMs *= 1;
+            unitType = UnitType.DISTANCE;
+        } else if(unit.startsWith("rots")) {
+            timeParsedMs *= 135;
+            unitType = UnitType.DISTANCE;
+        }
+
+        this.baseAmount = (long)timeParsedMs;
         this.returnValue = new float[] { timeParsedMs };
     }
 
@@ -44,6 +60,7 @@ public class TimeUnit extends Value {
 
     @NonNull
     public String toString() {
-        return this.ms + "ms";
+        return this.baseAmount +
+                ((unitType == UnitType.TIME) ? "ms" : "ticks");
     }
 }
