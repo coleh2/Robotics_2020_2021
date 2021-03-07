@@ -57,8 +57,8 @@ public class DeltaVFrankenstein extends StepAuto {
                 new DcMotor[] {
                         hardwareMap.get(DcMotor.class, "drum"),
                         hardwareMap.get(DcMotor.class, "intake"),
-                        new EncodedMotor(hardwareMap.get(DcMotor.class, "flywheelRight"), 32),
-                        new EncodedMotor(hardwareMap.get(DcMotor.class, "flywheelLeft"), 32)
+                        new EncodedMotor(hardwareMap.get(DcMotor.class, "flywheelRight"), 20),
+                        new EncodedMotor(hardwareMap.get(DcMotor.class, "flywheelLeft"), 20)
                 },
                 new String[] {
                         "drum",
@@ -140,10 +140,10 @@ public class DeltaVFrankenstein extends StepAuto {
                 break;
             case MOVE5:
                 //strafe back to center
-                limbs.setMotorPower("flywheelRight", -1);
-                limbs.setMotorPower("flywheelLeft", 1);
+                limbs.setMotorPower("flywheelRight", -.75);
+                limbs.setMotorPower("flywheelLeft", .75);
                 driver.driveRaw(0.3f,-0.3f,0.3f, -0.3f);
-               nextStepTicks(200, driver.frontRight.getCurrentPosition());
+               nextStepTicks(300, driver.frontRight.getCurrentPosition());
                 break;
             case MOVE5and5:
                 //Turn to center
@@ -153,7 +153,11 @@ public class DeltaVFrankenstein extends StepAuto {
                 double driveProp = (proportional/Math.abs(proportional)) * Range.clip(Math.abs(proportional), 0.06f, 0.3f);
 
                 driver.driveRaw(proportional, -proportional, -proportional, proportional);
-                nextStep(1000);
+                if(Math.abs(imu.getOrientation().thirdAngle) == 178) {
+                    currentStep = step.MOVE6;
+                } else {
+                    nextStep(1000);
+                }
 
                 break;
             case MOVE6:

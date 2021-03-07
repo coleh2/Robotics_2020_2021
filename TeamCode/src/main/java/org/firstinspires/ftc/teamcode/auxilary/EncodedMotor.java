@@ -178,7 +178,7 @@ public class EncodedMotor implements DcMotor {
                 long currentMotorPositionRecordingTime = System.currentTimeMillis();
                 float velocityPerMillisecond = (currentMotorPosition - lastMotorPosition) / (currentMotorPositionRecordingTime - lastMotorPositionRecordingTime);
 
-                float currentPercentageOfMaxVelocity = velocityPerMillisecond / (ticksPerRotation * 10.36f);
+                float currentPercentageOfMaxVelocity = velocityPerMillisecond / (ticksPerRotation);
 
                 float changePower = ((float)rawPower - currentPercentageOfMaxVelocity) * 1f;
 
