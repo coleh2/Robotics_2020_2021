@@ -65,8 +65,8 @@ public class TeleopDualControlerControls extends OpMode {
                 new DcMotor[] {
                         hardwareMap.get(DcMotor.class, "drum"),
                         hardwareMap.get(DcMotor.class, "intake"),
-                        new EncodedMotor(hardwareMap.get(DcMotor.class, "flywheelRight"), 64 * 60 ),
-                        new EncodedMotor(hardwareMap.get(DcMotor.class, "flywheelLeft"), 64 * 60)
+                        hardwareMap.get(DcMotor.class, "flywheelRight"),
+                        hardwareMap.get(DcMotor.class, "flywheelLeft")
                 },
                 new String[] {
                         "drum",
@@ -83,9 +83,6 @@ public class TeleopDualControlerControls extends OpMode {
 
        // driver.resetEncoders();
       //  driver.runUsingEncoders();
-
-            limbs.setMotorModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            limbs.setMotorModes(DcMotor.RunMode.RUN_USING_ENCODER);
 
         } catch (Exception e) {
             

@@ -57,8 +57,8 @@ public class DeltaVFrankenstein extends StepAuto {
                 new DcMotor[] {
                         hardwareMap.get(DcMotor.class, "drum"),
                         hardwareMap.get(DcMotor.class, "intake"),
-                        hardwareMap.get(DcMotor.class, "flywheelRight"),
-                        hardwareMap.get(DcMotor.class, "flywheelLeft")
+                        new EncodedMotor(hardwareMap.get(DcMotor.class, "flywheelRight"), 32),
+                        new EncodedMotor(hardwareMap.get(DcMotor.class, "flywheelLeft"), 32)
                 },
                 new String[] {
                         "drum",
@@ -101,7 +101,7 @@ public class DeltaVFrankenstein extends StepAuto {
             case MOVE1:
                 //go forward
                 driver.driveRaw( 0.3f, 0.3f, -0.3f, -0.3f);
-                nextStepTicks(1680, driver.frontRight.getCurrentPosition());
+                nextStepTicks(1550, driver.frontRight.getCurrentPosition());
                 break;
             case MOVE2:
                 //strafe to rings
@@ -132,7 +132,7 @@ public class DeltaVFrankenstein extends StepAuto {
                 limbs.setMotorPower("flywheelRight", -1);
                 limbs.setMotorPower("flywheelLeft", 1);
                 driver.driveRaw(0.3f,-0.3f,0.3f, -0.3f);
-               nextStepTicks(400, driver.frontRight.getCurrentPosition());
+               nextStepTicks(200, driver.frontRight.getCurrentPosition());
                 break;
             case MOVE5and5:
                 //Turn to center
@@ -151,10 +151,10 @@ public class DeltaVFrankenstein extends StepAuto {
                 //shoot ring 1
                 driver.driveRaw(0f,0f,0f, 0f);
 
-                limbs.setServoPower("shooterArm", 0.45);
+                limbs.setServoPower("shooterArm", 0.4);
                 limbs.setMotorPower("drum", 0);
 
-                nextStep(200);
+                nextStep(400);
                 break;
             case MOVE7:
             case MOVE10:
@@ -193,7 +193,7 @@ public class DeltaVFrankenstein extends StepAuto {
                //strafe to the side
                 driver.driveRaw(-0.4f, 0.4f,-0.4f, 0.4f);
 
-                nextStepTicks(1500, driver.frontRight.getCurrentPosition());
+                nextStepTicks(2000, driver.frontRight.getCurrentPosition());
                 break;
             case THREADONE3:
             case THREADTWO3:
@@ -202,7 +202,7 @@ public class DeltaVFrankenstein extends StepAuto {
 //lowe rarm
                 limbs.setServoPosition("wobbleArmLeft", 0.086);
                 limbs.setServoPosition("wobbleArmRight", 0.086);
-                nextStep(1000);
+                nextStep(2000);
                 break;
             case THREADONE4:
             case THREADTWO4:
@@ -230,7 +230,7 @@ public class DeltaVFrankenstein extends StepAuto {
                //drive back
 
                 driver.driveRaw( -0.3f, -0.3f, 0.3f, 0.3f);
-                nextStepTicks(1000, driver.frontRight.getCurrentPosition());
+                nextStepTicks(500, driver.frontRight.getCurrentPosition());
 
                 break;
             case THREADTWO1:
@@ -278,7 +278,7 @@ public class DeltaVFrankenstein extends StepAuto {
             case THREADTHREE2and2:
                 driver.driveRaw(-0.4f, -0.4f, 0.4f, 0.4f);
 
-                nextStepTicks(700, driver.frontRight.getCurrentPosition());
+                nextStepTicks(400, driver.frontRight.getCurrentPosition());
                 break;
             case THREADTHREE42:
                 driver.driveRaw(0.4f, -0.4f,0.4f, -0.4f);
@@ -291,6 +291,7 @@ public class DeltaVFrankenstein extends StepAuto {
                 limbs.setMotorPower("flywheelRight", 0);
                 limbs.setMotorPower("flywheelLeft", 0);
                 limbs.setServoPower("shooterArm", 0.63);
+                limbs.closeMotors();
                 break;
 
         }
@@ -310,5 +311,11 @@ public class DeltaVFrankenstein extends StepAuto {
         telemetry.addData("BL Power: ", driver.backLeft.getPower());
         telemetry.addData("BR Power: ", driver.backRight.getPower());
 
+    }
+
+    @Override
+    public void stop() {
+        limbs.closeMotors();
+        super.stop();
     }
 }

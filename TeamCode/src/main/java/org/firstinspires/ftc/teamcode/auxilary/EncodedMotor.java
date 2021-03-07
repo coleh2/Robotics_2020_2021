@@ -8,9 +8,9 @@ import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 
 public class EncodedMotor implements DcMotor {
 
-    public static final float DEFAULT_MAX_TICKS_PER_SECOND = 1f;
+    public static final float DEFAULT_TICKS_PER_ROT = 100f;
 
-    private float maxTicksPerSecond;
+    private float ticksPerRotation;
 
     private DcMotor motor;
 
@@ -28,7 +28,7 @@ public class EncodedMotor implements DcMotor {
         this.rawPower = motor.getPower();
         this.lastMotorPosition = motor.getCurrentPosition();
         this.lastMotorPositionRecordingTime = System.currentTimeMillis();
-        this.maxTicksPerSecond = _ticksPerSecond;
+        this.ticksPerRotation = _ticksPerSecond;
 
         this.runLoop = true;
 
@@ -41,7 +41,7 @@ public class EncodedMotor implements DcMotor {
         this.rawPower = motor.getPower();
         this.lastMotorPosition = motor.getCurrentPosition();
         this.lastMotorPositionRecordingTime = System.currentTimeMillis();
-        this.maxTicksPerSecond = DEFAULT_MAX_TICKS_PER_SECOND;
+        this.ticksPerRotation = DEFAULT_TICKS_PER_ROT;
 
         this.runLoop = true;
 
@@ -178,9 +178,9 @@ public class EncodedMotor implements DcMotor {
                 long currentMotorPositionRecordingTime = System.currentTimeMillis();
                 float velocityPerMillisecond = (currentMotorPosition - lastMotorPosition) / (currentMotorPositionRecordingTime - lastMotorPositionRecordingTime);
 
-                float currentPercentageOfMaxVelocity = velocityPerMillisecond / (maxTicksPerSecond*1000);
+                float currentPercentageOfMaxVelocity = velocityPerMillisecond / (ticksPerRotation * 10.36f);
 
-                float changePower = ((float)rawPower - currentPercentageOfMaxVelocity) * 0.005f;
+                float changePower = ((float)rawPower - currentPercentageOfMaxVelocity) * 1f;
 
                 double oldPower = motor.getPower();
                 double newPower = oldPower + changePower;

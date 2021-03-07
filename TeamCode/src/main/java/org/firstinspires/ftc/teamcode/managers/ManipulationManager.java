@@ -139,6 +139,10 @@ public class ManipulationManager extends FeatureManager {
         motors[i].setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
+    public void closeMotors() {
+        for(DcMotor m : motors) m.close();
+    }
+
 //    public void setServoPosition(int i, double power) {
 //        servos[i].setPosition(power);
 //    }
