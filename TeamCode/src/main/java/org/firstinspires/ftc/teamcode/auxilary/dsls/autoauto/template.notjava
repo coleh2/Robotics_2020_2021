@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.auxilary.EncodedMotor;
 import org.firstinspires.ftc.teamcode.auxilary.ColorSensor;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.Autoauto;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.AutoautoRuntime;
@@ -41,8 +42,8 @@ public class {{className}} extends OpMode {
                 new DcMotor[] {
                         hardwareMap.get(DcMotor.class, "drum"),
                         hardwareMap.get(DcMotor.class, "intake"),
-                        hardwareMap.get(DcMotor.class, "flywheelRight"),
-                        hardwareMap.get(DcMotor.class, "flywheelLeft")
+                        new EncodedMotor(hardwareMap.get(DcMotor.class, "flywheelRight"), 20),
+                        new EncodedMotor(hardwareMap.get(DcMotor.class, "flywheelLeft"), 20)
                 },
                 new String[] {
                         "drum",
