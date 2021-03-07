@@ -1,10 +1,13 @@
 package org.firstinspires.ftc.teamcode.unitTests.autoauto;
 
+import android.graphics.Color;
+
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.auxilary.ColorSensor;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.Autoauto;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.AutoautoRuntime;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
@@ -45,7 +48,7 @@ public class OpmodeTest {
                 }
         );
         DummyNormalizedColorSensor dummySense = new DummyNormalizedColorSensor();
-        SensorManager sense = new SensorManager(new DummyNormalizedColorSensor[] { dummySense }, new String[] { "sensor4" }, new DummyColorRangeSensor[] {}, new String [] {});
+        SensorManager sense = new SensorManager(new ColorSensor[] { new ColorSensor(dummySense) }, new String[] { "sensor4" });
 
         AutoautoRuntime runner = Autoauto.executeAutoautoProgram(programSource, driver, manip, sense);
 
