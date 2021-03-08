@@ -57,8 +57,8 @@ public class DeltaVFrankenstein extends StepAuto {
                 new DcMotor[] {
                         hardwareMap.get(DcMotor.class, "drum"),
                         hardwareMap.get(DcMotor.class, "intake"),
-                        new EncodedMotor(hardwareMap.get(DcMotor.class, "flywheelRight"), 20),
-                        new EncodedMotor(hardwareMap.get(DcMotor.class, "flywheelLeft"), 20)
+                        new EncodedMotor(hardwareMap.get(DcMotor.class, "flywheelRight"), 13),
+                        new EncodedMotor(hardwareMap.get(DcMotor.class, "flywheelLeft"), 13)
                 },
                 new String[] {
                         "drum",
