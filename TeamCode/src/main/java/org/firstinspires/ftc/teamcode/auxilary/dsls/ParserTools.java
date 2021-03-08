@@ -45,4 +45,9 @@ public class ParserTools {
         }
         return -1;
     }
+
+    public static String removeComments(String src) {
+        String result = "";
+        return result;
+    }
 }
