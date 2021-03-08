@@ -12,16 +12,14 @@ import org.firstinspires.ftc.teamcode.auxilary.EncodedMotor;
 import org.firstinspires.ftc.teamcode.auxilary.ColorSensor;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.Autoauto;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.AutoautoRuntime;
-import org.firstinspires.ftc.teamcode.managers.ManipulationManager;
-import org.firstinspires.ftc.teamcode.managers.MovementManager;
-import org.firstinspires.ftc.teamcode.managers.SensorManager;
-import org.firstinspires.ftc.teamcode.managers.FeatureManager;
+import org.firstinspires.ftc.teamcode.managers.*;
 
 @Autonomous
 public class {{className}} extends OpMode {
     MovementManager driver;
     ManipulationManager limbs;
     SensorManager sense;
+    ImuManager imu;
 
     AutoautoRuntime runtime;
     public void init() {
@@ -64,8 +62,10 @@ public class {{className}} extends OpMode {
                     }
             );
 
+            imu = new ImuManager(hardwareMap.get(com.qualcomm.hardware.bosch.BNO055IMU.class, "imu"));
 
-        runtime = Autoauto.executeAutoautoProgram("{{javaStringFileSource}}", driver, limbs, sense);
+
+        runtime = Autoauto.executeAutoautoProgram("{{javaStringFileSource}}", driver, limbs, sense, imu);
     }
 
     public void loop() {

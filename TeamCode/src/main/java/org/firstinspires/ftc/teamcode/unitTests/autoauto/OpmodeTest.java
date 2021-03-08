@@ -11,12 +11,14 @@ import org.firstinspires.ftc.teamcode.auxilary.ColorSensor;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.Autoauto;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.AutoautoRuntime;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
+import org.firstinspires.ftc.teamcode.managers.ImuManager;
 import org.firstinspires.ftc.teamcode.managers.ManipulationManager;
 import org.firstinspires.ftc.teamcode.managers.MovementManager;
 import org.firstinspires.ftc.teamcode.managers.SensorManager;
 import org.firstinspires.ftc.teamcode.unitTests.dummy.DummyColorRangeSensor;
 import org.firstinspires.ftc.teamcode.unitTests.dummy.DummyCrServo;
 import org.firstinspires.ftc.teamcode.unitTests.dummy.DummyDcMotor;
+import org.firstinspires.ftc.teamcode.unitTests.dummy.DummyImu;
 import org.firstinspires.ftc.teamcode.unitTests.dummy.DummyNormalizedColorSensor;
 import org.junit.Test;
 
@@ -49,8 +51,9 @@ public class OpmodeTest {
         );
         DummyNormalizedColorSensor dummySense = new DummyNormalizedColorSensor();
         SensorManager sense = new SensorManager(new ColorSensor[] { new ColorSensor(dummySense) }, new String[] { "sensor4" });
+        ImuManager imu = new ImuManager(new DummyImu());
 
-        AutoautoRuntime runner = Autoauto.executeAutoautoProgram(programSource, driver, manip, sense);
+        AutoautoRuntime runner = Autoauto.executeAutoautoProgram(programSource, driver, manip, sense, imu);
 
         FeatureManager.logger.log("program model: " + runner.program.toString());
 

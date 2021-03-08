@@ -27,7 +27,7 @@ public class AutoautoProgram {
     public AutoautoProgram(String src) {
         //first off, nilch the comments
         src = ParserTools.removeComments(src);
-        
+
         //split into the program's labeled statepaths
         String[] LSPs = ParserTools.groupAwareSplit(src, '#', true);
 

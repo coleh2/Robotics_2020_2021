@@ -18,7 +18,7 @@ import org.firstinspires.ftc.teamcode.auxilary.PaulMath;
 import static org.firstinspires.ftc.robotcore.external.navigation.NavUtil.meanIntegrate;
 import static org.firstinspires.ftc.robotcore.external.navigation.NavUtil.plus;
 
-public class ImuManager {
+public class ImuManager extends FeatureManager {
     public BNO055IMU imu;
 
     public ImuManager(BNO055IMU imu) {

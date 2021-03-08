@@ -5,6 +5,7 @@ import android.util.Log;
 import org.firstinspires.ftc.teamcode.auxilary.PaulMath;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.robotfunctions.*;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
+import org.firstinspires.ftc.teamcode.managers.ImuManager;
 import org.firstinspires.ftc.teamcode.managers.ManipulationManager;
 import org.firstinspires.ftc.teamcode.managers.MovementManager;
 import org.firstinspires.ftc.teamcode.managers.SensorManager;
@@ -18,7 +19,7 @@ public class RobotFunctionLoader {
         for(Function f : fns) store.put(f.name, f.argCount, f);
     }
 
-    public static Function[] loadFunctions(MovementManager driver, ManipulationManager manip, SensorManager sense) {
+    public static Function[] loadFunctions(MovementManager driver, ManipulationManager manip, SensorManager sense, ImuManager imu) {
         ArrayList<Function> functions = new ArrayList<>();
 
         DriveOmniFunction driveOmni = new DriveOmniFunction(driver); driveOmni.setName("driveOmni"); driveOmni.setArgCount(3); functions.add(driveOmni);
@@ -59,6 +60,7 @@ public class RobotFunctionLoader {
         HighestValueFunction highestValue = new HighestValueFunction(); highestValue.setName("highestValue"); highestValue.setArgCount(1); functions.add(highestValue);
         EncoderDistanceFunction encoderDistance = new EncoderDistanceFunction(); encoderDistance.setName("encoderDistance"); encoderDistance.setArgCount(1); functions.add(encoderDistance);
 
+        GetThirdAngleOrientationFunction getThirdAngleOrientation = new GetThirdAngleOrientationFunction(imu); getThirdAngleOrientation.setName("getThirdAngleOrientation"); getThirdAngleOrientation.setArgCount(0); functions.add(getThirdAngleOrientation);
         LogFunction log = new LogFunction(); log.setName("log"); log.setArgCount(1); functions.add(log);
 
         return functions.toArray(new Function[0]);

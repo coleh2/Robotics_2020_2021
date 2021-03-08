@@ -12,7 +12,7 @@
 
     driveOmni(0.3,0,0), after 900ticks next;
     driveOmni(0,0.3,0), after 300ticks next;
-    proportional = proportionalPID(getOrientation().thirdAngle, 180, 0.001f), driveOmni(0,0,proportional), if(getOrientation().thirdAngle = 179) next, after 0.5s next;
+    proportional = proportionalPID(getThirdAngleOrientation(), 180, 0.001f), driveOmni(0,0,proportional), if(getThirdAngleOrientation() = 179) next, after 0.5s next;
 
     setServoPower(shooterArm, 0.4), after 0.4s next;
     setServoPower(shooterArm, 0.63), setMotorPower(drum, -0.5), setMotorPower(flywheelLeft, -0.3), setMotorPower(flywheelRight, 0.3), after 0.8s next;
@@ -48,7 +48,7 @@
 
 #fourRings
     driveOmni(0.3,0,0), after 2800ticks next;
-    proportional = proportionalPID(getOrientation().thirdAngle, 90, 0.004f), driveOmni(0,0,proportional), after 2s next;
+    proportional = proportionalPID(getThirdAngleOrientation(), 90, 0.004f), driveOmni(0,0,proportional), after 2s next;
     driveOmni(-0.4,0,0), after 400ticks next;
 
     setServoPosition(wobbleArmLeft, 0.055), setServoPosition(wobbleArmRight, 0.055), after 2s next;
