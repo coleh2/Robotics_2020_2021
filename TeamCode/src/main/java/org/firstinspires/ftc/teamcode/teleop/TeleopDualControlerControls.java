@@ -111,47 +111,6 @@ public class TeleopDualControlerControls extends OpMode {
             limbs.setServoPosition("wobbleArmRight", input.getScalar("wobbleArmRight"));
             limbs.setServoPosition("wobbleArmLeft", input.getScalar("wobbleArmLeft"));
 
-//            if(input.getGamepad().a) {
-//                //limbs.setServoPosition("shooterArm", 0.7);
-//                limbs.setServoPower("shooterArm", 0.0);
-//            } else {
-//                limbs.setServoPower("shooterArm", 0.63);
-//            }
-
-//
-//            if (input.getGamepad().x){
-//                limbs.setServoPosition("wobbleArmLeft", 0.086);
-//                limbs.setServoPosition("wobbleArmRight", 0.086);
-//                //45 degrees = ~0.065
-//            }else {
-//                limbs.setServoPosition("wobbleArmLeft", 0.055);
-//                limbs.setServoPosition("wobbleArmRight", 0.055);
-//            }
-//            if (input.getGamepad().b){
-//                limbs.setServoPosition("wobbleGrabLeft", 1);
-//                limbs.setServoPosition("wobbleGrabRight", 1);
-//                //45 degrees = ~0.065
-//            }else {
-//                limbs.setServoPosition("wobbleGrabLeft", 0);
-//                limbs.setServoPosition("wobbleGrabRight", 0);
-//            }
-//
-//            if(input.getGamepad().dpad_up ){
-//                target+=0.0001;
-//            }
-//            if(input.getGamepad().dpad_down ){
-//                target-=0.0001;
-//            }
-
-//        telemetry.addData("FL Ticks:", driver.frontLeft.getCurrentPosition());
-//        telemetry.addData("FR Ticks:", driver.frontRight.getCurrentPosition());
-//        telemetry.addData("BL Ticks:", driver.backRight.getCurrentPosition());
-//        telemetry.addData("BR Ticks:", driver.backLeft.getCurrentPosition());
-//        telemetry.addData("Average Ticks:", (driver.frontLeft.getCurrentPosition()+
-//                driver.frontRight.getCurrentPosition()+
-//                driver.backLeft.getCurrentPosition()+
-//                driver.backRight.getCurrentPosition())/4);
-
             telemetry.addData("wobbleGrabRight", limbs.getServo("wobbleGrabRight").getPosition());
             telemetry.addData("wobbleGrabLeft", limbs.getServo("wobbleGrabLeft").getPosition());
             telemetry.addData("wobbleArmRight", limbs.getServo("wobbleArmRight").getPosition());
@@ -159,7 +118,7 @@ public class TeleopDualControlerControls extends OpMode {
 
 
             telemetry.addData("FL Power: ", driver.frontLeft.getPower());
-        telemetry.addData("FL Port: ", driver.frontLeft.getPortNumber());
+            telemetry.addData("FL Port: ", driver.frontLeft.getPortNumber());
 
         telemetry.addData("FR Power: ", driver.frontRight.getPower());
         telemetry.addData("FR Port: ", driver.frontRight.getPortNumber());
@@ -179,9 +138,6 @@ public class TeleopDualControlerControls extends OpMode {
         telemetry.addData("speed: ", driver.getScale());
 
         telemetry.addData("left trigger: ", input.getGamepad().left_trigger);
-
-        telemetry.addData("controls://fullIntake:", input.getControl("fullIntake").toString());
-        telemetry.addData("controls://lt:", input.getScalar("lt"));
         } catch (Exception e) {
             FeatureManager.logger.log(e.toString());
         }

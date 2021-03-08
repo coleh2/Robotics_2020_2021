@@ -185,13 +185,6 @@ public class EncodedMotor implements DcMotor {
                 double oldPower = motor.getPower();
                 double newPower = oldPower + changePower;
 
-                FeatureManager.logger.log("\ndeltpowr:      " + changePower
-                        + "\ndesired powr:  " + rawPower
-                        + "\ncur velo:      " + velocityPerMillisecond
-                        + "\nvelo %:        " + currentPercentageOfMaxVelocity
-                        + "\nmtrRawPowr:    " + oldPower
-                        + "\nnewMtrRawPowr: " + newPower);
-
                 motor.setPower(newPower);
 
                 lastMotorPosition = currentMotorPosition;
