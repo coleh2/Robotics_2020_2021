@@ -43,11 +43,35 @@ public class ParserTools {
 
             if(level == 0 && !inQuotes && currentChar == search) return i;
         }
+
         return -1;
     }
 
-    public static String removeComments(String src) {
-        String result = "";
-        return result;
+    public static String removeComments(String str) {
+        StringBuilder result = new StringBuilder("");
+
+        boolean inComment = false, inQuotes = false, inSinglelineComment = false;
+
+        int strlen = str.length();
+        for(int i = 0; i < strlen; i++) {
+            char currentChar = str.charAt(i);
+
+            if(!inQuotes) {
+                //comments!
+                if (str.substring(i, Math.min(i + 2, strlen)).equals("/*")) inComment = true;
+                if (str.substring(Math.max(i - 2, 0), i).equals("*/")) inComment = false;
+
+                if(str.substring(i, Math.min(i + 2, strlen)).equals("//")) inSinglelineComment = true;
+                if(str.charAt(i) == '\n') inSinglelineComment = false;
+            }
+
+            if(inComment || inSinglelineComment) continue;
+
+            if(currentChar == '"') inQuotes = !inQuotes;
+
+            result.append(str.charAt(i));
+        }
+
+        return result.toString();
     }
 }
