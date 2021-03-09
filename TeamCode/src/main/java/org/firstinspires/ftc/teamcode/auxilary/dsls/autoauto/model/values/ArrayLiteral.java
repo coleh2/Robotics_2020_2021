@@ -23,8 +23,7 @@ public class ArrayLiteral extends Value {
     public void init() {
         for(int i = elems.length - 1; i >= 0; i--) {
             assert this.elems[i] != null;
-            this.elems[i].runtimeFunctionStore = this.runtimeFunctionStore;
-            this.elems[i].runtimeVariableStore = this.runtimeVariableStore;
+            this.elems[i].setRuntimeReferences(this.runtimeFunctionStore, this.runtimeVariableStore);
             this.elems[i].init();
         }
     }

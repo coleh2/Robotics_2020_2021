@@ -32,6 +32,7 @@ public class Statement {
         String tr = src.trim();
 
         int firstWordIdx = tr.indexOf(' ');
+        if(tr.indexOf('(') > -1 && tr.indexOf('(') < firstWordIdx) firstWordIdx = tr.indexOf('(');
         firstWordIdx = firstWordIdx < 0 ? tr.length() : firstWordIdx;
 
         String firstWord = tr.substring(0,Math.max(0, firstWordIdx));

@@ -11,12 +11,14 @@ public class Statepath {
     public int currentState;
     private int oldCurrentState;
 
+    public String name;
     public AutoautoProgram program;
 
-    public Statepath(String src, AutoautoProgram program) {
+    public Statepath(String src, AutoautoProgram program, String name) {
         this.currentState = 0;
         this.oldCurrentState = -1;
         this.program = program;
+        this.name = name;
 
         String[] stateSources = ParserTools.groupAwareSplit(src, ';');
 
@@ -25,7 +27,7 @@ public class Statepath {
         for(int i = stateSources.length - 1; i >= 0; i--) {
             String tr = stateSources[i].trim();
             if(tr.equals("")) {
-                FeatureManager.logger.log("[AUTOAUTO ERROR] Empty state! Defaulting to `next`");
+                FeatureManager.logger.log("[AUTOAUTO ERROR] Empty state in statepath `" + name + "`! Defaulting to `next`");
                 this.states[i] = new State("next", program, this);
                 continue;
             }

@@ -5,6 +5,7 @@ import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.AutoautoProgr
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.State;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.Statepath;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values.BooleanOperator;
+import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 
 public class IfStatement extends Statement {
     BooleanOperator conditional;
@@ -12,9 +13,13 @@ public class IfStatement extends Statement {
 
     public IfStatement(String src, AutoautoProgram program, Statepath statepath, State state) {
         super(program, statepath, state);
-        src = src.substring("if ".length());
+        src = src.substring("if".length());
+        src = src.trim();
+
         int endingParen = ParserTools.groupAwareIndexOf(src, ')');
         int startingParen = src.indexOf('(');
+
+        if(endingParen == -1 || startingParen == -1) FeatureManager.logger.log("[AUTOAUTO ERROR] Missing " + (endingParen == -1 ? "ending" : "starting") + " paren in `if` statement: " + src);
 
         String conditionalSrc = src.substring(startingParen + 1, endingParen);
         conditional = new BooleanOperator(conditionalSrc);
@@ -25,5 +30,8 @@ public class IfStatement extends Statement {
     public void loop() {
         conditional.loop();
         if(conditional.getReturnValue()[0] > 0) subject.loop();
+    }
+    public String toString() {
+        return "if (" + conditional.toString() + ") " + subject.toString();
     }
 }

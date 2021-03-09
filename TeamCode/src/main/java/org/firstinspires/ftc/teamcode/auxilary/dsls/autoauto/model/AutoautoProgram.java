@@ -48,7 +48,7 @@ public class AutoautoProgram {
             } else {
                 lspName = LSPs[i].substring(0, colonIndex);
             }
-            Statepath newPath = new Statepath(LSPs[i].substring(colonIndex + 1), this);
+            Statepath newPath = new Statepath(LSPs[i].substring(colonIndex + 1), this, lspName);
             paths.put(lspName, newPath);
 
             if(i < currentPathIndex) {

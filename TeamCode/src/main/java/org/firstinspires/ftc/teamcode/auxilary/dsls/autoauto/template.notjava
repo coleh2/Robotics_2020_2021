@@ -13,6 +13,8 @@ import org.firstinspires.ftc.teamcode.auxilary.ColorSensor;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.Autoauto;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.AutoautoRuntime;
 import org.firstinspires.ftc.teamcode.managers.*;
+import org.junit.Test;
+import org.firstinspires.ftc.teamcode.unitTests.dummy.DummyHardwareMap;
 
 @Autonomous
 public class {{className}} extends OpMode {
@@ -23,7 +25,7 @@ public class {{className}} extends OpMode {
 
     AutoautoRuntime runtime;
     public void init() {
-        FeatureManager.logger.setBackend(telemetry.log());
+        if(this.internalOpModeServices!=null) FeatureManager.logger.setBackend(telemetry.log());
         driver = new MovementManager(hardwareMap.get(DcMotor.class, "fl"),
                 hardwareMap.get(DcMotor.class, "fr"),
                 hardwareMap.get(DcMotor.class, "bl"),
@@ -35,13 +37,21 @@ public class {{className}} extends OpMode {
                 new String[] {
                         "shooterArm"
                 },
-                new Servo[] {},
-                new String[] {},
+                new Servo[] {
+                        hardwareMap.get(Servo.class, "wobbleArmRight"),
+                        hardwareMap.get(Servo.class, "wobbleArmLeft"),
+                        hardwareMap.get(Servo.class, "wobbleGrabRight"),
+                        hardwareMap.get(Servo.class, "wobbleGrabLeft")
+                },
+                new String[] {
+                        "wobbleArmRight","wobbleArmLeft" , "wobbleGrabRight","wobbleGrabLeft"
+
+                },
                 new DcMotor[] {
                         hardwareMap.get(DcMotor.class, "drum"),
                         hardwareMap.get(DcMotor.class, "intake"),
-                        new EncodedMotor(hardwareMap.get(DcMotor.class, "flywheelRight"), 20),
-                        new EncodedMotor(hardwareMap.get(DcMotor.class, "flywheelLeft"), 20)
+                        new EncodedMotor(hardwareMap.get(DcMotor.class, "flywheelRight"), 13),
+                        new EncodedMotor(hardwareMap.get(DcMotor.class, "flywheelLeft"), 13)
                 },
                 new String[] {
                         "drum",
@@ -50,6 +60,8 @@ public class {{className}} extends OpMode {
                         "flywheelLeft"
                 }
         );
+        driver.resetEncoders();
+        driver.runWithOutEncoders();
 
          sense = new SensorManager(
                     new ColorSensor[] {
@@ -66,9 +78,18 @@ public class {{className}} extends OpMode {
 
 
         runtime = Autoauto.executeAutoautoProgram("{{javaStringFileSource}}", driver, limbs, sense, imu);
+        FeatureManager.logger.log(runtime.program.toString());
     }
 
     public void loop() {
         runtime.loop();
+    }
+
+    @Test
+    public void runTest() {
+        this.hardwareMap = new DummyHardwareMap();
+        this.init();
+        FeatureManager.logger.log(runtime.program.toString());
+        for(int i = 0; i < 3; i++) this.loop();
     }
 }

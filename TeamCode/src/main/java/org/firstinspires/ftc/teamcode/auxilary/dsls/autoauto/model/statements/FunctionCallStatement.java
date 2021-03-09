@@ -26,7 +26,7 @@ public class FunctionCallStatement extends Statement {
 
     @Override
     public void init() {
-        this.function.runtimeFunctionStore = this.program.autoautoRuntime.functions;
+        this.function.setRuntimeReferences(this.program.autoautoRuntime.functions, this.program.autoautoRuntime.variables);
         this.function.init();
     }
 

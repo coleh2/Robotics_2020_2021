@@ -1,9 +1,10 @@
 package org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values;
 
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.statements.Statement;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.Function;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 
-enum Type {LESS_THAN, LESS_EQUAL_THAN, EQUAL, GREATER_THAN, GREATER_EQUAL_THAN, NOT_EQUAL, HUH}
+enum Type {LESS_THAN, LESS_EQUAL_THAN, EQUAL, GREATER_THAN, GREATER_EQUAL_THAN, NOT_EQUAL, FUNC_CALL, HUH}
 
 public class BooleanOperator extends Value {
 
@@ -13,6 +14,8 @@ public class BooleanOperator extends Value {
     Value b;
 
     Statement statement;
+
+    FunctionCall function;
 
     public BooleanOperator(String src) {
         int lteIndex = src.indexOf("<=");
@@ -35,7 +38,12 @@ public class BooleanOperator extends Value {
                             neqIndex >= 0 ? neqIndex :
                             -1;
 
-        if(operatorIndex == -1) FeatureManager.logger.log("[AUTOAUTO ERROR] Could not parse boolean operator `" + src + "`");
+        if(operatorIndex == -1) {
+            FeatureManager.logger.log("[AUTOAUTO INFO] Boolean operator falling back to boolean function `" + src + "`");
+            this.type = Type.FUNC_CALL;
+            this.function = new FunctionCall(src);
+            return;
+        }
 
         this.type = lteIndex >= 0 ? Type.LESS_EQUAL_THAN :
                     gteIndex >= 0 ? Type.GREATER_EQUAL_THAN :
@@ -58,6 +66,12 @@ public class BooleanOperator extends Value {
     }
 
     public void loop() {
+        if(this.type == Type.FUNC_CALL) {
+            this.function.loop();
+            if(this.function.returnValue[0] > 0) this.returnValue = new float[] {0};
+            else this.returnValue = new float[] {1};
+            return;
+        }
         a.loop();
         b.loop();
         switch(type) {
@@ -118,5 +132,10 @@ public class BooleanOperator extends Value {
             default:
                 this.returnValue = new float[] {0};
         }
+    }
+
+    public String toString() {
+        if(this.type == Type.FUNC_CALL) return this.function.toString();
+        else return this.a.toString() + " " + this.type.name() + " " + this.b.toString();
     }
 }

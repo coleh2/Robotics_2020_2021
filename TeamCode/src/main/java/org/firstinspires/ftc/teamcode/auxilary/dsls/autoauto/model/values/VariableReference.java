@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values;
 
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.VariableStore;
+import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 
 public class VariableReference extends Value {
     String name;

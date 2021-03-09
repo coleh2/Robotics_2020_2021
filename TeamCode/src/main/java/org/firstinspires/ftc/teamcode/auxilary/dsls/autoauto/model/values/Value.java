@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values;
 
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.FunctionStore;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.VariableStore;
+import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 
 public class Value {
     protected float[] returnValue = new float[0];
@@ -26,5 +27,10 @@ public class Value {
 
     public float[] getReturnValue() {
         return this.returnValue;
+    }
+
+    public final void setRuntimeReferences(FunctionStore functions, VariableStore variables) {
+        this.runtimeFunctionStore = functions;
+        this.runtimeVariableStore = variables;
     }
 }

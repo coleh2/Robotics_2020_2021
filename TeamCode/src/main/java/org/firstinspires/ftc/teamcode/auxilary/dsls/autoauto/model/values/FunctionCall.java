@@ -35,9 +35,11 @@ public class FunctionCall extends Value {
 
     public void init() {
         for(int i = args.length - 1; i >= 0; i--) {
-            assert this.args[i] != null;
-            this.args[i].runtimeFunctionStore = this.runtimeFunctionStore;
-            this.args[i].runtimeVariableStore = this.runtimeVariableStore;
+            if(this.args[i] == null) {
+                FeatureManager.logger.log("Null argument " + i + " in " + this.toString());
+                continue;
+            }
+            this.args[i].setRuntimeReferences(this.runtimeFunctionStore, this.runtimeVariableStore);
             this.args[i].init();
         }
     }
@@ -85,7 +87,7 @@ public class FunctionCall extends Value {
         str.append(this.name + "(");
         for(Value arg : args) {
             if(arg == null) str.append("<null>");
-            str.append(arg.toString() + ", ");
+            else str.append(arg.toString() + ", ");
         }
         str.append(")");
         return str.toString();

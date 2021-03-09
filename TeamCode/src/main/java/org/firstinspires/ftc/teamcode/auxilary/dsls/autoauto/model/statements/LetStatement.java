@@ -31,8 +31,7 @@ public class LetStatement extends Statement {
 
 
     public void init() {
-        this.value.runtimeFunctionStore = program.autoautoRuntime.functions;
-        this.value.runtimeVariableStore = program.autoautoRuntime.variables;
+        this.value.setRuntimeReferences(program.autoautoRuntime.functions, program.autoautoRuntime.variables);
         this.value.init();
     }
 
