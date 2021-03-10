@@ -1,0 +1,20 @@
+<filetype binary="false" description="Autoauto Driving" name="Autoauto">
+  <highlighting>
+    <options>
+      <option name="LINE_COMMENT" value="" />
+      <option name="COMMENT_START" value="/*" />
+      <option name="COMMENT_END" value="*/" />
+      <option name="HEX_PREFIX" value="" />
+      <option name="NUM_POSTFIXES" value="tickshm" />
+      <option name="HAS_BRACKETS" value="true" />
+      <option name="HAS_PARENS" value="true" />
+    </options>
+    <keywords keywords="cartesianToPolar;delta;downScale;driveOmni;driveOmniExponential;driveRaw;driveVertical;driveWithVertical;encoderDistance;getHSL;getMotorPositions;getMotorPower;getScale;getServoPower;getThirdAngleOrientation;getTicks;highestValue;isSpecial;log;normalizeArray;omniCalc;polarToCartesian;proportionalPID;resetEncoders;roundToPoint;runMotorUsingEncoder;runToPosition;runUsingEncoders;runWithOutEncoders;setMotorPower;setServoPosition;setServoPower;setTargetPositions;stopDrive;upScale" ignore_case="false" />
+    <keywords2 keywords="#" />
+    <keywords3 />
+    <keywords4 keywords="after;goto;if;let;next;skip" />
+  </highlighting>
+  <extensionMap>
+    <mapping ext="autoauto" />
+  </extensionMap>
+</filetype>
