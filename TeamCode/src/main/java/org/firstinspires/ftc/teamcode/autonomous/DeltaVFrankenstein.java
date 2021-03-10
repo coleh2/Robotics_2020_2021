@@ -177,7 +177,7 @@ public class DeltaVFrankenstein extends StepAuto {
                 //retract
                 limbs.setMotorPower("drum", -0.5);
 
-                limbs.setServoPower("shooterArm", 0.63);
+                limbs.setServoPower("shooterArm", 0.57);
 
                 nextStep(800);
                 break;
