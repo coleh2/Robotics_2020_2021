@@ -1,0 +1,31 @@
+<idea-plugin>
+    <id>net.coleh.autoautolanguageplugin</id>
+    <category>Custom Languages</category>
+    <name>Autoauto Language Support</name>
+    <vendor url="https://github.com/coleh2">coleh</vendor>
+    <version>0.0.29</version>
+
+    <idea-version since-build="193" />
+
+    <depends>com.intellij.modules.androidstudio</depends>
+    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.java</depends>
+
+    <description><![CDATA[
+      Language support for the Autoauto DSL for First Tech Competition's Autonomous period.
+      Convention-over-configuration approach applied per-project, using the Managers pattern to interact with the robot.
+    ]]></description>
+
+    <actions>
+        <action id="Autoauto.NewFile" class="net.coleh.autoautolanguageplugin.AutoautoNewFileAction" text="Robot File" description="Create a new Robot file">
+            <add-to-group group-id="NewGroup" anchor="last"/>
+        </action>
+    </actions>
+
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileType language="Autoauto" name="Robot file" extensions="autoauto" fieldName="INSTANCE" implementationClass="net.coleh.autoautolanguageplugin.AutoautoFileType"/>
+        <lang.parserDefinition language="Autoauto" implementationClass="net.coleh.autoautolanguageplugin.parse.AutoautoParserDefinition"/>
+        <lang.syntaxHighlighterFactory language="Autoauto" implementationClass="net.coleh.autoautolanguageplugin.parse.syntaxhighlight.AutoautoSyntaxHighlighterFactory"/>
+    </extensions>
+</idea-plugin>

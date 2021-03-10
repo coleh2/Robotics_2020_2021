@@ -1,0 +1,62 @@
+{
+  parserClass="net.coleh.autoautolanguageplugin.parse.AutoautoParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Autoauto"
+  psiImplClassSuffix="Impl"
+  psiPackage="net.coleh.autoautolanguageplugin.parse"
+  psiImplPackage="net.coleh.autoautolanguageplugin.parse.impl"
+
+  elementTypeHolderClass="net.coleh.autoautolanguageplugin.parse.AutoautoTypes"
+  elementTypeClass="net.coleh.autoautolanguageplugin.parse.AutoautoElementType"
+  tokenTypeClass="net.coleh.autoautolanguageplugin.parse.AutoautoTokenType"
+}
+
+autoautoFile ::=  [comment] WHITESPACE_RANGE [comment] labeledStatepath+ [comment] WHITESPACE_RANGE [comment]
+
+labeledStatepath ::= [comment] WHITESPACE_RANGE [comment] statepathLabel COLON [comment] WHITESPACE_RANGE [comment] statepath [comment] WHITESPACE_RANGE [comment]
+
+statepathLabel ::= HASHTAG IDENTIFIER
+
+statepath ::=  [comment] WHITESPACE_RANGE [comment] ((state SEMICOLON)+ [state]) [comment] WHITESPACE_RANGE [comment]
+
+state ::=  [comment] WHITESPACE_RANGE [comment] ((statement COMMA)+ [statement]) [comment] WHITESPACE_RANGE [comment]
+
+statement ::=  [comment] WHITESPACE_RANGE [comment]  (afterStatement|functionCallStatement|gotoStatement|ifStatement|letStatement|nextStatement|skipStatement)  [comment] WHITESPACE_RANGE [comment]
+
+afterStatement ::= AFTER unitValue statement
+
+functionCallStatement ::= functionCall
+
+gotoStatement ::= GOTO IDENTIFIER
+
+ifStatement ::= IF OPEN_PAREN boolean CLOSE_PAREN statement
+
+letStatement ::= LET variableReference [comment] WHITESPACE_RANGE [comment] EQUALS [comment] WHITESPACE_RANGE [comment] value
+
+nextStatement ::= NEXT
+
+skipStatement ::= SKIP NUMERIC_VALUE
+
+value ::= [comment] WHITESPACE_RANGE [comment] (arrayLiteral | boolean | functionCall | NUMERIC_VALUE | stringLiteral | unitValue | variableReference) [comment] WHITESPACE_RANGE [comment]
+
+nonBooleanValue ::=  [comment] WHITESPACE_RANGE [comment] (arrayLiteral | functionCall | NUMERIC_VALUE | stringLiteral | unitValue | variableReference) [comment] WHITESPACE_RANGE [comment]
+
+variableReference ::= IDENTIFIER
+
+arrayLiteral ::= "[" value* "]"
+
+boolean ::= (nonBooleanValue comparisonOperator nonBooleanValue) | functionCall
+
+comparisonOperator ::= COMPARE_LT | COMPARE_LTE | COMPARE_EQ | COMPARE_NEQ | COMPARE_GTE | COMPARE_GT
+
+functionCall ::= IDENTIFIER [comment] WHITESPACE_RANGE [comment] OPEN_PAREN value* CLOSE_PAREN
+
+stringLiteral ::= QUOTE NON_QUOTE_CHARACTER* QUOTE
+
+unitValue ::= NUMERIC_VALUE unit
+
+unit ::= IDENTIFIER
+
+comment ::= COMMENT_BEGIN COMMENT_TEXT COMMENT_END
