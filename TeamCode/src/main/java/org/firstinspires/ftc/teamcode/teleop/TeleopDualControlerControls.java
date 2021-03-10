@@ -80,7 +80,10 @@ public class TeleopDualControlerControls extends OpMode {
 
             limbs.getServo("wobbleArmLeft").setDirection(Servo.Direction.REVERSE);
             limbs.getServo("wobbleGrabRight").setDirection(Servo.Direction.REVERSE);
-
+//            limbs.resetEncoders("flywheelRight");
+//            limbs.resetEncoders("flywheelLeft");
+//            limbs.runUsingEncoders("flywheelRight");
+//            limbs.runUsingEncoders("flywheelLeft");
        // driver.resetEncoders();
       //  driver.runUsingEncoders();
 
