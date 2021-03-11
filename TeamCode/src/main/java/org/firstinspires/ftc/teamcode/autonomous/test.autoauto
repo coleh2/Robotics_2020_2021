@@ -2,7 +2,7 @@
     driveOmni(0, 1, 0), after 1s next;
     log(4.0), after 1s next;
     driveOmni(1, 0, 0)
-#oneRing
+#oneRing:
      driveOmni(0, 1, 0), after 1s next;
      log(4.0), after 1s next;
      driveOmni(1, 0, 0)

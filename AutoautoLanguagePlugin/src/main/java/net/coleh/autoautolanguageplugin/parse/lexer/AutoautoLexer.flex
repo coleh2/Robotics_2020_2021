@@ -24,16 +24,19 @@ import net.coleh.autoautolanguageplugin.parse.AutoautoTypes;
 EOL=\R
 WHITE_SPACE=\s
 NUMERIC_VALUE=-?[0-9]*\.?[0-9]+
+NUMERIC_VALUE_WITH_UNIT=-?[0-9]*\.?[0-9]+\w+
 WHITESPACE_RANGE=\s+
+STATEPATH_LABEL_ID=#\w+
 
 %state IN_COMMENT
 %state IN_STRING
+%state IN_LINE_COMMENT
 %%
 <YYINITIAL> {
   {WHITE_SPACE}              { return TokenType.WHITE_SPACE; }
   {WHITESPACE_RANGE}         { return AutoautoTypes.WHITESPACE_RANGE; }
 
-  "#"                  { return AutoautoTypes.HASHTAG; }
+  {STATEPATH_LABEL_ID}    { return AutoautoTypes.STATEPATH_LABEL_ID; }
   ":"                    { return AutoautoTypes.COLON; }
   ";"                { return AutoautoTypes.SEMICOLON; }
   ","                    { return AutoautoTypes.COMMA; }
@@ -48,6 +51,7 @@ WHITESPACE_RANGE=\s+
   "next"                     { return AutoautoTypes.NEXT; }
   "skip"                     { return AutoautoTypes.SKIP; }
   {NUMERIC_VALUE}            { return AutoautoTypes.NUMERIC_VALUE; }
+  {NUMERIC_VALUE_WITH_UNIT}                 {return AutoautoTypes.NUMERIC_VALUE_WITH_UNIT; }
   "\""                    { yybegin(IN_STRING); return AutoautoTypes.QUOTE; }
   "<"                     { return AutoautoTypes.COMPARE_LT; }
   "<="                    { return AutoautoTypes.COMPARE_LTE; }
@@ -57,16 +61,22 @@ WHITESPACE_RANGE=\s+
   ">"                     { return AutoautoTypes.COMPARE_LT; }
   \w+                     { return AutoautoTypes.IDENTIFIER; }
   "/*"                       { yybegin(IN_COMMENT); return AutoautoTypes.COMMENT_BEGIN;}
+  "//"                       { yybegin(IN_LINE_COMMENT); return AutoautoTypes.LINE_COMMENT_BEGIN;}
 }
 
 <IN_STRING> {
     "\""                       { yybegin(YYINITIAL); return AutoautoTypes.QUOTE; }
-     .+      { return AutoautoTypes.NON_QUOTE_CHARACTER; }
+     .      { return AutoautoTypes.NON_QUOTE_CHARACTER; }
 }
 
 <IN_COMMENT> {
-    "*/"              { yybegin(YYINITIAL);return AutoautoTypes.COMMENT_END;  }
-     .+              { return AutoautoTypes.COMMENT_TEXT; }
+    "*/"              { yybegin(YYINITIAL); return AutoautoTypes.COMMENT_END;  }
+     .              { return AutoautoTypes.COMMENT_TEXT; }
+}
+
+<IN_LINE_COMMENT> {
+    "\n"              { yybegin(YYINITIAL); return AutoautoTypes.LINE_COMMENT_END;  }
+     .              { return AutoautoTypes.COMMENT_TEXT; }
 }
 
 [^] { return TokenType.BAD_CHARACTER; }

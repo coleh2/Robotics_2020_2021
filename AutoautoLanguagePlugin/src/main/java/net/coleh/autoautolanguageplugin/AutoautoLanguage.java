@@ -9,7 +9,7 @@ public class AutoautoLanguage extends Language {
     public static final AutoautoLanguage INSTANCE = new AutoautoLanguage();
 
     private AutoautoLanguage() {
-        super("Simple");
+        super("Autoauto");
     }
 }
 
