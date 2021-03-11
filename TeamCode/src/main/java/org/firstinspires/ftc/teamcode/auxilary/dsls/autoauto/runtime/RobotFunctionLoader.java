@@ -51,7 +51,7 @@ public class RobotFunctionLoader {
         IsSpecialFunction isSpecial = new IsSpecialFunction(sense); isSpecial.setName("isSpecial"); isSpecial.setArgCount(1); functions.add(isSpecial);
 
         OmniCalcFunction omniCalc = new OmniCalcFunction(); omniCalc.setName("omniCalc"); omniCalc.setArgCount(3); functions.add(omniCalc);
-        ProportionalPIDFunction proportionalPID = new ProportionalPIDFunction(); proportionalPID.setName("proportionalPID"); proportionalPID.setArgCount(2); functions.add(proportionalPID);
+        ProportionalPIDFunction proportionalPID = new ProportionalPIDFunction(); proportionalPID.setName("proportionalPID"); proportionalPID.setArgCount(3); functions.add(proportionalPID);
         DeltaFunction delta = new DeltaFunction(); delta.setName("delta"); delta.setArgCount(2); functions.add(delta);
         NormalizeArrayFunction normalizeArray = new NormalizeArrayFunction(); normalizeArray.setName("normalizeArray"); normalizeArray.setArgCount(1); functions.add(normalizeArray);
         CartesianToPolarFunction cartesianToPolar = new CartesianToPolarFunction(); cartesianToPolar.setName("cartesianToPolar"); cartesianToPolar.setArgCount(2); functions.add(cartesianToPolar);

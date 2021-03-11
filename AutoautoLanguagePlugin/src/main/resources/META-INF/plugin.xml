@@ -27,5 +27,9 @@
         <fileType language="Autoauto" name="Robot file" extensions="autoauto" fieldName="INSTANCE" implementationClass="net.coleh.autoautolanguageplugin.AutoautoFileType"/>
         <lang.parserDefinition language="Autoauto" implementationClass="net.coleh.autoautolanguageplugin.parse.AutoautoParserDefinition"/>
         <lang.syntaxHighlighterFactory language="Autoauto" implementationClass="net.coleh.autoautolanguageplugin.parse.syntaxhighlight.AutoautoSyntaxHighlighterFactory"/>
+        <colorSettingsPage implementation="net.coleh.autoautolanguageplugin.parse.syntaxhighlight.AutoautoColorSettingsPage"/>
+        <completion.contributor language="Autoauto" implementationClass="net.coleh.autoautolanguageplugin.completion.AutoautoCompletionContributor"/>
+        <annotator language="Autoauto" implementationClass="net.coleh.autoautolanguageplugin.annotate.AutoautoAnnotator"/>
+        <lang.commenter language="Autoauto" implementationClass="net.coleh.autoautolanguageplugin.comment.AutoautoCommenter"/>
     </extensions>
 </idea-plugin>

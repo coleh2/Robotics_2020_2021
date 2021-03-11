@@ -11,19 +11,22 @@
   elementTypeHolderClass="net.coleh.autoautolanguageplugin.parse.AutoautoTypes"
   elementTypeClass="net.coleh.autoautolanguageplugin.parse.AutoautoElementType"
   tokenTypeClass="net.coleh.autoautolanguageplugin.parse.AutoautoTokenType"
+
+  psiImplUtilClass="net.coleh.autoautolanguageplugin.parse.AutoautoPsiUtilImpl"
 }
 
-autoautoFile ::=  [comment] WHITESPACE_RANGE [comment] labeledStatepath+ [comment] WHITESPACE_RANGE [comment]
+autoautoFile ::=  commentOpportunity* labeledStatepath+ commentOpportunity*
 
-labeledStatepath ::= [comment] WHITESPACE_RANGE [comment] statepathLabel COLON [comment] WHITESPACE_RANGE [comment] statepath [comment] WHITESPACE_RANGE [comment]
+commentOpportunity ::= comment [WHITESPACE_RANGE]
 
-statepathLabel ::= HASHTAG IDENTIFIER
+labeledStatepath ::= commentOpportunity* STATEPATH_LABEL_ID COLON commentOpportunity* statepath commentOpportunity* {methods=[getLabel]}
 
-statepath ::=  [comment] WHITESPACE_RANGE [comment] ((state SEMICOLON)+ [state]) [comment] WHITESPACE_RANGE [comment]
 
-state ::=  [comment] WHITESPACE_RANGE [comment] ((statement COMMA)+ [statement]) [comment] WHITESPACE_RANGE [comment]
+statepath ::=  commentOpportunity* (state SEMICOLON)* state [SEMICOLON] commentOpportunity*
 
-statement ::=  [comment] WHITESPACE_RANGE [comment]  (afterStatement|functionCallStatement|gotoStatement|ifStatement|letStatement|nextStatement|skipStatement)  [comment] WHITESPACE_RANGE [comment]
+state ::=  commentOpportunity* (statement COMMA)* statement [COMMA] commentOpportunity*
+
+statement ::=  commentOpportunity*  (afterStatement|functionCallStatement|gotoStatement|ifStatement|letStatement|nextStatement|skipStatement)  commentOpportunity*
 
 afterStatement ::= AFTER unitValue statement
 
@@ -33,30 +36,34 @@ gotoStatement ::= GOTO IDENTIFIER
 
 ifStatement ::= IF OPEN_PAREN boolean CLOSE_PAREN statement
 
-letStatement ::= LET variableReference [comment] WHITESPACE_RANGE [comment] EQUALS [comment] WHITESPACE_RANGE [comment] value
+letStatement ::= LET variableReference commentOpportunity* EQUALS commentOpportunity* value
 
 nextStatement ::= NEXT
 
 skipStatement ::= SKIP NUMERIC_VALUE
 
-value ::= [comment] WHITESPACE_RANGE [comment] (arrayLiteral | boolean | functionCall | NUMERIC_VALUE | stringLiteral | unitValue | variableReference) [comment] WHITESPACE_RANGE [comment]
+value ::= commentOpportunity* (arrayLiteral | boolean | functionCall | NUMERIC_VALUE | stringLiteral | unitValue | variableReference) commentOpportunity*
 
-nonBooleanValue ::=  [comment] WHITESPACE_RANGE [comment] (arrayLiteral | functionCall | NUMERIC_VALUE | stringLiteral | unitValue | variableReference) [comment] WHITESPACE_RANGE [comment]
+nonBooleanValue ::=  commentOpportunity* (arrayLiteral | functionCall | NUMERIC_VALUE | stringLiteral | unitValue | variableReference) commentOpportunity*
 
 variableReference ::= IDENTIFIER
 
-arrayLiteral ::= "[" value* "]"
+arrayLiteral ::= "[" [argumentList] "]"
 
 boolean ::= (nonBooleanValue comparisonOperator nonBooleanValue) | functionCall
 
 comparisonOperator ::= COMPARE_LT | COMPARE_LTE | COMPARE_EQ | COMPARE_NEQ | COMPARE_GTE | COMPARE_GT
 
-functionCall ::= IDENTIFIER [comment] WHITESPACE_RANGE [comment] OPEN_PAREN value* CLOSE_PAREN
+functionCall ::= IDENTIFIER commentOpportunity* OPEN_PAREN [argumentList] CLOSE_PAREN
 
 stringLiteral ::= QUOTE NON_QUOTE_CHARACTER* QUOTE
 
-unitValue ::= NUMERIC_VALUE unit
+unitValue ::= NUMERIC_VALUE_WITH_UNIT
 
-unit ::= IDENTIFIER
+comment ::= blockComment | lineComment
 
-comment ::= COMMENT_BEGIN COMMENT_TEXT COMMENT_END
+blockComment ::= COMMENT_BEGIN COMMENT_TEXT* COMMENT_END
+
+lineComment ::= LINE_COMMENT_BEGIN COMMENT_TEXT* LINE_COMMENT_END
+
+argumentList ::= (value COMMA)* value

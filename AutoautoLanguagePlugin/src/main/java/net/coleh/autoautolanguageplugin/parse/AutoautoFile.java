@@ -22,6 +22,6 @@ public class AutoautoFile extends PsiFileBase {
 
     @Override
     public String toString() {
-        return "Simple File";
+        return "Autoauto File";
     }
 }

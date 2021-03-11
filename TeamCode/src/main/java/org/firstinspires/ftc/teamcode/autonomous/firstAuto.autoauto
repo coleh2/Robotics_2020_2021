@@ -3,7 +3,7 @@
     setServoPosition(wobbleGrabLeft, 1), setServoPosition(wobbleGrabRight, 1), next;
     setServoPower(shooterArm, 0.63), setMotorPower(drum, -0.5), setMotorPower(flywheelLeft, -0.3), setMotorPower(flywheelRight, 0.3), after 0.8s next;
     setMotorPower(flywheelLeft, 0), setMotorPower(flywheelRight, 0), next;
-    goto shooting;
+    goto shooting, driveOmni()
 
 #shooting:
     //drive to sampling
@@ -15,7 +15,10 @@
     //drive to line
     driveOmni(0.3,0,0), after 900ticks next;
     driveOmni(0,0.3,0), after 300ticks next;
-    proportional = proportionalPID(getThirdAngleOrientation(), 180, 0.001f), driveOmni(0,0,proportional), if(getThirdAngleOrientation() == 179) next, after 0.5s next;
+    let proportional = proportionalPID(getThirdAngleOrientation(), 180, 0.001f), driveOmni(0,0,proportional), if(getThirdAngleOrientation() == 179) next, after 0.5s next;
+    driveOmni();
+
+
 
     //shooting
     setServoPower(shooterArm, 0.4), after 0.4s next;
