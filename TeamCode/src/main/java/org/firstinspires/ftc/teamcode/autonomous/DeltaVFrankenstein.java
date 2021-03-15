@@ -23,7 +23,7 @@ public class DeltaVFrankenstein extends StepAuto {
     ManipulationManager limbs;
     ColorSensor sensorOne;
     ColorSensor sensorFour;
-    ImuManager imu;
+     ImuManager imu;
     int stepTime=0;
     int conditional;
 

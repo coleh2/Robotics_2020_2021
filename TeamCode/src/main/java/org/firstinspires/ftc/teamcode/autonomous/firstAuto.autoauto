@@ -3,7 +3,7 @@
     setServoPosition(wobbleGrabLeft, 1), setServoPosition(wobbleGrabRight, 1), next;
     setServoPower(shooterArm, 0.63), setMotorPower(drum, -0.5), setMotorPower(flywheelLeft, -0.3), setMotorPower(flywheelRight, 0.3), after 0.8s next;
     setMotorPower(flywheelLeft, 0), setMotorPower(flywheelRight, 0), next;
-    goto shooting, driveOmni()
+    goto shooting
 
 #shooting:
     //drive to sampling
@@ -35,7 +35,7 @@
     setServoPower(shooterArm, 0.63), setMotorPower(flywheelLeft, 0), setMotorPower(flywheelRight, 0), next;
 
     //goto different threads
-    if(rings == 0) goto zeroRings, if(rings == 1) goto oneRing, if(rings == 4) goto fourRings;
+    if(rings == 0) goto zeroRings, if(rings == 1) goto oneRing, if(rings == 4) goto fourRings
 
 #zeroRings:
     //drive to correct position
@@ -48,7 +48,7 @@
     setServoPosition(wobbleArmLeft, 0.055), setServoPosition(wobbleArmRight, 0.055), driveOmni(0,0.4,0), after 1300ticks next;
 
     //park on the line
-    driveOmni(-0.3,0,0), after 500ticks goto end;
+    driveOmni(-0.3,0,0), after 500ticks goto end
 
 #oneRing:
     //drive to correct position
@@ -60,13 +60,13 @@
     setServoPosition(wobbleArmLeft, 0.055), setServoPosition(wobbleArmRight, 0.055), driveOmni(0,0.4,0), after 1300ticks next;
 
     //park on the line
-    driveOmni(-0.3,0,0), after 1500ticks goto end;
+    driveOmni(-0.3,0,0), after 1500ticks goto end
 
 #fourRings:
     //drive to correct position
     driveOmni(0.3,0,0), after 2800ticks next;
     //turn to position
-    proportional = proportionalPID(getThirdAngleOrientation(), 90, 0.004f), driveOmni(0,0,proportional), after 2s next;
+    let proportional = proportionalPID(getThirdAngleOrientation(), 90, 0.004f), driveOmni(0,0,proportional), after 2s next;
     driveOmni(-0.4,0,0), after 400ticks next;
 
     //release wobble goal
@@ -75,7 +75,7 @@
     setServoPosition(wobbleArmLeft, 0.055), setServoPosition(wobbleArmRight, 0.055), driveOmni(0,0.4,0), after 1300ticks next;
 
     //park on the line
-    driveOmni(-0.4,0,0), after 800ticks goto end;
+    driveOmni(-0.4,0,0), after 800ticks goto end
 
 #end:
-    driveOmni(0,0,0), setServoPower(shooterArm, 0.63), setMotorPower(flywheelLeft, 0), setMotorPower(flywheelRight, 0), setMotoPower(drum, 0);
+    driveOmni(0,0,0), setServoPower(shooterArm, 0.63), setMotorPower(flywheelLeft, 0), setMotorPower(flywheelRight, 0), setMotoPower(drum, 0)
