@@ -54,6 +54,7 @@ public interface AutoautoTypes {
   IElementType LET = new AutoautoTokenType("LET");
   IElementType LINE_COMMENT_BEGIN = new AutoautoTokenType("LINE_COMMENT_BEGIN");
   IElementType LINE_COMMENT_END = new AutoautoTokenType("LINE_COMMENT_END");
+  IElementType MINUS = new AutoautoTokenType("MINUS");
   IElementType NEXT = new AutoautoTokenType("NEXT");
   IElementType NON_QUOTE_CHARACTER = new AutoautoTokenType("NON_QUOTE_CHARACTER");
   IElementType NUMERIC_VALUE = new AutoautoTokenType("NUMERIC_VALUE");

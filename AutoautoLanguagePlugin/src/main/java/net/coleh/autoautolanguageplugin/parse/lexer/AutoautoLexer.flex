@@ -50,6 +50,7 @@ STATEPATH_LABEL_ID=#\w+
   "="                   { return AutoautoTypes.EQUALS; }
   "next"                     { return AutoautoTypes.NEXT; }
   "skip"                     { return AutoautoTypes.SKIP; }
+  "-"                       { return AutoautoTypes.MINUS; }
   {NUMERIC_VALUE}            { return AutoautoTypes.NUMERIC_VALUE; }
   {NUMERIC_VALUE_WITH_UNIT}                 {return AutoautoTypes.NUMERIC_VALUE_WITH_UNIT; }
   "\""                    { yybegin(IN_STRING); return AutoautoTypes.QUOTE; }

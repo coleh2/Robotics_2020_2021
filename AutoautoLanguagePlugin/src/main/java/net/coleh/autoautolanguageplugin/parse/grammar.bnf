@@ -42,7 +42,7 @@ nextStatement ::= NEXT
 
 skipStatement ::= SKIP NUMERIC_VALUE
 
-value ::= commentOpportunity* (arrayLiteral | boolean | functionCall | NUMERIC_VALUE | stringLiteral | unitValue | variableReference) commentOpportunity*
+value ::= commentOpportunity*  [MINUS] (arrayLiteral | boolean | functionCall | NUMERIC_VALUE | stringLiteral | unitValue | variableReference) commentOpportunity*
 
 nonBooleanValue ::=  commentOpportunity* (arrayLiteral | functionCall | NUMERIC_VALUE | stringLiteral | unitValue | variableReference) commentOpportunity*
 

@@ -172,13 +172,13 @@ public class AutoautoLexer implements FlexLexer {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\4\0\1\1\1\2\1\1\1\3\1\1\1\4\1\1"+
-    "\1\5\1\6\1\7\3\4\1\10\1\11\1\4\1\12"+
-    "\2\4\1\13\1\14\1\1\1\14\1\1\2\15\1\16"+
-    "\1\17\1\20\1\21\1\0\1\22\1\3\1\23\2\4"+
-    "\1\24\1\4\1\25\2\4\1\26\1\27\1\30\1\31"+
-    "\1\32\1\33\2\4\1\24\5\4\1\34\1\35\1\36"+
-    "\1\4\1\37\1\40";
+    "\4\0\1\1\1\2\1\3\1\4\1\1\1\5\1\1"+
+    "\1\6\1\7\1\10\3\5\1\11\1\12\1\5\1\13"+
+    "\2\5\1\14\1\15\1\1\1\15\1\1\2\16\1\17"+
+    "\1\20\1\21\1\22\1\0\1\23\1\4\1\24\2\5"+
+    "\1\25\1\5\1\26\2\5\1\27\1\30\1\31\1\32"+
+    "\1\33\1\34\2\5\1\25\5\5\1\35\1\36\1\37"+
+    "\1\5\1\40\1\41";
 
   private static int [] zzUnpackAction() {
     int [] result = new int[65];
@@ -644,162 +644,167 @@ public class AutoautoLexer implements FlexLexer {
             { return TokenType.BAD_CHARACTER;
             } 
             // fall through
-          case 33: break;
+          case 34: break;
           case 2: 
             { return TokenType.WHITE_SPACE;
             } 
             // fall through
-          case 34: break;
-          case 3: 
-            { return AutoautoTypes.NUMERIC_VALUE;
-            } 
-            // fall through
           case 35: break;
-          case 4: 
-            { return AutoautoTypes.IDENTIFIER;
+          case 3: 
+            { return AutoautoTypes.MINUS;
             } 
             // fall through
           case 36: break;
-          case 5: 
-            { return AutoautoTypes.COLON;
+          case 4: 
+            { return AutoautoTypes.NUMERIC_VALUE;
             } 
             // fall through
           case 37: break;
-          case 6: 
-            { return AutoautoTypes.SEMICOLON;
+          case 5: 
+            { return AutoautoTypes.IDENTIFIER;
             } 
             // fall through
           case 38: break;
-          case 7: 
-            { return AutoautoTypes.COMMA;
+          case 6: 
+            { return AutoautoTypes.COLON;
             } 
             // fall through
           case 39: break;
-          case 8: 
-            { return AutoautoTypes.OPEN_PAREN;
+          case 7: 
+            { return AutoautoTypes.SEMICOLON;
             } 
             // fall through
           case 40: break;
-          case 9: 
-            { return AutoautoTypes.CLOSE_PAREN;
+          case 8: 
+            { return AutoautoTypes.COMMA;
             } 
             // fall through
           case 41: break;
-          case 10: 
-            { return AutoautoTypes.EQUALS;
+          case 9: 
+            { return AutoautoTypes.OPEN_PAREN;
             } 
             // fall through
           case 42: break;
-          case 11: 
-            { yybegin(IN_STRING); return AutoautoTypes.QUOTE;
+          case 10: 
+            { return AutoautoTypes.CLOSE_PAREN;
             } 
             // fall through
           case 43: break;
-          case 12: 
-            { return AutoautoTypes.COMPARE_LT;
+          case 11: 
+            { return AutoautoTypes.EQUALS;
             } 
             // fall through
           case 44: break;
-          case 13: 
-            { return AutoautoTypes.COMMENT_TEXT;
+          case 12: 
+            { yybegin(IN_STRING); return AutoautoTypes.QUOTE;
             } 
             // fall through
           case 45: break;
-          case 14: 
-            { return AutoautoTypes.NON_QUOTE_CHARACTER;
+          case 13: 
+            { return AutoautoTypes.COMPARE_LT;
             } 
             // fall through
           case 46: break;
-          case 15: 
-            { yybegin(YYINITIAL); return AutoautoTypes.QUOTE;
+          case 14: 
+            { return AutoautoTypes.COMMENT_TEXT;
             } 
             // fall through
           case 47: break;
-          case 16: 
-            { yybegin(YYINITIAL); return AutoautoTypes.LINE_COMMENT_END;
+          case 15: 
+            { return AutoautoTypes.NON_QUOTE_CHARACTER;
             } 
             // fall through
           case 48: break;
-          case 17: 
-            { return AutoautoTypes.WHITESPACE_RANGE;
+          case 16: 
+            { yybegin(YYINITIAL); return AutoautoTypes.QUOTE;
             } 
             // fall through
           case 49: break;
-          case 18: 
-            { return AutoautoTypes.NUMERIC_VALUE_WITH_UNIT;
+          case 17: 
+            { yybegin(YYINITIAL); return AutoautoTypes.LINE_COMMENT_END;
             } 
             // fall through
           case 50: break;
-          case 19: 
-            { return AutoautoTypes.STATEPATH_LABEL_ID;
+          case 18: 
+            { return AutoautoTypes.WHITESPACE_RANGE;
             } 
             // fall through
           case 51: break;
-          case 20: 
-            { return AutoautoTypes.IF;
+          case 19: 
+            { return AutoautoTypes.NUMERIC_VALUE_WITH_UNIT;
             } 
             // fall through
           case 52: break;
-          case 21: 
-            { return AutoautoTypes.COMPARE_EQ;
+          case 20: 
+            { return AutoautoTypes.STATEPATH_LABEL_ID;
             } 
             // fall through
           case 53: break;
-          case 22: 
-            { return AutoautoTypes.COMPARE_LTE;
+          case 21: 
+            { return AutoautoTypes.IF;
             } 
             // fall through
           case 54: break;
-          case 23: 
-            { return AutoautoTypes.COMPARE_NEQ;
+          case 22: 
+            { return AutoautoTypes.COMPARE_EQ;
             } 
             // fall through
           case 55: break;
-          case 24: 
-            { return AutoautoTypes.COMPARE_GTE;
+          case 23: 
+            { return AutoautoTypes.COMPARE_LTE;
             } 
             // fall through
           case 56: break;
-          case 25: 
-            { yybegin(IN_LINE_COMMENT); return AutoautoTypes.LINE_COMMENT_BEGIN;
+          case 24: 
+            { return AutoautoTypes.COMPARE_NEQ;
             } 
             // fall through
           case 57: break;
-          case 26: 
-            { yybegin(IN_COMMENT); return AutoautoTypes.COMMENT_BEGIN;
+          case 25: 
+            { return AutoautoTypes.COMPARE_GTE;
             } 
             // fall through
           case 58: break;
-          case 27: 
-            { yybegin(YYINITIAL); return AutoautoTypes.COMMENT_END;
+          case 26: 
+            { yybegin(IN_LINE_COMMENT); return AutoautoTypes.LINE_COMMENT_BEGIN;
             } 
             // fall through
           case 59: break;
-          case 28: 
-            { return AutoautoTypes.LET;
+          case 27: 
+            { yybegin(IN_COMMENT); return AutoautoTypes.COMMENT_BEGIN;
             } 
             // fall through
           case 60: break;
-          case 29: 
-            { return AutoautoTypes.NEXT;
+          case 28: 
+            { yybegin(YYINITIAL); return AutoautoTypes.COMMENT_END;
             } 
             // fall through
           case 61: break;
-          case 30: 
-            { return AutoautoTypes.SKIP;
+          case 29: 
+            { return AutoautoTypes.LET;
             } 
             // fall through
           case 62: break;
-          case 31: 
-            { return AutoautoTypes.GOTO;
+          case 30: 
+            { return AutoautoTypes.NEXT;
             } 
             // fall through
           case 63: break;
-          case 32: 
-            { return AutoautoTypes.AFTER;
+          case 31: 
+            { return AutoautoTypes.SKIP;
             } 
             // fall through
           case 64: break;
+          case 32: 
+            { return AutoautoTypes.GOTO;
+            } 
+            // fall through
+          case 65: break;
+          case 33: 
+            { return AutoautoTypes.AFTER;
+            } 
+            // fall through
+          case 66: break;
           default:
             zzScanError(ZZ_NO_MATCH);
           }

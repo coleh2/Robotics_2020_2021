@@ -727,7 +727,7 @@ public class AutoautoParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // commentOpportunity* (arrayLiteral | boolean | functionCall | NUMERIC_VALUE | stringLiteral | unitValue | variableReference) commentOpportunity*
+  // commentOpportunity*  [MINUS] (arrayLiteral | boolean | functionCall | NUMERIC_VALUE | stringLiteral | unitValue | variableReference) commentOpportunity*
   public static boolean value(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "value")) return false;
     boolean r;
@@ -735,6 +735,7 @@ public class AutoautoParser implements PsiParser, LightPsiParser {
     r = value_0(b, l + 1);
     r = r && value_1(b, l + 1);
     r = r && value_2(b, l + 1);
+    r = r && value_3(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -750,9 +751,16 @@ public class AutoautoParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // arrayLiteral | boolean | functionCall | NUMERIC_VALUE | stringLiteral | unitValue | variableReference
+  // [MINUS]
   private static boolean value_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "value_1")) return false;
+    consumeToken(b, MINUS);
+    return true;
+  }
+
+  // arrayLiteral | boolean | functionCall | NUMERIC_VALUE | stringLiteral | unitValue | variableReference
+  private static boolean value_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "value_2")) return false;
     boolean r;
     r = arrayLiteral(b, l + 1);
     if (!r) r = boolean_$(b, l + 1);
@@ -765,12 +773,12 @@ public class AutoautoParser implements PsiParser, LightPsiParser {
   }
 
   // commentOpportunity*
-  private static boolean value_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "value_2")) return false;
+  private static boolean value_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "value_3")) return false;
     while (true) {
       int c = current_position_(b);
       if (!commentOpportunity(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "value_2", c)) break;
+      if (!empty_element_parsed_guard_(b, "value_3", c)) break;
     }
     return true;
   }
