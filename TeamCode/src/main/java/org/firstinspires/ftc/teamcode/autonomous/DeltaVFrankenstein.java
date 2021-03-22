@@ -112,7 +112,7 @@ public class DeltaVFrankenstein extends StepAuto {
             case MOVE1:
                 //go forward
                 driver.driveRaw( 0.3f, 0.3f, -0.3f, -0.3f);
-                nextStepTicks(1550, driver.frontRight.getCurrentPosition());
+                nextStepTicks(1550, driver.getTicks());
                 break;
             case MOVE2:
                 //strafe to rings
