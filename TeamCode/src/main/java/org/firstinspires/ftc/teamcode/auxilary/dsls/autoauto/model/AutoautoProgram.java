@@ -12,7 +12,7 @@ import java.util.Map;
 public class AutoautoProgram {
     public HashMap<String, Statepath> paths;
     public Statepath currentPath;
-    String currentPathName;
+    public String currentPathName;
     int currentPathIndex;
 
     public AutoautoRuntime autoautoRuntime;
