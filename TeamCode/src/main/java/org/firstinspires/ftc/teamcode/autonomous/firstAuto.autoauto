@@ -2,43 +2,43 @@
     setServoPosition(wobbleArmLeft, 0.055), setServoPosition(wobbleArmRight, 0.055), next;
     setServoPosition(wobbleGrabLeft, 1), setServoPosition(wobbleGrabRight, 1), next;
     setServoPower(shooterArm, 0.63), setMotorPower(drum, -0.5), setMotorPower(flywheelLeft, -0.3), setMotorPower(flywheelRight, 0.3), after 0.8s next;
-    setMotorPower(flywheelLeft, 0), setMotorPower(flywheelRight, 0), next;
+    setMotorPower(drum, 0), setMotorPower(flywheelLeft, 0), setMotorPower(flywheelRight, 0), next;
     goto shooting
 
 #shooting:
-    //drive to sampling
-    driveOmni(0.3,0,0), after 1550ticks next;
-    driveOmni(0,0.3,0), after 70ticks next;
-    //setting conditional
+    /*drive to sampling*/
+    driveOmni(0.3,0.0,0.0), after 1550ticks next;
+    driveOmni(0.0,0.3,0.0), after 70ticks next;
+    /*setting conditional*/
     let rings = 0, if(isSpecial(sensorOne)) let rings = 1, if(isSpecial(sensorFour)) let rings = 4, log(rings), after 0.5s next;
 
-    //drive to line
-    driveOmni(0.3,0,0), after 900ticks next;
-    driveOmni(0,0.3,0), after 300ticks next;
+    /*drive to line*/
+    driveOmni(0.3,0.0,0.0), after 900ticks next;
+    driveOmni(0.0,0.3,0.0), after 300ticks next;
     let proportional = proportionalPID(getThirdAngleOrientation(), 180, 0.001f), driveOmni(0,0,proportional), if(getThirdAngleOrientation() == 179) next, after 0.5s next;
     driveOmni();
 
 
 
-    //shooting
+    /*shooting*/
     setServoPower(shooterArm, 0.4), after 0.4s next;
     setServoPower(shooterArm, 0.63), setMotorPower(drum, -0.5), setMotorPower(flywheelLeft, -0.3), setMotorPower(flywheelRight, 0.3), after 0.8s next;
     setMotorPower(flywheelLeft, 0.75), setMotorPower(flywheelRight, -0.75), after 0.5s next;
 
-    //shooting
+    /*shooting*/
     setServoPower(shooterArm, 0.4), after 0.4s next;
     setServoPower(shooterArm, 0.63), setMotorPower(drum, -0.5), setMotorPower(flywheelLeft, -0.3), setMotorPower(flywheelRight, 0.3), after 0.8s next;
     setMotorPower(flywheelLeft, 0.75), setMotorPower(flywheelRight, -0.75), after 0.5s next;
 
-    //shooting
+    /*shooting*/
     setServoPower(shooterArm, 0.4), after 0.4s next;
     setServoPower(shooterArm, 0.63), setMotorPower(flywheelLeft, 0), setMotorPower(flywheelRight, 0), next;
 
-    //goto different threads
+    /*goto different threads*/
     if(rings == 0) goto zeroRings, if(rings == 1) goto oneRing, if(rings == 4) goto fourRings
 
 #zeroRings:
-    //drive to correct position
+    /*drive to correct position*/
     driveOmni(0.3,0,0), after 1300ticks next;
     driveOmni(0,-0.4,0), after 2000ticks next;
 
