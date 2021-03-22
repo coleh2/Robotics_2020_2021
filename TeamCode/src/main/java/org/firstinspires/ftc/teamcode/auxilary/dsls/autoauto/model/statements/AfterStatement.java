@@ -38,7 +38,11 @@ public class AfterStatement extends Statement {
         if(wait.unitType == UnitValue.UnitType.TIME) {
             if (System.currentTimeMillis() >= stepStartTime + wait.baseAmount) action.loop();
         } else if(wait.unitType == UnitValue.UnitType.DISTANCE) {
-            if((int)program.autoautoRuntime.functions.get("getTicks", 0).call(new float[0][0])[0] > stepStartTick + wait.baseAmount) action.loop();
+            int tarTicks = (int) wait.baseAmount;
+            int ticksReferPoint = stepStartTick;
+            int cTicks = (int)program.autoautoRuntime.functions.get("getTicks", 0).call(new float[0][0])[0];
+            
+            if(Math.abs(cTicks - ticksReferPoint) >= Math.abs(tarTicks)) action.loop();
         }
     }
 }
