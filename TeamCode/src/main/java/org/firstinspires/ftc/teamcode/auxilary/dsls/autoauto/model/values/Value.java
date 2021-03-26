@@ -12,8 +12,7 @@ public class Value {
 
     public static Value createProperValueType(String src) {
         String trimmed = src.trim();
-        if(trimmed.startsWith("-")) return new ArithmeticValue(new NumericValue("-1"), "*", createProperValueType(src.substring(1)));
-        else if(trimmed.matches("^[0-9]*\\.?[0-9]+$")) return new NumericValue(trimmed);
+        if(trimmed.matches("^[0-9]*\\.?[0-9]+$")) return new NumericValue(trimmed);
         else if(trimmed.matches("^[0-9]*\\.?[0-9]+[a-z]+$")) return new UnitValue(trimmed);
         else if(trimmed.startsWith("[") && trimmed.endsWith("]")) return new ArrayLiteral(trimmed);
         else if(trimmed.indexOf('(') > -1) return new FunctionCall(trimmed);
