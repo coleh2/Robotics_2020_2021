@@ -19,8 +19,7 @@ public class Value {
         else if(trimmed.indexOf('(') > -1) return new FunctionCall(trimmed);
         else if(trimmed.startsWith("\"") && trimmed.endsWith("\"")) return new StringLiteral(trimmed);
         else if(trimmed.matches("^\\w+$")) return new VariableReference(trimmed);
-
-        return null;
+        else return new ArithmeticValue(trimmed);
     }
 
     public void init() {}

@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values;
 
+import org.firstinspires.ftc.teamcode.auxilary.dsls.ParserTools;
+
 public class ArithmeticValue extends Value {
     String operator;
     Value right;
@@ -10,6 +12,59 @@ public class ArithmeticValue extends Value {
         this.left = left;
         this.operator = operator;
         this.right = right;
+    }
+
+    public ArithmeticValue(String src) {
+        int moduloIndex = ParserTools.groupAwareIndexOf(src, '%');
+        if(moduloIndex > -1) {
+            this.left = Value.createProperValueType(src.substring(0, moduloIndex));
+            this.operator = "%";
+            this.right = Value.createProperValueType(src.substring(moduloIndex + 1));
+            return;
+        }
+
+        int exponentIndex = ParserTools.groupAwareIndexOf(src, '^');
+        if(exponentIndex > -1) {
+            this.left = Value.createProperValueType(src.substring(0, exponentIndex));
+            this.operator = "^";
+            this.right = Value.createProperValueType(src.substring(exponentIndex + 1));
+            return;
+        }
+
+        int multiplicationIndex = ParserTools.groupAwareIndexOf(src, '*');
+        int divisionIndex = ParserTools.groupAwareIndexOf(src, '/');
+
+        //lowest index that isn't -1
+        int mdGemdasIndex = Math.min(
+                multiplicationIndex < 0 ? divisionIndex : multiplicationIndex,
+                divisionIndex < 0 ? multiplicationIndex : divisionIndex);
+
+        if(mdGemdasIndex > -1) {
+            this.left = Value.createProperValueType(src.substring(0, mdGemdasIndex));
+            this.operator = "" + src.charAt(mdGemdasIndex);
+            this.right = Value.createProperValueType(src.substring(mdGemdasIndex + 1));
+            return;
+        }
+
+        int additionIndex = ParserTools.groupAwareIndexOf(src, '+');
+        int subtractionIndex = ParserTools.groupAwareIndexOf(src, '-');
+
+        //lowest index that isn't -1
+        int asGemdasIndex = Math.min(
+                additionIndex < 0 ? subtractionIndex : additionIndex,
+                subtractionIndex < 0 ? additionIndex : subtractionIndex);
+
+        if(asGemdasIndex > -1) {
+            this.left = Value.createProperValueType(src.substring(0, asGemdasIndex));
+            this.operator = "" + src.charAt(asGemdasIndex);
+            this.right = Value.createProperValueType(src.substring(asGemdasIndex + 1));
+            return;
+        }
+
+        //fallback
+        this.left = Value.createProperValueType(src);
+        this.operator = "";
+        this.right = null;
     }
 
     @Override
@@ -24,11 +79,28 @@ public class ArithmeticValue extends Value {
     public void loop() {
         left.loop();
         right.loop();
-        //TODO: make it work on arrays
-        //TODO: not just multiplication
+
         switch(operator) {
+            case "%":
+                this.returnValue = new float[] { left.getReturnValue()[0] % right.getReturnValue()[0] };
+                break;
+            case "^":
+                this.returnValue = new float[] { (float)Math.pow(left.getReturnValue()[0], left.getReturnValue()[1]) };
+                break;
             case "*":
                 this.returnValue = new float[] { left.getReturnValue()[0] * right.getReturnValue()[0] };
+                break;
+            case "/":
+                this.returnValue = new float[] { left.getReturnValue()[0] / right.getReturnValue()[0] };
+                break;
+            case "+":
+                this.returnValue = new float[] { left.getReturnValue()[0] + right.getReturnValue()[0] };
+                break;
+            case "-":
+                this.returnValue = new float[] { left.getReturnValue()[0] - right.getReturnValue()[0] };
+                break;
+            default:
+                this.returnValue = left.getReturnValue();
                 break;
         }
 
