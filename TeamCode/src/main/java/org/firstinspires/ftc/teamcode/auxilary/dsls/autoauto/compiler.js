@@ -1,6 +1,8 @@
 var fs = require("fs");
 var path = require("path");
 
+var parserTools = require("./parser-tools.js");
+
 var directory = __dirname.split(path.sep);
 
 console.log(directory);
@@ -19,7 +21,9 @@ for(var i = 0; i < autoautoFiles.length; i++) {
     var className = fileName.replace(".autoauto", "__autoauto");
     var javaFileName = className + ".java";
 
-    var javaStringFileSource = fileSource.replace(/\r?\n/g, " ").replace(/"/g, "\\\"");
+    var uncommentedFileSource = parserTools.stripComments(fileSource);
+
+    var javaStringFileSource = uncommentedFileSource.replace(/\r?\n/g, " ").replace(/"/g, "\\\"");
 
     fs.writeFileSync(compiledResultDirectory + "/" + javaFileName, processTemplate(template, className, javaStringFileSource));
 }
