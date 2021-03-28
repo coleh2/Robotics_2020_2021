@@ -50,7 +50,6 @@ STATEPATH_LABEL_ID=#\w+
   "="                   { return AutoautoTypes.EQUALS; }
   "next"                     { return AutoautoTypes.NEXT; }
   "skip"                     { return AutoautoTypes.SKIP; }
-  "-"                       { return AutoautoTypes.MINUS; }
   {NUMERIC_VALUE}            { return AutoautoTypes.NUMERIC_VALUE; }
   {NUMERIC_VALUE_WITH_UNIT}                 {return AutoautoTypes.NUMERIC_VALUE_WITH_UNIT; }
   "\""                    { yybegin(IN_STRING); return AutoautoTypes.QUOTE; }
@@ -60,9 +59,20 @@ STATEPATH_LABEL_ID=#\w+
   "!="                    { return AutoautoTypes.COMPARE_NEQ; }
   ">="                    { return AutoautoTypes.COMPARE_GTE; }
   ">"                     { return AutoautoTypes.COMPARE_LT; }
+  "true"                    { return AutoautoTypes.TRUE; }
+  "false"                    { return AutoautoTypes.FALSE; }
   \w+                     { return AutoautoTypes.IDENTIFIER; }
   "/*"                       { yybegin(IN_COMMENT); return AutoautoTypes.COMMENT_BEGIN;}
   "//"                       { yybegin(IN_LINE_COMMENT); return AutoautoTypes.LINE_COMMENT_BEGIN;}
+  "+"                        { return AutoautoTypes.PLUS; }
+  "-"                        { return AutoautoTypes.MINUS; }
+  "/"                        { return AutoautoTypes.DIVIDE; }
+  "*"                        { return AutoautoTypes.MULTIPLY; }
+  "%"                        { return AutoautoTypes.MODULUS; }
+  "^"                        { return AutoautoTypes.EXPONENTIATE; }
+  "$"                        { return AutoautoTypes.DOLLAR_SIGN; }
+  "["                        { return AutoautoTypes.OPEN_SQUARE_BRACKET; }
+  "]"                        { return AutoautoTypes.CLOSE_SQUARE_BRACKET; }
 }
 
 <IN_STRING> {

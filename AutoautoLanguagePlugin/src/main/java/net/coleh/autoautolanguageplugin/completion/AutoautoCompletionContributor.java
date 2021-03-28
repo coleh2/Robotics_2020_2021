@@ -13,6 +13,8 @@ import net.coleh.autoautolanguageplugin.parse.AutoautoTypes;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+
 public class AutoautoCompletionContributor extends CompletionContributor {
     public AutoautoCompletionContributor() {
         extend(CompletionType.BASIC, PlatformPatterns.psiElement(AutoautoTypes.FUNCTION_CALL),
@@ -34,6 +36,10 @@ public class AutoautoCompletionContributor extends CompletionContributor {
 
         for(AutoautoBuiltinFunctionCompletions.AutoautoBuiltinFunctionRecord record  : AutoautoBuiltinFunctionCompletions.records) resultSet.addElement(new AutoautoFunctionLookupElement(record));
 
-        resultSet.addElement(LookupElementBuilder.create(parameters.getOriginalPosition().getParent().toString()));
+        resultSet.addElement(new AutoautoFrontmatterKeyLookupElement("servos", "Servos that will be available in the resulting opmode"));
+        resultSet.addElement(new AutoautoFrontmatterKeyLookupElement("crServos", "CRServos that will be available in the resulting opmode"));
+        resultSet.addElement(new AutoautoFrontmatterKeyLookupElement("testIterations", "Amount of times that the loop will be ran in tests"));
+
+        resultSet.addElement(LookupElementBuilder.create(parameters.getOriginalPosition().getParent().getClass().getCanonicalName()));
     }
 }

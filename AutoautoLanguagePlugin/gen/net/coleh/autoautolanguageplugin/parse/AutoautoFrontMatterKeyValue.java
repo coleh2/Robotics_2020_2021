@@ -5,12 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface AutoautoBoolean extends PsiElement {
+public interface AutoautoFrontMatterKeyValue extends PsiElement {
 
   @NotNull
-  List<AutoautoArithmeticValue> getArithmeticValueList();
+  List<AutoautoCommentOpportunity> getCommentOpportunityList();
 
-  @Nullable
-  AutoautoComparisonOperator getComparisonOperator();
+  @NotNull
+  AutoautoValue getValue();
 
 }

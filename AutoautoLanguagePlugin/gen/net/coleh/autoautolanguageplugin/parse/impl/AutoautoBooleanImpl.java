@@ -27,21 +27,15 @@ public class AutoautoBooleanImpl extends ASTWrapperPsiElement implements Autoaut
   }
 
   @Override
+  @NotNull
+  public List<AutoautoArithmeticValue> getArithmeticValueList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, AutoautoArithmeticValue.class);
+  }
+
+  @Override
   @Nullable
   public AutoautoComparisonOperator getComparisonOperator() {
     return findChildByClass(AutoautoComparisonOperator.class);
-  }
-
-  @Override
-  @Nullable
-  public AutoautoFunctionCall getFunctionCall() {
-    return findChildByClass(AutoautoFunctionCall.class);
-  }
-
-  @Override
-  @NotNull
-  public List<AutoautoNonBooleanValue> getNonBooleanValueList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, AutoautoNonBooleanValue.class);
   }
 
 }

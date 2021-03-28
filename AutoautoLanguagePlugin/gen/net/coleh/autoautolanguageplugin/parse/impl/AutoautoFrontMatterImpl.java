@@ -11,25 +11,19 @@ import static net.coleh.autoautolanguageplugin.parse.AutoautoTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import net.coleh.autoautolanguageplugin.parse.*;
 
-public class AutoautoNonBooleanValueImpl extends ASTWrapperPsiElement implements AutoautoNonBooleanValue {
+public class AutoautoFrontMatterImpl extends ASTWrapperPsiElement implements AutoautoFrontMatter {
 
-  public AutoautoNonBooleanValueImpl(@NotNull ASTNode node) {
+  public AutoautoFrontMatterImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull AutoautoVisitor visitor) {
-    visitor.visitNonBooleanValue(this);
+    visitor.visitFrontMatter(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof AutoautoVisitor) accept((AutoautoVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @Nullable
-  public AutoautoArrayLiteral getArrayLiteral() {
-    return findChildByClass(AutoautoArrayLiteral.class);
   }
 
   @Override
@@ -39,27 +33,9 @@ public class AutoautoNonBooleanValueImpl extends ASTWrapperPsiElement implements
   }
 
   @Override
-  @Nullable
-  public AutoautoFunctionCall getFunctionCall() {
-    return findChildByClass(AutoautoFunctionCall.class);
-  }
-
-  @Override
-  @Nullable
-  public AutoautoStringLiteral getStringLiteral() {
-    return findChildByClass(AutoautoStringLiteral.class);
-  }
-
-  @Override
-  @Nullable
-  public AutoautoUnitValue getUnitValue() {
-    return findChildByClass(AutoautoUnitValue.class);
-  }
-
-  @Override
-  @Nullable
-  public AutoautoVariableReference getVariableReference() {
-    return findChildByClass(AutoautoVariableReference.class);
+  @NotNull
+  public List<AutoautoFrontMatterKeyValue> getFrontMatterKeyValueList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, AutoautoFrontMatterKeyValue.class);
   }
 
 }

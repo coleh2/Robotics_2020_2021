@@ -39,6 +39,8 @@ public class AutoautoSyntaxHighlighter extends SyntaxHighlighterBase {
             createTextAttributesKey("AUTOAUTO_NUMERIC_VALUE", DefaultLanguageHighlighterColors.NUMBER);
     public static final TextAttributesKey STRING =
             createTextAttributesKey("AUTOAUTO_STRING", DefaultLanguageHighlighterColors.STRING);
+    public static final TextAttributesKey DOLLAR_SIGN =
+            createTextAttributesKey("AUTOAUTO_DOLLAR_SIGN", DefaultLanguageHighlighterColors.BRACES);
 
     public static final TextAttributesKey BAD_CHARACTER =
             createTextAttributesKey("SIMPLE_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER);
@@ -56,6 +58,7 @@ public class AutoautoSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey[] NUMERIC_VALUE_KEYS = new TextAttributesKey[] { NUMERIC_VALUE };
     public static final TextAttributesKey[] STRING_KEYS = new TextAttributesKey[] { STRING };
     public static final TextAttributesKey[] BAD_CHARACTER_KEYS = new TextAttributesKey[] { BAD_CHARACTER };
+    public static final TextAttributesKey[] DOLLAR_SIGN_KEYS = new TextAttributesKey[] { DOLLAR_SIGN };
 
     public static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[] { };
 
@@ -102,6 +105,8 @@ public class AutoautoSyntaxHighlighter extends SyntaxHighlighterBase {
             return STRING_KEYS;
         } else if(tokenType.equals(AutoautoTypes.CLOSE_PAREN) || tokenType.equals(AutoautoTypes.OPEN_PAREN)) {
             return PARENS_KEYS;
+        } else if(tokenType.equals(AutoautoTypes.DOLLAR_SIGN)) {
+            return DOLLAR_SIGN_KEYS;
         } else{
             return EMPTY_KEYS;
         }

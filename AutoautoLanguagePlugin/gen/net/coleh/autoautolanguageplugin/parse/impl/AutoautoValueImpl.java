@@ -28,8 +28,8 @@ public class AutoautoValueImpl extends ASTWrapperPsiElement implements AutoautoV
 
   @Override
   @Nullable
-  public AutoautoArrayLiteral getArrayLiteral() {
-    return findChildByClass(AutoautoArrayLiteral.class);
+  public AutoautoArithmeticValue getArithmeticValue() {
+    return findChildByClass(AutoautoArithmeticValue.class);
   }
 
   @Override
@@ -42,30 +42,6 @@ public class AutoautoValueImpl extends ASTWrapperPsiElement implements AutoautoV
   @NotNull
   public List<AutoautoCommentOpportunity> getCommentOpportunityList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, AutoautoCommentOpportunity.class);
-  }
-
-  @Override
-  @Nullable
-  public AutoautoFunctionCall getFunctionCall() {
-    return findChildByClass(AutoautoFunctionCall.class);
-  }
-
-  @Override
-  @Nullable
-  public AutoautoStringLiteral getStringLiteral() {
-    return findChildByClass(AutoautoStringLiteral.class);
-  }
-
-  @Override
-  @Nullable
-  public AutoautoUnitValue getUnitValue() {
-    return findChildByClass(AutoautoUnitValue.class);
-  }
-
-  @Override
-  @Nullable
-  public AutoautoVariableReference getVariableReference() {
-    return findChildByClass(AutoautoVariableReference.class);
   }
 
 }

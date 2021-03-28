@@ -1,3 +1,13 @@
+$
+key: 3,
+key: "value",
+key: 3,
+key: ["tree", "bf"],
+vf: 3,
+gr: 4,
+servos: ["wobbleArmRight", "wobbleArmLeft" , "wobbleGrabRight","wobbleGrabLeft"]
+$
+
 #init:
     driveOmni(0, 1, 0), after 1s next;
     log(4.0), after 1s next;

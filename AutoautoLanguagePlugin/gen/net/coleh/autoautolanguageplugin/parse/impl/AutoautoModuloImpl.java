@@ -11,14 +11,14 @@ import static net.coleh.autoautolanguageplugin.parse.AutoautoTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import net.coleh.autoautolanguageplugin.parse.*;
 
-public class AutoautoIfStatementImpl extends ASTWrapperPsiElement implements AutoautoIfStatement {
+public class AutoautoModuloImpl extends ASTWrapperPsiElement implements AutoautoModulo {
 
-  public AutoautoIfStatementImpl(@NotNull ASTNode node) {
+  public AutoautoModuloImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull AutoautoVisitor visitor) {
-    visitor.visitIfStatement(this);
+    visitor.visitModulo(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
@@ -28,14 +28,8 @@ public class AutoautoIfStatementImpl extends ASTWrapperPsiElement implements Aut
 
   @Override
   @NotNull
-  public AutoautoStatement getStatement() {
-    return findNotNullChildByClass(AutoautoStatement.class);
-  }
-
-  @Override
-  @NotNull
-  public AutoautoValueInParens getValueInParens() {
-    return findNotNullChildByClass(AutoautoValueInParens.class);
+  public List<AutoautoBaseExpression> getBaseExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, AutoautoBaseExpression.class);
   }
 
 }

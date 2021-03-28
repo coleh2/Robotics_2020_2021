@@ -5,12 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface AutoautoBoolean extends PsiElement {
+public interface AutoautoProduct extends PsiElement {
 
   @NotNull
-  List<AutoautoArithmeticValue> getArithmeticValueList();
-
-  @Nullable
-  AutoautoComparisonOperator getComparisonOperator();
+  List<AutoautoExponent> getExponentList();
 
 }

@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface AutoautoNonBooleanValue extends PsiElement {
+public interface AutoautoBaseExpression extends PsiElement {
 
   @Nullable
   AutoautoArrayLiteral getArrayLiteral();
@@ -21,6 +21,9 @@ public interface AutoautoNonBooleanValue extends PsiElement {
 
   @Nullable
   AutoautoUnitValue getUnitValue();
+
+  @Nullable
+  AutoautoValueInParens getValueInParens();
 
   @Nullable
   AutoautoVariableReference getVariableReference();

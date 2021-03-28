@@ -3,7 +3,7 @@
     <category>Custom Languages</category>
     <name>Autoauto Language Support</name>
     <vendor url="https://github.com/coleh2">coleh</vendor>
-    <version>0.0.29</version>
+    <version>0.0.40</version>
 
     <idea-version since-build="193" />
 
@@ -18,7 +18,7 @@
 
     <actions>
         <action id="Autoauto.NewFile" class="net.coleh.autoautolanguageplugin.AutoautoNewFileAction" text="Robot File" description="Create a new Robot file">
-            <add-to-group group-id="NewGroup" anchor="last"/>
+            <add-to-group group-id="NewGroup" anchor="after" relative-to-action="NewFile"/>
         </action>
     </actions>
 

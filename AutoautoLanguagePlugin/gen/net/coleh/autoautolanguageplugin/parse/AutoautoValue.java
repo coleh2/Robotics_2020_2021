@@ -8,24 +8,12 @@ import com.intellij.psi.PsiElement;
 public interface AutoautoValue extends PsiElement {
 
   @Nullable
-  AutoautoArrayLiteral getArrayLiteral();
+  AutoautoArithmeticValue getArithmeticValue();
 
   @Nullable
   AutoautoBoolean getBoolean();
 
   @NotNull
   List<AutoautoCommentOpportunity> getCommentOpportunityList();
-
-  @Nullable
-  AutoautoFunctionCall getFunctionCall();
-
-  @Nullable
-  AutoautoStringLiteral getStringLiteral();
-
-  @Nullable
-  AutoautoUnitValue getUnitValue();
-
-  @Nullable
-  AutoautoVariableReference getVariableReference();
 
 }

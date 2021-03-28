@@ -8,9 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface AutoautoIfStatement extends PsiElement {
 
   @NotNull
-  AutoautoBoolean getBoolean();
+  AutoautoStatement getStatement();
 
   @NotNull
-  AutoautoStatement getStatement();
+  AutoautoValueInParens getValueInParens();
 
 }

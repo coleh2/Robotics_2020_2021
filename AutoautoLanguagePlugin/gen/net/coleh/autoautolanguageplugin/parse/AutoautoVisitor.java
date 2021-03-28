@@ -15,7 +15,15 @@ public class AutoautoVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitArithmeticValue(@NotNull AutoautoArithmeticValue o) {
+    visitPsiElement(o);
+  }
+
   public void visitArrayLiteral(@NotNull AutoautoArrayLiteral o) {
+    visitPsiElement(o);
+  }
+
+  public void visitBaseExpression(@NotNull AutoautoBaseExpression o) {
     visitPsiElement(o);
   }
 
@@ -36,6 +44,18 @@ public class AutoautoVisitor extends PsiElementVisitor {
   }
 
   public void visitComparisonOperator(@NotNull AutoautoComparisonOperator o) {
+    visitPsiElement(o);
+  }
+
+  public void visitExponent(@NotNull AutoautoExponent o) {
+    visitPsiElement(o);
+  }
+
+  public void visitFrontMatter(@NotNull AutoautoFrontMatter o) {
+    visitPsiElement(o);
+  }
+
+  public void visitFrontMatterKeyValue(@NotNull AutoautoFrontMatterKeyValue o) {
     visitPsiElement(o);
   }
 
@@ -67,11 +87,15 @@ public class AutoautoVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitModulo(@NotNull AutoautoModulo o) {
+    visitPsiElement(o);
+  }
+
   public void visitNextStatement(@NotNull AutoautoNextStatement o) {
     visitPsiElement(o);
   }
 
-  public void visitNonBooleanValue(@NotNull AutoautoNonBooleanValue o) {
+  public void visitProduct(@NotNull AutoautoProduct o) {
     visitPsiElement(o);
   }
 
@@ -95,11 +119,19 @@ public class AutoautoVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitSum(@NotNull AutoautoSum o) {
+    visitPsiElement(o);
+  }
+
   public void visitUnitValue(@NotNull AutoautoUnitValue o) {
     visitPsiElement(o);
   }
 
   public void visitValue(@NotNull AutoautoValue o) {
+    visitPsiElement(o);
+  }
+
+  public void visitValueInParens(@NotNull AutoautoValueInParens o) {
     visitPsiElement(o);
   }
 
