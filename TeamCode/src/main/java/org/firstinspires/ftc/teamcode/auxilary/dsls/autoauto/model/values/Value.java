@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values;
 
+import org.firstinspires.ftc.teamcode.auxilary.dsls.ParserTools;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.FunctionStore;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.VariableStore;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
@@ -14,7 +15,7 @@ public class Value {
     }
 
     public static Value createProperValueType(String src, boolean noArithmetic) {
-        String trimmed = deParen(src.trim());
+        String trimmed = ParserTools.deParen(src.trim());
         if(trimmed.matches("^-?[0-9]*\\.?[0-9]+$")) return new NumericValue(trimmed);
         else if(trimmed.matches("^-?[0-9]*\\.?[0-9]+[a-z]+$")) return new UnitValue(trimmed);
         else if(trimmed.startsWith("[") && trimmed.endsWith("]")) return new ArrayLiteral(trimmed);
@@ -29,10 +30,7 @@ public class Value {
         }
     }
 
-    private static String deParen(String src) {
-        if(src.startsWith("(") && src.endsWith(")")) return src.substring(1, src.length() - 1);
-        else return src;
-    }
+
 
     public void init() {}
     public void loop() {}

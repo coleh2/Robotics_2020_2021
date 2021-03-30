@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.ParserTools;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 import org.jetbrains.annotations.NotNull;
+import org.xml.sax.Parser;
 
 import java.util.Arrays;
 
@@ -19,6 +20,7 @@ public class ArithmeticValue extends Value {
     }
 
     public ArithmeticValue(String src) {
+        src = ParserTools.wrapLiteralsWithParens(src);
 
         int additionIndex = ParserTools.groupAwareIndexOf(src, '+');
         int subtractionIndex = ParserTools.groupAwareIndexOf(src, '-');
@@ -68,8 +70,8 @@ public class ArithmeticValue extends Value {
 
         //fallback
         this.left = Value.createProperValueType(src, true);
-        this.operator = "*";
-        this.right = Value.createProperValueType("1");
+        this.operator = "+";
+        this.right = Value.createProperValueType("0");
     }
 
     @Override

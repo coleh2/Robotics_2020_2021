@@ -1,10 +1,11 @@
 $
 type: "test",
-testIterations: 5
+testIterations: 6
 $
 #init:
     log("this should be 3: " + (1 + 2)), next;
     log("this should be 4: " + 2 * 2), next;
     log("this should be 2.5: " + 5 / 2), next;
     log("this should be 16: " + 4 ^ 2), next;
-    log("this should be 1: " + 17 % 16), next
+    log("this should be 1: " + 17 % 16), next;
+    log("this should be -30: " + -1 * 30), next
