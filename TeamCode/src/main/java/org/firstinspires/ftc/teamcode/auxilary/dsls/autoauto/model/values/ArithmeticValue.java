@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values;
 
 import org.firstinspires.ftc.teamcode.auxilary.dsls.ParserTools;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
@@ -72,11 +73,15 @@ public class ArithmeticValue extends Value {
 
     @Override
     public void init() {
-        left.setRuntimeReferences(this.runtimeFunctionStore, this.runtimeVariableStore);
-        left.init();
+        if(left != null) {
+            left.setRuntimeReferences(this.runtimeFunctionStore, this.runtimeVariableStore);
+            left.init();
+        }
 
-        right.setRuntimeReferences(this.runtimeFunctionStore, this.runtimeVariableStore);
-        right.init();
+        if(right != null) {
+            right.setRuntimeReferences(this.runtimeFunctionStore, this.runtimeVariableStore);
+            right.init();
+        }
     }
 
     public void loop() {
@@ -134,6 +139,11 @@ public class ArithmeticValue extends Value {
         else bStr += Arrays.toString(b.getReturnValue());
 
         this.returnValue = (new StringLiteral("\"" + aStr + bStr + "\"")).getReturnValue();
+    }
+
+    @NotNull
+    public String toString() {
+        return "(" + (left == null ? "<null>" : left.toString()) + ")" + operator + "(" + (right == null ? "<null>" : right.toString()) + ")";
     }
 
     @Override

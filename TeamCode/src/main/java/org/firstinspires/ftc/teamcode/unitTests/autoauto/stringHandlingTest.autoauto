@@ -8,4 +8,5 @@ $
     log("foo" + 34s), next;
     log(43 + "foo"), next;
     log("bar" + [34, 43]), next;
-    log("re" + "lo" + "aded"), next
+    log("re" + "lo" + "aded"), next;
+    log("re" + (3 + 6)), next
