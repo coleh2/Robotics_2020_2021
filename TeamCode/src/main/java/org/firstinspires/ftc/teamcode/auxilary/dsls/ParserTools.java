@@ -74,4 +74,12 @@ public class ParserTools {
 
         return result.toString();
     }
+
+    public static int countCharacters(String str, char search) {
+        int total = 0;
+        for(char c : str.toCharArray()) {
+            if(c == search) total++;
+        }
+        return total;
+    }
 }

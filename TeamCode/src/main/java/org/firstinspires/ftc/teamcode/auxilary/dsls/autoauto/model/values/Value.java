@@ -20,12 +20,12 @@ public class Value {
         else if(trimmed.startsWith("[") && trimmed.endsWith("]")) return new ArrayLiteral(trimmed);
         else if(trimmed.matches("^\\w+\\(.+")) return new FunctionCall(trimmed);
         else if(trimmed.matches("^\"[^\"]+\"$")) return new StringLiteral(trimmed);
-        else if(trimmed.matches("^-\\w+$")) return new ArithmeticValue("-1 * " + trimmed.substring(1));
+        else if(trimmed.matches("^-\\w+$")) return new ArithmeticValue(createProperValueType(trimmed.substring(1)), "*", new NumericValue("-1"));
         else if(trimmed.matches("^\\w+$")) return new VariableReference(trimmed);
         else if(!noArithmetic) return new ArithmeticValue(trimmed);
         else {
-            FeatureManager.logger.log("[AUTOAUTO ERROR]  Unparsable value `" + trimmed + "`");
-            return null;
+            FeatureManager.logger.log("[AUTOAUTO ERROR]  Unparsable value `" + trimmed + "`. This is not necessarily a 'bad' problem; it happens normally when negative literals are used in arithmetic. It will now default to `0`.");
+            return new NumericValue("0");
         }
     }
 

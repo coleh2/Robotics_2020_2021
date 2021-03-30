@@ -68,8 +68,8 @@ public class ArithmeticValue extends Value {
 
         //fallback
         this.left = Value.createProperValueType(src, true);
-        this.operator = "";
-        this.right = null;
+        this.operator = "*";
+        this.right = Value.createProperValueType("1");
     }
 
     @Override
