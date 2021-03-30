@@ -1,0 +1,7 @@
+$
+type: "test",
+testIterations: 7
+$
+#init:
+    log("this should be 3: " + (1 + 2)), next;
+    log("this should be 4: " + 2 * 2), next

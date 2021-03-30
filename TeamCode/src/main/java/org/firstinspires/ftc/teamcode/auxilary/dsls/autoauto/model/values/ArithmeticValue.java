@@ -19,19 +19,19 @@ public class ArithmeticValue extends Value {
     }
 
     public ArithmeticValue(String src) {
-        int moduloIndex = ParserTools.groupAwareIndexOf(src, '%');
-        if(moduloIndex > -1) {
-            this.left = Value.createProperValueType(src.substring(0, moduloIndex));
-            this.operator = "%";
-            this.right = Value.createProperValueType(src.substring(moduloIndex + 1));
-            return;
-        }
 
-        int exponentIndex = ParserTools.groupAwareIndexOf(src, '^');
-        if(exponentIndex > -1) {
-            this.left = Value.createProperValueType(src.substring(0, exponentIndex));
-            this.operator = "^";
-            this.right = Value.createProperValueType(src.substring(exponentIndex + 1));
+        int additionIndex = ParserTools.groupAwareIndexOf(src, '+');
+        int subtractionIndex = ParserTools.groupAwareIndexOf(src, '-');
+
+        //lowest index that isn't -1
+        int asGemdasIndex = Math.min(
+                additionIndex < 0 ? subtractionIndex : additionIndex,
+                subtractionIndex < 0 ? additionIndex : subtractionIndex);
+
+        if(asGemdasIndex > -1) {
+            this.left = Value.createProperValueType(src.substring(0, asGemdasIndex));
+            this.operator = "" + src.charAt(asGemdasIndex);
+            this.right = Value.createProperValueType(src.substring(asGemdasIndex + 1));
             return;
         }
 
@@ -50,18 +50,19 @@ public class ArithmeticValue extends Value {
             return;
         }
 
-        int additionIndex = ParserTools.groupAwareIndexOf(src, '+');
-        int subtractionIndex = ParserTools.groupAwareIndexOf(src, '-');
+        int exponentIndex = ParserTools.groupAwareIndexOf(src, '^');
+        if(exponentIndex > -1) {
+            this.left = Value.createProperValueType(src.substring(0, exponentIndex));
+            this.operator = "^";
+            this.right = Value.createProperValueType(src.substring(exponentIndex + 1));
+            return;
+        }
 
-        //lowest index that isn't -1
-        int asGemdasIndex = Math.min(
-                additionIndex < 0 ? subtractionIndex : additionIndex,
-                subtractionIndex < 0 ? additionIndex : subtractionIndex);
-
-        if(asGemdasIndex > -1) {
-            this.left = Value.createProperValueType(src.substring(0, asGemdasIndex));
-            this.operator = "" + src.charAt(asGemdasIndex);
-            this.right = Value.createProperValueType(src.substring(asGemdasIndex + 1));
+        int moduloIndex = ParserTools.groupAwareIndexOf(src, '%');
+        if(moduloIndex > -1) {
+            this.left = Value.createProperValueType(src.substring(0, moduloIndex));
+            this.operator = "%";
+            this.right = Value.createProperValueType(src.substring(moduloIndex + 1));
             return;
         }
 
