@@ -65,7 +65,7 @@ public class ArithmeticValue extends Value {
         }
 
         //fallback
-        this.left = Value.createProperValueType(src);
+        this.left = Value.createProperValueType(src, true);
         this.operator = "";
         this.right = null;
     }
