@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values;
 
 import org.firstinspires.ftc.teamcode.auxilary.dsls.ParserTools;
+import org.firstinspires.ftc.teamcode.managers.FeatureManager;
+
+import java.util.Arrays;
 
 public class ArithmeticValue extends Value {
     String operator;
@@ -80,6 +83,16 @@ public class ArithmeticValue extends Value {
         left.loop();
         right.loop();
 
+        if(
+            (left.getReturnValue().length >= 2 && left.getReturnValue()[0] == '"' && left.getReturnValue()[left.getReturnValue().length - 1] == '"') ||
+            (right.getReturnValue().length >= 2 && right.getReturnValue()[0] == '"' && right.getReturnValue()[right.getReturnValue().length - 1] == '"')
+            ) {
+            if(operator.equals("+")) concatenate(left, right);
+            else FeatureManager.logger.log("[AUTOAUTO ERROR] Bad operator " + operator + "on string value.");
+
+            return;
+        }
+
         switch(operator) {
             case "%":
                 this.returnValue = new float[] { left.getReturnValue()[0] % right.getReturnValue()[0] };
@@ -104,6 +117,23 @@ public class ArithmeticValue extends Value {
                 break;
         }
 
+    }
+
+    private void concatenate(Value a, Value b) {
+        String aStr = "";
+        String bStr = "";
+
+        if(a instanceof StringLiteral) aStr = StringLiteral.codesToString(a.getReturnValue());
+        else if(a instanceof UnitValue) aStr += a.toString();
+        else if(a.getReturnValue().length == 1) aStr = a.getReturnValue()[0] + "";
+        else aStr += Arrays.toString(a.getReturnValue());
+
+        if(b instanceof StringLiteral) bStr = StringLiteral.codesToString(b.getReturnValue());
+        else if(b instanceof UnitValue) bStr += b.toString();
+        else if(b.getReturnValue().length == 1) bStr = b.getReturnValue()[0] + "";
+        else bStr += Arrays.toString(b.getReturnValue());
+
+        this.returnValue = (new StringLiteral("\"" + aStr + bStr + "\"")).getReturnValue();
     }
 
     @Override
