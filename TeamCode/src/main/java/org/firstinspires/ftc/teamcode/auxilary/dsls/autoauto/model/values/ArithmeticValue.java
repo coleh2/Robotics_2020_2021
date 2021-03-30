@@ -104,7 +104,7 @@ public class ArithmeticValue extends Value {
                 this.returnValue = new float[] { left.getReturnValue()[0] % right.getReturnValue()[0] };
                 break;
             case "^":
-                this.returnValue = new float[] { (float)Math.pow(left.getReturnValue()[0], left.getReturnValue()[1]) };
+                this.returnValue = new float[] { (float)Math.pow(left.getReturnValue()[0], right.getReturnValue()[0]) };
                 break;
             case "*":
                 this.returnValue = new float[] { left.getReturnValue()[0] * right.getReturnValue()[0] };
