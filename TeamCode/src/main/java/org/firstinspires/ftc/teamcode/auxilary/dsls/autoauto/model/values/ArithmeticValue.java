@@ -123,12 +123,12 @@ public class ArithmeticValue extends Value {
         String aStr = "";
         String bStr = "";
 
-        if(a instanceof StringLiteral) aStr = StringLiteral.codesToString(a.getReturnValue());
+        if(StringLiteral.isStringCode(a.getReturnValue())) aStr = StringLiteral.codesToString(a.getReturnValue());
         else if(a instanceof UnitValue) aStr += a.toString();
         else if(a.getReturnValue().length == 1) aStr = a.getReturnValue()[0] + "";
         else aStr += Arrays.toString(a.getReturnValue());
 
-        if(b instanceof StringLiteral) bStr = StringLiteral.codesToString(b.getReturnValue());
+        if(StringLiteral.isStringCode(b.getReturnValue())) bStr = StringLiteral.codesToString(b.getReturnValue());
         else if(b instanceof UnitValue) bStr += b.toString();
         else if(b.getReturnValue().length == 1) bStr = b.getReturnValue()[0] + "";
         else bStr += Arrays.toString(b.getReturnValue());

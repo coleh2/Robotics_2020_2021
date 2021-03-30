@@ -74,9 +74,10 @@ public class template extends OpMode {
     }
 
     public void loop() {
+        FeatureManager.logger.log("=====");
+        FeatureManager.logger.log("Statepath: " +runtime.program.currentPathName);
+        FeatureManager.logger.log("State: " +runtime.program.currentPath.currentState);
         runtime.loop();
-        FeatureManager.logger.log("Statepath" +runtime.program.currentPathName);
-        FeatureManager.logger.log("State" +runtime.program.currentPath.currentState);
     }
 
     @Test

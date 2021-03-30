@@ -33,4 +33,7 @@ public class StringLiteral extends Value {
         }
         return res.toString();
     }
+    public static boolean isStringCode(float[] c) {
+        return c.length >= 2 && c[0] == '"' && c[c.length - 1] == '"';
+    }
 }
