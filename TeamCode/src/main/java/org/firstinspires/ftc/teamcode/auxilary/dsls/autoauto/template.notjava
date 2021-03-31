@@ -92,6 +92,6 @@ public class {{className}} extends OpMode {
         this.hardwareMap = new DummyHardwareMap();
         this.init();
         FeatureManager.logger.log(runtime.program.toString());
-        for(int i = 0; i < 3; i++) this.loop();
+        for(int i = 0; i < 10; i++) this.loop();
     }
 }

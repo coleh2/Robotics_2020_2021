@@ -110,4 +110,8 @@ public class ArithmeticValue extends Value {
     public float[] getReturnValue() {
         return this.returnValue;
     }
+
+    public String toString() {
+        return left.toString() + " " + operator + " " + right.toString();
+    }
 }
