@@ -26,4 +26,5 @@ intellij {
     pluginName 'autoauto-language-plugin'
     updateSinceUntilBuild false
     plugins "android"
+    alternativeIdePath '/Applications/Android Studio.app'
 }

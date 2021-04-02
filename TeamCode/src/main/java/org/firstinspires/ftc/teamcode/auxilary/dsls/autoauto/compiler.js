@@ -29,7 +29,7 @@ for(var i = 0; i < autoautoFiles.length; i++) {
 
     var javaStringFileSource = frontMatter.stripped.replace(/\r?\n/g, " ").replace(/"/g, "\\\"");
 
-    fs.writeFileSync(compiledResultDirectory + "/" + javaFileName, processTemplate(template, className, frontMatter, javaStringFileSource));
+    fs.writeFileSync(compiledResultDirectory + "/" + javaFileName, processTemplate(template, className, frontMatter.frontMatter, javaStringFileSource));
 }
 
 function processTemplate(template, className, frontMatter, javaStringFileSource) {
@@ -40,7 +40,7 @@ function processTemplate(template, className, frontMatter, javaStringFileSource)
         .replace("NSERVOS", buildServos(frontMatter.servos))
         .replace("CRSERVO_NAMES", buildCrServoNames(frontMatter.crServos))
         .replace("CRSERVOS", buildCrServos(frontMatter.crServos))
-        .replace("TESTITERATIONS", frontMatter.testIterations || 3);
+        .replace("TESTITERATIONS", frontMatter.testIterations === undefined ? 3 : frontMatter.testIterations);
 }
 
 function buildServoNames(servos) {
@@ -55,25 +55,25 @@ function buildCrServoNames(crServos) {
 
 function buildCrServos(crServos) {
     if(crServos === undefined) return `hardwareMap.get(CRServo.class, "shooterArm")`;
-    else return crServos.map(x=> `"hardwareMap.get(CRServo.class, "${x}"),"`).join(", ");
+    else return crServos.map(x=> `hardwareMap.get(CRServo.class, "${x}")`).join(", ");
 }
 
 function buildServos(servos) {
     if(servos === undefined) return `hardwareMap.get(Servo.class, "wobbleArmRight"), hardwareMap.get(Servo.class, "wobbleArmLeft"), hardwareMap.get(Servo.class, "wobbleGrabRight"), hardwareMap.get(Servo.class, "wobbleGrabLeft")`;
-    else return servos.map(x=> `"hardwareMap.get(Servo.class, "${x}"),"`).join(", ");
+    else return servos.map(x=> `hardwareMap.get(Servo.class, "${x}")`).join(", ");
 }
 
 function stripAndParseFrontMatter(src) {
     var startDollarSign = parserTools.findUngroupedSubstring(src, "$");
     if(startDollarSign == -1) return { stripped: src, frontMatter: {} };
 
-    var endDollarSign = parserTools.findUngroupedSubstring(src.substring(startDollarSign + 1), "$");
+    var endDollarSign = startDollarSign + 1 + parserTools.findUngroupedSubstring(src.substring(startDollarSign + 1), "$");
     if(endDollarSign == -1) throw src;
 
     var frontMatter = eval("({" + src.substring(startDollarSign + 1, endDollarSign) + "})");
 
     return {
-        stripped: src.substring(endDollarSign + 1),
+        stripped: src.substring(parserTools.findUngroupedSubstring(src, "#")),
         frontMatter: frontMatter
     }
 }
