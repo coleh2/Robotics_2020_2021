@@ -74,4 +74,45 @@ public class ParserTools {
 
         return result.toString();
     }
+
+    public static int countCharacters(String str, char search) {
+        int total = 0;
+        for(char c : str.toCharArray()) {
+            if(c == search) total++;
+        }
+        return total;
+    }
+
+    public static String wrapLiteralsWithParens(String src) {
+        boolean inQuotes = false, inLiteral = false;
+        int literalStart = 0;
+        for(int i = 0; i < src.length(); i++) {
+            char ch = src.charAt(i);
+
+            if(ch == '"') inQuotes = !inQuotes;
+
+            if(!inQuotes) {
+                if(!inLiteral) {
+                    if(Character.isDigit(ch) && src.charAt(Math.max(0, i - 1)) == '-') {
+                        literalStart = Math.max(0, i - 1);
+                        inLiteral = true;
+                    }
+                } else if(inLiteral) {
+                    if(!(Character.isDigit(ch) || ch == '.')) {
+                        int literalEnd = i;
+                        String literal = src.substring(literalStart, literalEnd);
+                        src = src.substring(0, literalStart) + "(" + literal + ")" + src.substring(literalEnd);
+                        i += 2;
+                        inLiteral = false;
+                    }
+                }
+            }
+        }
+        return src;
+    }
+
+    public static String deParen(String src) {
+        while(src.startsWith("(") && src.endsWith(")"))  src = src.substring(1, src.length() - 1);
+        return src;
+    }
 }

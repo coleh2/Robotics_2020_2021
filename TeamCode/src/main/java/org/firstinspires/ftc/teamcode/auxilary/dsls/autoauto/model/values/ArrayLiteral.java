@@ -29,6 +29,14 @@ public class ArrayLiteral extends Value {
     }
 
     @Override
+    public void loop() {
+        for(int i = 0; i < elems.length; i++) {
+            elems[i].loop();
+            this.returnValue[i] = elems[i].getReturnValue()[0];
+        }
+    }
+
+    @Override
     public float[] getReturnValue() {
         return this.returnValue;
     }

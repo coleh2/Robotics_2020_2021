@@ -25,4 +25,15 @@ public class StringLiteral extends Value {
         for(float v : this.returnValue) res.append((char) v);
         return res.toString();
     }
+
+    public static String codesToString(float[] codes) {
+        StringBuilder res = new StringBuilder();
+        for (float v : codes) {
+            if (v != '"') res.append((char) v);
+        }
+        return res.toString();
+    }
+    public static boolean isStringCode(float[] c) {
+        return c.length >= 2 && c[0] == '"' && c[c.length - 1] == '"';
+    }
 }
