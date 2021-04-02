@@ -1,5 +1,8 @@
+$
+testIterations: 10
+$
 #init:
-    log("proportional"), log(proportional), log("angle"), log(getThirdAngleOrientation()), let proportional = proportionalPID(getThirdAngleOrientation(), -90, 0.004), driveRaw(proportional, -1*proportional, -1*proportional, proportional), if(getThirdAngleOrientation() == -90) next, after 10s next;
+    log("proportional: " + proportional), log("angle: " + getThirdAngleOrientation()), let proportional = proportionalPID(getThirdAngleOrientation(), -90, 0.004), driveRaw(proportional, -1*proportional, -1*proportional, proportional), if(getThirdAngleOrientation() == -90) next, after 10s next
 //    log(proportional), let proportional = proportionalPID(getThirdAngleOrientation(), -90, 0.004), driveRaw(proportional, -1*proportional, -1*proportional, proportional), if(getThirdAngleOrientation() == 90) next, after 2s goto end
 
 #end:
