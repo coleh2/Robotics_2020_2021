@@ -88,3 +88,8 @@ lint/tmp/
 
 #autoauto files
 *__autoauto.java
+__autoauto.java
+/AutoautoLanguagePlugin/src/*
+/AutoautoLanguagePlugin/gen/*
+/AutoautoLanguagePlugin/build/*
+/AutoautoLanguagePlugin/build.gradle
