@@ -65,70 +65,46 @@ public class BooleanOperator extends Value {
         return this.returnValue;
     }
 
+    public void init() {
+        a.setRuntimeReferences(runtimeFunctionStore, runtimeVariableStore);
+        b.setRuntimeReferences(runtimeFunctionStore, runtimeVariableStore);
+    }
+
     public void loop() {
         if(this.type == Type.FUNC_CALL) {
             this.function.loop();
-            if(this.function.returnValue[0] > 0) this.returnValue = new float[] {0};
-            else this.returnValue = new float[] {1};
+            if(this.function.returnValue[0] > 0) this.returnValue = new float[] {1};
+            else this.returnValue = new float[] {0};
             return;
         }
         a.loop();
         b.loop();
         switch(type) {
             case EQUAL:
-                for(int i = a.returnValue.length - 1; i >= 0; i--) {
-                    if(!(a.returnValue[i] == b.returnValue[i])) {
-                        this.returnValue = new float[] {0};
-                        break;
-                    }
-                }
-                this.returnValue = new float[] {1};
-                break;
+                if(!(a.getReturnValue()[0] == b.getReturnValue()[0])) this.returnValue = new float[] {1};
+                else this.returnValue = new float[] {0};
+            break;
             case NOT_EQUAL:
-                for(int i = Math.min(a.returnValue.length, b.returnValue.length) - 1; i >= 0; i--) {
-                    if(!(a.returnValue[i] != b.returnValue[i])) {
-                        this.returnValue = new float[] {0};
-                        break;
-                    }
-                }
-                this.returnValue = new float[] {1};
-                break;
+                if(!(a.getReturnValue()[0] != b.getReturnValue()[0])) this.returnValue = new float[] {1};
+                else this.returnValue = new float[] {0};
+            break;
             case LESS_THAN:
-                for(int i =  Math.min(a.returnValue.length, b.returnValue.length)- 1; i >= 0; i--) {
-                    if(!(a.returnValue[i] < b.returnValue[i])) {
-                        this.returnValue = new float[] {0};
-                        break;
-                    }
-                }
-                this.returnValue = new float[] {1};
-                break;
+                    FeatureManager.logger.log(a.getReturnValue().length);
+                    if(!(a.getReturnValue()[0] < b.getReturnValue()[0])) this.returnValue = new float[] {1};
+                    else this.returnValue = new float[] {0};
+            break;
             case GREATER_THAN:
-                for(int i =  Math.min(a.returnValue.length, b.returnValue.length)- 1; i >= 0; i--) {
-                    if(!(a.returnValue[i] > b.returnValue[i])) {
-                        this.returnValue = new float[] {0};
-                        break;
-                    }
-                }
-                this.returnValue = new float[] {1};
-                break;
+                if(!(a.getReturnValue()[0] > b.getReturnValue()[0])) this.returnValue = new float[] {1};
+                else this.returnValue = new float[] {0};
+            break;
             case LESS_EQUAL_THAN:
-                for(int i =  Math.min(a.returnValue.length, b.returnValue.length)- 1; i >= 0; i--) {
-                    if(!(a.returnValue[i] <= b.returnValue[i])) {
-                        this.returnValue = new float[] {0};
-                        break;
-                    }
-                }
-                this.returnValue = new float[] {1};
-                break;
+                if(!(a.getReturnValue()[0] <= b.getReturnValue()[0])) this.returnValue = new float[] {1};
+                else this.returnValue = new float[] {0};
+            break;
             case GREATER_EQUAL_THAN:
-                for(int i =  Math.min(a.returnValue.length, b.returnValue.length)- 1; i >= 0; i--) {
-                    if(!(a.returnValue[i] >= b.returnValue[i])) {
-                        this.returnValue = new float[] {0};
-                        break;
-                    }
-                }
-                this.returnValue = new float[] {1};
-                break;
+                if(!(a.getReturnValue()[0] >= b.getReturnValue()[0])) this.returnValue = new float[] {1};
+                else this.returnValue = new float[] {0};
+            break;
             default:
                 this.returnValue = new float[] {0};
         }

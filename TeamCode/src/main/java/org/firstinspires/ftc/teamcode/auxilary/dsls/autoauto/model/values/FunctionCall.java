@@ -59,6 +59,7 @@ public class FunctionCall extends Value {
             for(int i = this.args.length - 1; i >= 0; i--) {
                 this.args[i].loop();
                 argsResolved[i] = this.args[i].getReturnValue();
+                if(argsResolved[i].length == 0) FeatureManager.logger.log("[AA ERROR] " + this.args[i].toString() + "is 0-len");
             }
 
             this.returnValue = fn.call(argsResolved);

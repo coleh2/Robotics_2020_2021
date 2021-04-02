@@ -27,6 +27,11 @@ public class IfStatement extends Statement {
         this.subject = Statement.createProperStatementType(src.substring(endingParen + 1), program, statepath, state);
     }
 
+    public void init() {
+        conditional.setRuntimeReferences(program.autoautoRuntime.functions, program.autoautoRuntime.variables);
+        conditional.init();
+    }
+
     public void loop() {
         conditional.loop();
         if(conditional.getReturnValue()[0] > 0) subject.loop();

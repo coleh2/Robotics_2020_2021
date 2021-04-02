@@ -15,6 +15,5 @@ public class DeltaFunction extends Function {
 
     public float[] call(float[][] args) {
         return new float[] { PaulMath.delta(args[0][0], args[1][0]) };
-
     }
 }
