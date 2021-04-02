@@ -28,14 +28,14 @@ public class AutoautoIfStatementImpl extends ASTWrapperPsiElement implements Aut
 
   @Override
   @NotNull
-  public AutoautoStatement getStatement() {
-    return findNotNullChildByClass(AutoautoStatement.class);
+  public AutoautoBoolean getBoolean() {
+    return findNotNullChildByClass(AutoautoBoolean.class);
   }
 
   @Override
   @NotNull
-  public AutoautoValueInParens getValueInParens() {
-    return findNotNullChildByClass(AutoautoValueInParens.class);
+  public AutoautoStatement getStatement() {
+    return findNotNullChildByClass(AutoautoStatement.class);
   }
 
 }

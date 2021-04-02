@@ -520,14 +520,15 @@ public class AutoautoParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IF valueInParens statement
+  // IF OPEN_PAREN boolean CLOSE_PAREN statement
   public static boolean ifStatement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ifStatement")) return false;
     if (!nextTokenIs(b, IF)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, IF);
-    r = r && valueInParens(b, l + 1);
+    r = consumeTokens(b, 0, IF, OPEN_PAREN);
+    r = r && boolean_$(b, l + 1);
+    r = r && consumeToken(b, CLOSE_PAREN);
     r = r && statement(b, l + 1);
     exit_section_(b, m, IF_STATEMENT, r);
     return r;

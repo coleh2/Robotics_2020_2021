@@ -5,7 +5,9 @@ key: 3,
 key: ["tree", "bf"],
 vf: 3,
 gr: 4,
-servos: ["wobbleArmRight", "wobbleArmLeft" , "wobbleGrabRight","wobbleGrabLeft"]
+servos: ["wobbleArmRight", "wobbleArmLeft" , "wobbleGrabRight","wobbleGrabLeft", "thththt"],
+crServos: ["shootyshootybangbang"],
+testIterations: 6
 $
 
 #init:

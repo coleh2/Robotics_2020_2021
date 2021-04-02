@@ -38,7 +38,7 @@ functionCallStatement ::= functionCall
 
 gotoStatement ::= GOTO IDENTIFIER
 
-ifStatement ::= IF valueInParens statement
+ifStatement ::= IF OPEN_PAREN boolean CLOSE_PAREN statement
 
 letStatement ::= LET variableReference commentOpportunity* EQUALS commentOpportunity* value
 
