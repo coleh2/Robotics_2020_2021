@@ -30,6 +30,8 @@ public class IfStatement extends Statement {
     public void init() {
         conditional.setRuntimeReferences(program.autoautoRuntime.functions, program.autoautoRuntime.variables);
         conditional.init();
+
+        subject.init();
     }
 
     public void loop() {

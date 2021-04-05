@@ -67,7 +67,9 @@ public class BooleanOperator extends Value {
 
     public void init() {
         a.setRuntimeReferences(runtimeFunctionStore, runtimeVariableStore);
+        a.init();
         b.setRuntimeReferences(runtimeFunctionStore, runtimeVariableStore);
+        b.init();
     }
 
     public void loop() {

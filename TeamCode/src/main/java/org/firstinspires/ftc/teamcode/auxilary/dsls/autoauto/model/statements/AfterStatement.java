@@ -29,6 +29,14 @@ public class AfterStatement extends Statement {
     }
 
     @Override
+    public void init() {
+        action.init();
+
+        wait.setRuntimeReferences(program.autoautoRuntime.functions, program.autoautoRuntime.variables);
+        wait.init();
+    }
+
+    @Override
     public void stepInit() {
         this.stepStartTime = System.currentTimeMillis();
         this.stepStartTick = (int)program.autoautoRuntime.functions.get("getTicks", 0).call(new float[0][0])[0];
