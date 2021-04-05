@@ -7,6 +7,8 @@ import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.Statepath;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values.BooleanOperator;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 
+import java.util.Arrays;
+
 public class IfStatement extends Statement {
     BooleanOperator conditional;
     Statement subject;
@@ -36,6 +38,7 @@ public class IfStatement extends Statement {
 
     public void loop() {
         conditional.loop();
+//        FeatureManager.logger.log("[AuAu] if statement logs: " + Arrays.toString(conditional.getReturnValue()));
         if(conditional.getReturnValue()[0] > 0) subject.loop();
     }
     public String toString() {

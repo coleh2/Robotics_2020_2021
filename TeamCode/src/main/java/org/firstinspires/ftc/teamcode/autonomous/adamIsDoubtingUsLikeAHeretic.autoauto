@@ -2,16 +2,17 @@ $
 testIterations: 10
 $
 #init:
-    log("proportional: " + proportional),
+    let proportional = proportionalPID(getThirdAngleOrientation(), -90, 0.01),
+        log("proportional: " + proportional),
         log("angle: " + getThirdAngleOrientation()),
-        log("delta: " + delta(-90, getThirdAngleOrientation())),
-        let proportional = proportionalPID(getThirdAngleOrientation(), -90, 0.004),
         driveRaw(-1*proportional, proportional, proportional, -1*proportional),
-        if( delta(-90, getThirdAngleOrientation()) < 360)
-            log("GAAHHHH"),
+        let del = delta(-90, getThirdAngleOrientation()),
+        log("del: " + del),
+        if(del < 1)
+            next,
         after 10s
             next;
-//    driveRaw(1, 1, -1, -1), after 1s next;
+    driveRaw(0.3, 0.3, -0.3, -0.3), after 1s next;
     goto end
 
 #end:

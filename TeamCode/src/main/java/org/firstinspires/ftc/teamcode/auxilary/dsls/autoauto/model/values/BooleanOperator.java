@@ -83,28 +83,28 @@ public class BooleanOperator extends Value {
         b.loop();
         switch(type) {
             case EQUAL:
-                if(!(a.getReturnValue()[0] == b.getReturnValue()[0])) this.returnValue = new float[] {1};
+                if(a.getReturnValue()[0] == b.getReturnValue()[0]) this.returnValue = new float[] {1};
                 else this.returnValue = new float[] {0};
             break;
             case NOT_EQUAL:
-                if(!(a.getReturnValue()[0] != b.getReturnValue()[0])) this.returnValue = new float[] {1};
+                if(a.getReturnValue()[0] != b.getReturnValue()[0]) this.returnValue = new float[] {1};
                 else this.returnValue = new float[] {0};
             break;
             case LESS_THAN:
                     FeatureManager.logger.log(a.getReturnValue().length);
-                    if(!(a.getReturnValue()[0] < b.getReturnValue()[0])) this.returnValue = new float[] {1};
+                    if(a.getReturnValue()[0] < b.getReturnValue()[0]) this.returnValue = new float[] {1};
                     else this.returnValue = new float[] {0};
             break;
             case GREATER_THAN:
-                if(!(a.getReturnValue()[0] > b.getReturnValue()[0])) this.returnValue = new float[] {1};
+                if(a.getReturnValue()[0] > b.getReturnValue()[0]) this.returnValue = new float[] {1};
                 else this.returnValue = new float[] {0};
             break;
             case LESS_EQUAL_THAN:
-                if(!(a.getReturnValue()[0] <= b.getReturnValue()[0])) this.returnValue = new float[] {1};
+                if(a.getReturnValue()[0] <= b.getReturnValue()[0]) this.returnValue = new float[] {1};
                 else this.returnValue = new float[] {0};
             break;
             case GREATER_EQUAL_THAN:
-                if(!(a.getReturnValue()[0] >= b.getReturnValue()[0])) this.returnValue = new float[] {1};
+                if(a.getReturnValue()[0] >= b.getReturnValue()[0]) this.returnValue = new float[] {1};
                 else this.returnValue = new float[] {0};
             break;
             default:

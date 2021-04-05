@@ -78,4 +78,4 @@
     driveRaw(-0.4,-0.4,0.4,0.4), after 800ticks goto end
 
 #end:
-    driveRaw(0.0,0.0,0.0,0.0), setServoPower(shooterArm, 0.63), setMotorPower(flywheelLeft, 0), setMotorPower(flywheelRight, 0), setMotoPower(drum, 0)
+    driveRaw(0.0,0.0,0.0,0.0), setServoPower(shooterArm, 0.63), setMotorPower(flywheelLeft, 0), setMotorPower(flywheelRight, 0), setMotorPower(drum, 0)
