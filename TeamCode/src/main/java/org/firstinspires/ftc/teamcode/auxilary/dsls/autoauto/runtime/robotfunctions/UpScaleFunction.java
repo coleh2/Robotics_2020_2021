@@ -16,7 +16,7 @@ public class UpScaleFunction extends Function {
     }
 
     public float[] call(float[][] args) {
-        manager.upScale();
+//        manager.upScale();
         return new float[0];
     }
 }

@@ -170,7 +170,7 @@ public class Teleop extends OpMode {
         telemetry.addData("controls:drive", input.getControl("drive").toString());
         telemetry.addData("controls:drive/result", Arrays.toString(input.getVector("drive")));
 
-        telemetry.addData("speed: ", driver.getScale());
+//        telemetry.addData("speed: ", driver.getScale());
 
     }
 }

@@ -111,7 +111,7 @@ public class StateMachineAutoColor extends OpMode {
         telemetry.addData("Flywheel Right Power", limbs.getMotorPower("flywheelRight"));
         telemetry.addData("Flywheel Left Power", limbs.getMotorPower("flywheelLeft"));
 
-        telemetry.addData("speed: ", driver.getScale());
+//        telemetry.addData("speed: ", driver.getScale());
         telemetry.addData("FL Power: ", driver.frontLeft.getPower());
         telemetry.addData("FL Port: ", driver.frontLeft.getPortNumber());
 

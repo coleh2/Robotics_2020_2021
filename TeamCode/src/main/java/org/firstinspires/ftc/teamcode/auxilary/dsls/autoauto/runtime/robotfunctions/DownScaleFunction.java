@@ -16,7 +16,7 @@ public class DownScaleFunction extends Function {
     }
 
     public float[] call(float[][] args) {
-        manager.downScale();
+//        manager.downScale();
         return new float[0];
     }
 }

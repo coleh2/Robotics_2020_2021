@@ -138,7 +138,7 @@ public class TeleopControls extends OpMode {
         telemetry.addData("Flywheel Left Power", limbs.getMotorPower("flywheelLeft"));
         telemetry.addData("Orientation", imu.getOrientation().toString());
 
-        telemetry.addData("speed: ", driver.getScale());
+//        telemetry.addData("speed: ", driver.getScale());
 
         telemetry.addData("left trigger: ", input.getGamepad().left_trigger);
 

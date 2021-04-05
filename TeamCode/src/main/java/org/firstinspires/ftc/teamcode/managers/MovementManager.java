@@ -18,7 +18,7 @@ public class MovementManager extends FeatureManager {
     public DcMotor backRight;
     private ElapsedTime timer;
 
-    private static float scale = 0.5f;
+//    private static float scale = 0.5f;
 
     /**
      * Create a MovementManager with four motors.
@@ -59,14 +59,14 @@ public class MovementManager extends FeatureManager {
     }
 
     public void stopDrive() {
-        frontLeft.setPower(0);
-        frontRight.setPower(0);
-        backRight.setPower(0);
-        backLeft.setPower(0);
+        frontLeft.setPower(0.0);
+        frontRight.setPower(0.0);
+        backRight.setPower(0.0);
+        backLeft.setPower(0.0);
     }
 
     public void driveOmni(float[] powers) {
-        float[] sum = PaulMath.omniCalc(powers[0]*scale, powers[1]*scale, powers[2] * scale);
+        float[] sum = PaulMath.omniCalc(powers[0]/**scale*/, powers[1]/**scale*/, powers[2] /** scale*/);
         driveRaw(sum[0], sum[1], sum[2], sum[3]);
     }
 
@@ -134,15 +134,15 @@ public class MovementManager extends FeatureManager {
         }
         stopDrive();
     }
-    public float getScale(){
-        return scale;
-    }
-    public void upScale(){
-        scale+=0.01;
-    }
-    public void downScale(){
-        scale-=0.01;
-    }
+//    public float getScale(){
+//        return scale;
+//    }
+//    public void upScale(){
+//        scale+=0.01;
+//    }
+//    public void downScale(){
+//        scale-=0.01;
+//    }
 
     public float[] getMotorPositions() {
         return new float[] {

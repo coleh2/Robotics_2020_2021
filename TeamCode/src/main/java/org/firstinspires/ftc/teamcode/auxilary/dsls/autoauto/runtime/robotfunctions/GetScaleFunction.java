@@ -16,6 +16,7 @@ public class GetScaleFunction extends Function {
     }
 
     public float[] call(float[][] args) {
-        return new float[] {manager.getScale() };
+//        return new float[] {manager.getScale() };
+        return new float[] {0.5f};
     }
 }
