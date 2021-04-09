@@ -21,19 +21,17 @@ repositories {
 dependencies {
     annotationProcessor files('lib/OpModeAnnotationProcessor.jar')
     implementation 'junit:junit:4.12'
+
+    implementation 'org.apache.commons:commons-math3:3.6.1'
+
+    implementation 'com.acmerobotics.roadrunner:core:0.5.3'
 }
 
 task generateAutoautoSources {
     doFirst {
         def script = "node TeamCode/src/main/java/org/firstinspires/ftc/teamcode/auxilary/dsls/autoauto/compiler.js".execute()
-        script.in.eachLine {line -> println line}
-        script.err.eachLine {line -> println "ERROR: " + line}
+        script.in.eachLine { line -> println line }
+        script.err.eachLine { line -> println "ERROR: " + line }
         script.waitFor()
-    }
-}
-
-android {
-    gradle.projectsEvaluated {
-        preBuild.dependsOn(generateAutoautoSources)
     }
 }
