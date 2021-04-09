@@ -1,0 +1,7 @@
+#init:
+    log("front: " + omniCalc(1.0,0.0,0.0)),
+        log("back: " + omniCalc(-1.0,0.0,0.0)),
+        log("right: " + omniCalc(0.0,1.0,0.0)),
+        log("left: " + omniCalc(0.0,-1.0,0.0)),
+        log("turn right: " + omniCalc(0.0,0.0,1.0)),
+        log("turn left: " + omniCalc(0.0,0.0,-1.0))
