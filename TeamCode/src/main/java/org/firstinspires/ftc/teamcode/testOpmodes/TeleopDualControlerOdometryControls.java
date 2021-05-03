@@ -1,27 +1,28 @@
-package org.firstinspires.ftc.teamcode.teleop;
+package org.firstinspires.ftc.teamcode.testOpmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareDevice;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.auxilary.EncodedMotor;
-import org.firstinspires.ftc.teamcode.auxilary.controlmaps.DualControllerContolMap;
 import org.firstinspires.ftc.teamcode.auxilary.ColorSensor;
+import org.firstinspires.ftc.teamcode.auxilary.controlmaps.DualControllerContolMap;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 import org.firstinspires.ftc.teamcode.managers.ImuManager;
 import org.firstinspires.ftc.teamcode.managers.InputManager;
 import org.firstinspires.ftc.teamcode.managers.ManipulationManager;
 import org.firstinspires.ftc.teamcode.managers.MovementManager;
+import org.firstinspires.ftc.teamcode.managers.OdometryManager;
+
+import java.util.Arrays;
 
 
 @TeleOp
-public class TeleopDualControlerControls extends OpMode {
+public class TeleopDualControlerOdometryControls extends OpMode {
 
     InputManager input;
-    MovementManager driver;
+    OdometryManager roadrunner;
     ManipulationManager limbs;
     ColorSensor sensor;
     Servo grab;
@@ -36,10 +37,7 @@ public class TeleopDualControlerControls extends OpMode {
         try {
         FeatureManager.logger.setBackend(telemetry.log());
 
-        driver = new MovementManager(hardwareMap.get(DcMotor.class, "fl"),
-                hardwareMap.get(DcMotor.class, "fr"),
-                hardwareMap.get(DcMotor.class, "br"),
-                hardwareMap.get(DcMotor.class, "bl"));
+        roadrunner = new OdometryManager(hardwareMap);
 
         input = new InputManager(gamepad1, gamepad2, new DualControllerContolMap());
 
@@ -99,7 +97,7 @@ public class TeleopDualControlerControls extends OpMode {
 
             input.update();
 
-            driver.driveOmni((input.getVector("drive")));
+            roadrunner.driveOmni((input.getVector("drive")));
 
             limbs.setMotorPower("intake", 0.8*input.getScalar("intake"));
 
@@ -113,33 +111,22 @@ public class TeleopDualControlerControls extends OpMode {
             limbs.setServoPosition("wobbleArmRight", input.getScalar("wobbleArmRight"));
             limbs.setServoPosition("wobbleArmLeft", input.getScalar("wobbleArmLeft"));
 
+            telemetry.addData("Position garbage: ", Arrays.toString(roadrunner.getCurrentPosition()));
+
             telemetry.addData("wobbleGrabRight", limbs.getServo("wobbleGrabRight").getPosition());
             telemetry.addData("wobbleGrabLeft", limbs.getServo("wobbleGrabLeft").getPosition());
             telemetry.addData("wobbleArmRight", limbs.getServo("wobbleArmRight").getPosition());
             telemetry.addData("wobbleArmLeft", limbs.getServo("wobbleArmLeft").getPosition());
 
+            telemetry.addData("Drum Power", limbs.getMotorPower("drum"));
+            telemetry.addData("Intake Power", limbs.getMotorPower("intake"));
+            telemetry.addData("Flywheel Right Power", limbs.getMotorPower("flywheelRight"));
+            telemetry.addData("Flywheel Left Power", limbs.getMotorPower("flywheelLeft"));
+            telemetry.addData("Orientation", imu.getOrientation().toString());
 
-            telemetry.addData("FL Power: ", driver.frontLeft.getPower());
-            telemetry.addData("FL Port: ", driver.frontLeft.getPortNumber());
+            telemetry.addData("left trigger: ", input.getGamepad().left_trigger);
 
-        telemetry.addData("FR Power: ", driver.frontRight.getPower());
-        telemetry.addData("FR Port: ", driver.frontRight.getPortNumber());
-
-        telemetry.addData("BL Power: ", driver.backLeft.getPower());
-        telemetry.addData("BL Port: ", driver.backLeft.getPortNumber());
-
-        telemetry.addData("BR Power: ", driver.backRight.getPower());
-        telemetry.addData("BR Port: ", driver.backRight.getPortNumber());
-
-        telemetry.addData("Drum Power", limbs.getMotorPower("drum"));
-        telemetry.addData("Intake Power", limbs.getMotorPower("intake"));
-        telemetry.addData("Flywheel Right Power", limbs.getMotorPower("flywheelRight"));
-        telemetry.addData("Flywheel Left Power", limbs.getMotorPower("flywheelLeft"));
-        telemetry.addData("Orientation", imu.getOrientation().toString());
-
-        telemetry.addData("speed: ", driver.getScale());
-
-        telemetry.addData("left trigger: ", input.getGamepad().left_trigger);
+            roadrunner.update();
         } catch (Exception e) {
             FeatureManager.logger.log(e.toString());
         }
