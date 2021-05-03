@@ -50,14 +50,12 @@ public class EncoderTester extends OpMode {
                 new DcMotor[] {
                         hardwareMap.get(DcMotor.class, "drum"),
                         hardwareMap.get(DcMotor.class, "intake"),
-                        hardwareMap.get(DcMotor.class, "flywheelRight"),
-                        hardwareMap.get(DcMotor.class, "flywheelLeft")
+                        hardwareMap.get(DcMotor.class, "flywheel")
                 },
                 new String[] {
                         "drum",
                         "intake",
-                        "flywheelRight",
-                        "flywheelLeft"
+                        "flywheel"
                 }
             );
 

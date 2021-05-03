@@ -40,12 +40,10 @@ public class TeleopFlywheel extends OpMode {
                 new Servo[] {},
                 new String[] {},
                 new DcMotor[] {
-                        hardwareMap.get(DcMotor.class, "flywheelRight"),
-                        hardwareMap.get(DcMotor.class, "flywheelLeft")
+                        hardwareMap.get(DcMotor.class, "flywheel"),
                 },
                 new String[] {
-                        "flywheelRight",
-                        "flywheelLeft"
+                        "flywheel"
                 }
             );
 
@@ -71,25 +69,16 @@ public class TeleopFlywheel extends OpMode {
 
 
         if(input.getGamepad().right_trigger > 0.5){
-            limbs.setMotorPower("flywheelRight", -0.3f);
+            limbs.setMotorPower("flywheel", 0.3f);
         } else
         if(input.getGamepad().right_bumper){
-            limbs.setMotorPower("flywheelRight", 0.3f);
+            limbs.setMotorPower("flywheel", -0.3f);
         } else {
-            limbs.setMotorPower("flywheelRight", 0f);
+            limbs.setMotorPower("flywheel", 0f);
         }
 
-        if(input.getGamepad().left_trigger > 0.5){
-            limbs.setMotorPower("flywheelLeft", 1f);
-        } else
-        if(input.getGamepad().left_bumper){
-            limbs.setMotorPower("flywheelLeft", -1f);
-        } else {
-            limbs.setMotorPower("flywheelLeft", 0f);
-        }
 
-        telemetry.addData("flywheelLeft Power", limbs.getMotorPower("flywheelLeft"));
-        telemetry.addData("flywheelRight Power", limbs.getMotorPower("flywheelRight"));
+        telemetry.addData("flywheel Power", limbs.getMotorPower("flywheel"));
 
         telemetry.addData("Orientation", imu.getOrientation().toString());
     }

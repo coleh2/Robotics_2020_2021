@@ -35,19 +35,17 @@ public class TeleopMotorTest extends OpMode {
 //                hardwareMap.get(DcMotor.class, "bl"));
         input = new InputManager(gamepad1, new BasicDrivingControlMap());
         imu = new ImuManager(hardwareMap.get(com.qualcomm.hardware.bosch.BNO055IMU.class, "imu"));
-        EncodedMotor enc = new EncodedMotor(hardwareMap.get(DcMotor.class, "flywheelRight"), 2800);
+        EncodedMotor enc = new EncodedMotor(hardwareMap.get(DcMotor.class, "flywheel"), 2800);
         limbs = new ManipulationManager(
                 new CRServo[] {},
                 new String[] {},
                 new Servo[] {},
                 new String[] {},
                 new DcMotor[] {
-                        hardwareMap.get(DcMotor.class, "flywheelRight"),
-                        hardwareMap.get(DcMotor.class, "flywheelLeft")
+                        hardwareMap.get(DcMotor.class, "flywheel"),
                 },
                 new String[] {
-                        "flywheelRight",
-                        "flywheelLeft"
+                        "flywheel"
                 }
             );
 
@@ -78,12 +76,12 @@ public class TeleopMotorTest extends OpMode {
 
 
         if(input.getGamepad().right_trigger > 0.5){
-            limbs.setMotorPower("flywheelRight", -speed);
+            limbs.setMotorPower("flywheel", -speed);
         } else
         if(input.getGamepad().right_bumper){
-            limbs.setMotorPower("flywheelRight", speed);
+            limbs.setMotorPower("flywheel", speed);
         } else {
-            limbs.setMotorPower("flywheelRight", 0f);
+            limbs.setMotorPower("flywheel", 0f);
         }
 
         if(input.getGamepad().dpad_up) {
@@ -101,8 +99,7 @@ public class TeleopMotorTest extends OpMode {
         } else downPressed = false;
 
 
-//        telemetry.addData("flywheelLeft Power", limbs.getMotorPower("flywheelLeft"));
-        telemetry.addData("flywheelRight Power", limbs.getMotorPower("flywheelRight"));
+        telemetry.addData("flywheel Power", limbs.getMotorPower("flywheel"));
         telemetry.addData("speed: ", speed);
         telemetry.addData("Orientation", imu.getOrientation().toString());
 

@@ -56,14 +56,12 @@ public class TeleopControls extends OpMode {
                 new DcMotor[] {
                         hardwareMap.get(DcMotor.class, "drum"),
                         hardwareMap.get(DcMotor.class, "intake"),
-                        hardwareMap.get(DcMotor.class, "flywheelRight"),
-//                        hardwareMap.get(DcMotor.class, "flywheelLeft")
+                        hardwareMap.get(DcMotor.class, "flywheel"),
                 },
                 new String[] {
                         "drum",
                         "intake",
-                        "flywheelRight",
-//                        "flywheelLeft"
+                        "flywheel"
                 }
 
         );
@@ -72,9 +70,8 @@ public class TeleopControls extends OpMode {
         driver.runUsingEncoders();
         limbs.getServo("wobbleArmLeft").setDirection(Servo.Direction.REVERSE);
         limbs.getServo("wobbleGrabRight").setDirection(Servo.Direction.REVERSE);
-        limbs.resetEncoders("flywheelRight");
-//            limbs.resetEncoders("flywheelLeft");
-        limbs.runUsingEncoders("flywheelRight");
+        limbs.resetEncoders("flywheel");
+        limbs.runUsingEncoders("flywheel");
 
 
     }
@@ -91,8 +88,7 @@ public class TeleopControls extends OpMode {
         limbs.setMotorPower("intake", 0.8*input.getScalar("intake"));
 
         limbs.setMotorPower("drum", input.getScalar("drum"));
-        limbs.setMotorPower("flywheelRight", speed*input.getScalar("flywheelRight"));
-//        limbs.setMotorPower("flywheelLeft", input.getScalar("flywheelLeft"));
+        limbs.setMotorPower("flywheel", speed*input.getScalar("flywheel"));
         limbs.setServoPower("shooterArm", input.getScalar("shooterArm"));
 
         limbs.setServoPosition("wobbleGrabRight", input.getScalar("wobbleGrabRight"));
@@ -129,8 +125,7 @@ public class TeleopControls extends OpMode {
 
         telemetry.addData("Drum Power", limbs.getMotorPower("drum"));
         telemetry.addData("Intake Power", limbs.getMotorPower("intake"));
-        telemetry.addData("Flywheel Right Power", limbs.getMotorPower("flywheelRight"));
-//        telemetry.addData("Flywheel Left Power", limbs.getMotorPower("flywheelLeft"));
+        telemetry.addData("Flywheel Power", limbs.getMotorPower("flywheel"));
         telemetry.addData("Orientation", imu.getOrientation().toString());
 
         telemetry.addData("speed: ", speed);

@@ -47,14 +47,12 @@ public class TeleopShoot extends OpMode {
                 new DcMotor[] {
                         hardwareMap.get(DcMotor.class, "drum"),
                         hardwareMap.get(DcMotor.class, "intake"),
-                        hardwareMap.get(DcMotor.class, "flywheelRight"),
-                        hardwareMap.get(DcMotor.class, "flywheelLeft")
+                        hardwareMap.get(DcMotor.class, "flywheel"),
                 },
                 new String[] {
                         "drum",
                         "intake",
-                        "flywheelRight",
-                        "flywheelLeft"
+                        "flywheel"
                 }
             );
 
@@ -84,11 +82,9 @@ public class TeleopShoot extends OpMode {
 
 
         if(input.getGamepad().right_trigger > 0.1){
-            limbs.setMotorPower("flywheelRight", -1);
-            limbs.setMotorPower("flywheelLeft", 1);
+            limbs.setMotorPower("flywheel", 1);
         } else {
-            limbs.setMotorPower("flywheelRight", 0);
-            limbs.setMotorPower("flywheelLeft", 0);
+            limbs.setMotorPower("flywheel", 0);
         }
 
         if(input.getGamepad().right_bumper) {
@@ -144,8 +140,7 @@ public class TeleopShoot extends OpMode {
 
         telemetry.addData("Drum Power", limbs.getMotorPower("drum"));
         telemetry.addData("Intake Power", limbs.getMotorPower("intake"));
-        telemetry.addData("Flywheel Right Power", limbs.getMotorPower("flywheelRight"));
-        telemetry.addData("Flywheel Left Power", limbs.getMotorPower("flywheelLeft"));
+        telemetry.addData("Flywheel Power", limbs.getMotorPower("flywheel"));
         telemetry.addData("Orientation", imu.getOrientation().toString());
     }
 }
