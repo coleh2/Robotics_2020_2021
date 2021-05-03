@@ -46,14 +46,12 @@ public class SwitchAuto extends OpMode {
                 new DcMotor[] {
                         hardwareMap.get(DcMotor.class, "drum"),
                         hardwareMap.get(DcMotor.class, "intake"),
-                        hardwareMap.get(DcMotor.class, "flywheelRight"),
-                        hardwareMap.get(DcMotor.class, "flywheelLeft")
+                        hardwareMap.get(DcMotor.class, "flywheel")
                 },
                 new String[] {
                         "drum",
                         "intake",
-                        "flywheelRight",
-                        "flywheelLeft"
+                        "flywheel"
                 }
         );
         imu = new ImuManager(hardwareMap.get(com.qualcomm.hardware.bosch.BNO055IMU.class, "imu"));
@@ -74,8 +72,7 @@ public class SwitchAuto extends OpMode {
             case 0:
                 //set shooterArm and turn on Flywheels
                 limbs.setServoPower("shooterArm", 0.63);
-                limbs.setMotorPower("flywheelRight", -1);
-                limbs.setMotorPower("flywheelLeft", 1);
+                limbs.setMotorPower("flywheel", 1);
                 step++;
                 startTime = getRuntime(); break;
             case 1:
@@ -325,8 +322,7 @@ public class SwitchAuto extends OpMode {
         telemetry.addData("Step Run Time:", getRuntime()-startTime);
         telemetry.addData("Drum Power", limbs.getMotorPower("drum"));
         telemetry.addData("Intake Power", limbs.getMotorPower("intake"));
-        telemetry.addData("Flywheel Right Power", limbs.getMotorPower("flywheelRight"));
-        telemetry.addData("Flywheel Left Power", limbs.getMotorPower("flywheelLeft"));
+        telemetry.addData("Flywheel Power", limbs.getMotorPower("flywheel"));
         telemetry.addData("FL Power: ", driver.frontLeft.getPower());
         telemetry.addData("FR Power: ", driver.frontRight.getPower());
         telemetry.addData("BL Power: ", driver.backLeft.getPower());

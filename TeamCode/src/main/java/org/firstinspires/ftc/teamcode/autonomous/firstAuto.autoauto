@@ -1,8 +1,8 @@
 #init:
     setServoPosition(wobbleArmLeft, 0.055), setServoPosition(wobbleArmRight, 0.055), next;
     setServoPosition(wobbleGrabLeft, 1), setServoPosition(wobbleGrabRight, 1), next;
-    setServoPower(shooterArm, 0.63), setMotorPower(drum, -0.5), setMotorPower(flywheelLeft, -1.0), setMotorPower(flywheelRight, 1.0), after 0.8s next;
-    setMotorPower(drum, 0), setMotorPower(flywheelLeft, 0), setMotorPower(flywheelRight, 0), next;
+    setServoPower(shooterArm, 0.63), setMotorPower(drum, -0.5), setMotorPower(flywheel, -1.0), after 0.8s next;
+    setMotorPower(drum, 0), setMotorPower(flywheel, 0), next;
     goto shooting
 
 #shooting:
@@ -22,17 +22,17 @@
 
     /*shooting*/
     setServoPower(shooterArm, 0.4), after 0.4s next;
-    setServoPower(shooterArm, 0.63), setMotorPower(drum, -0.5), setMotorPower(flywheelLeft, -1.0), setMotorPower(flywheelRight, 1.0), after 0.8s next;
-    setMotorPower(flywheelLeft, 0.75), setMotorPower(flywheelRight, -0.75), after 0.5s next;
+    setServoPower(shooterArm, 0.63), setMotorPower(drum, -0.5), setMotorPower(flywheel, -1.0), after 0.8s next;
+    setMotorPower(flywheelRight, -0.75), after 0.5s next;
 
     /*shooting*/
     setServoPower(shooterArm, 0.4), after 0.4s next;
-    setServoPower(shooterArm, 0.63), setMotorPower(drum, -0.5), setMotorPower(flywheelLeft, -1.0), setMotorPower(flywheelRight, 1.0), after 0.8s next;
-    setMotorPower(flywheelLeft, 0.75), setMotorPower(flywheelRight, -0.75), after 0.5s next;
+    setServoPower(shooterArm, 0.63), setMotorPower(drum, -0.5), setMotorPower(flywheel, -1.0), after 0.8s next;
+    setMotorPower(flywheelRight, -0.75), after 0.5s next;
 
     /*shooting*/
     setServoPower(shooterArm, 0.4), after 0.4s next;
-    setServoPower(shooterArm, 0.63), setMotorPower(flywheelLeft, 0), setMotorPower(flywheelRight, 0), next;
+    setServoPower(shooterArm, 0.63), setMotorPower(flywheel, 0), next;
 
     /*goto different threads*/
     if(rings == 0) goto zeroRings, if(rings == 1) goto oneRing, if(rings == 4) goto fourRings
@@ -78,4 +78,4 @@
     driveRaw(-0.4,-0.4,0.4,0.4), after 800ticks goto end
 
 #end:
-    driveRaw(0.0,0.0,0.0,0.0), setServoPower(shooterArm, 0.63), setMotorPower(flywheelLeft, 0), setMotorPower(flywheelRight, 0), setMotorPower(drum, 0)
+    driveRaw(0.0,0.0,0.0,0.0), setServoPower(shooterArm, 0.63), setMotorPower(flywheel, 0), setMotorPower(drum, 0)

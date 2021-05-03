@@ -34,21 +34,18 @@ public class StateMachineAutoOfficial extends OpMode {
                 new DcMotor[] {
                         hardwareMap.get(DcMotor.class, "drum"),
                         hardwareMap.get(DcMotor.class, "intake"),
-                        hardwareMap.get(DcMotor.class, "flywheelRight"),
-                        hardwareMap.get(DcMotor.class, "flywheelLeft")
+                        hardwareMap.get(DcMotor.class, "flywheel")
                 },
                 new String[] {
                         "drum",
                         "intake",
-                        "flywheelRight",
-                        "flywheelLeft"
+                        "flywheel"
                 }
         );
 
         int currentState = 0;
         stateMachine = new StateMachine(new AutoState[] {
                 new AutoState(new AutoState.ContinueCondition(   AutoState.ContinueType.INSTANT,                 1),  new AutoState.StateAction(AutoState.ActionType.MANIP_MOTOR,    new float[] {2f, -1f}              )),
-                new AutoState(new AutoState.ContinueCondition(   AutoState.ContinueType.INSTANT,                 2),  new AutoState.StateAction(AutoState.ActionType.MANIP_MOTOR,    new float[] {3f, 1f}               )),
                 new AutoState(new AutoState.ContinueCondition(   AutoState.ContinueType.TIME,    1700L, 3),  new AutoState.StateAction(AutoState.ActionType.DRIVE,          new float[] {0.6f,0.6f,-0.6f,-0.6f})),
                 new AutoState(new AutoState.ContinueCondition(   AutoState.ContinueType.TIME,    500L,   4),  new AutoState.StateAction(AutoState.ActionType.DRIVE,          new float[] {0f,0f,0f,0f}          )),
                 new AutoState(new AutoState.ContinueCondition(   AutoState.ContinueType.TIME,    1_000L, 5),  new AutoState.StateAction(AutoState.ActionType.MANIP_SERVO,    new float[] {0f, 0f}               )),
@@ -61,7 +58,6 @@ public class StateMachineAutoOfficial extends OpMode {
                 new AutoState(new AutoState.ContinueCondition(   AutoState.ContinueType.INSTANT,                 12), new AutoState.StateAction(AutoState.ActionType.DRIVE,          new float[] {0f,0f,0f,0f}          )),
                 new AutoState(new AutoState.ContinueCondition(   AutoState.ContinueType.INSTANT,                 13), new AutoState.StateAction(AutoState.ActionType.DRIVE,          new float[] {0f, 0f, 0f,0f}        )),
                 new AutoState(new AutoState.ContinueCondition(   AutoState.ContinueType.INSTANT,                 14), new AutoState.StateAction(AutoState.ActionType.MANIP_MOTOR,    new float[] {2f, 0f}               )),
-                new AutoState(new AutoState.ContinueCondition(   AutoState.ContinueType.INSTANT,                 14), new AutoState.StateAction(AutoState.ActionType.MANIP_MOTOR,    new float[] {3f, 0f}               ))
 
         });
 
@@ -97,8 +93,7 @@ public class StateMachineAutoOfficial extends OpMode {
 
         telemetry.addData("Drum Power", limbs.getMotorPower("drum"));
         telemetry.addData("Intake Power", limbs.getMotorPower("intake"));
-        telemetry.addData("Flywheel Right Power", limbs.getMotorPower("flywheelRight"));
-        telemetry.addData("Flywheel Left Power", limbs.getMotorPower("flywheelLeft"));
+        telemetry.addData("Flywheel Power", limbs.getMotorPower("flywheel"));
 
         telemetry.addData("speed: ", driver.getScale());
         telemetry.addData("FL Power: ", driver.frontLeft.getPower());
