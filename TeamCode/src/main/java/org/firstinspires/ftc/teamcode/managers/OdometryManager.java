@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.teamcode.auxilary.roadrunner.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.auxilary.roadrunner.drive.StandardTrackingWheelLocalizer;
 
 public class OdometryManager extends FeatureManager {
     SampleMecanumDrive driveBackend;
@@ -22,9 +23,9 @@ public class OdometryManager extends FeatureManager {
     public void driveOmni(float[] powers) {
         driveBackend.setWeightedDrivePower(
                 new Pose2d(
-                        -powers[0]*0.1,
-                        -powers[1]*0.1,
-                        -powers[2]*0.1
+                        powers[1]*0.3,
+                        -powers[2]*0.3,
+                        powers[0]*0.3
                 )
         );
     }

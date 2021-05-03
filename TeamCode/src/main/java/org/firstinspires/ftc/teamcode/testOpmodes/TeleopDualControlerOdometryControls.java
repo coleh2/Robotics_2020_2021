@@ -15,6 +15,8 @@ import org.firstinspires.ftc.teamcode.managers.ManipulationManager;
 import org.firstinspires.ftc.teamcode.managers.MovementManager;
 import org.firstinspires.ftc.teamcode.managers.OdometryManager;
 
+import java.util.Arrays;
+
 
 @TeleOp
 public class TeleopDualControlerOdometryControls extends OpMode {
@@ -108,6 +110,8 @@ public class TeleopDualControlerOdometryControls extends OpMode {
             limbs.setServoPosition("wobbleGrabLeft", input.getScalar("wobbleGrabLeft"));
             limbs.setServoPosition("wobbleArmRight", input.getScalar("wobbleArmRight"));
             limbs.setServoPosition("wobbleArmLeft", input.getScalar("wobbleArmLeft"));
+
+            telemetry.addData("Position garbage: ", Arrays.toString(roadrunner.getCurrentPosition()));
 
             telemetry.addData("wobbleGrabRight", limbs.getServo("wobbleGrabRight").getPosition());
             telemetry.addData("wobbleGrabLeft", limbs.getServo("wobbleGrabLeft").getPosition());
