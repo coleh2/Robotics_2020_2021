@@ -10,5 +10,7 @@ public class DualControllerContolMap extends ControlMap {
     public static String wobbleGrabLeft = "ternary(gamepad2RightBumper, 1, 0)";
     public static String wobbleArmRight = "ternary(gamepad2LeftBumper, 0.055, 0.086)";
     public static String wobbleArmLeft = "ternary(gamepad2LeftBumper, 0.055, 0.086)";
+    public static String shoulderLeft = "togglebetween(or(gamepad2RightStickButton, gamepad2LeftStickButton), 0, 0.1)";
+    public static String shoulderRight = "togglebetween(or(gamepad2RightStickButton, gamepad2LeftStickButton), 0, 0.1)";
 
 }

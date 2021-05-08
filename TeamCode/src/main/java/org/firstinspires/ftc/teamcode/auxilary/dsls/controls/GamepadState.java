@@ -5,8 +5,10 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 public class GamepadState {
     public float left_stick_x;
     public float left_stick_y;
+    public boolean left_stick_button;
     public float right_stick_x;
     public float right_stick_y;
+    public boolean right_stick_button;
     public float left_trigger;
     public float right_trigger;
     public boolean left_bumper;
@@ -22,8 +24,10 @@ public class GamepadState {
 
     public float gamepad2_left_stick_x;
     public float gamepad2_left_stick_y;
+    public boolean gamepad2_left_stick_button;
     public float gamepad2_right_stick_x;
     public float gamepad2_right_stick_y;
+    public boolean gamepad2_right_stick_button;
     public float gamepad2_left_trigger;
     public float gamepad2_right_trigger;
     public boolean gamepad2_left_bumper;
@@ -57,8 +61,10 @@ public class GamepadState {
 
         st.left_stick_x = 0f;
         st.left_stick_y = 0f;
+        st.left_stick_button = false;
         st.right_stick_x = 0f;
         st.right_stick_y = 0f;
+        st.right_stick_button = false;
         st.left_trigger = 0f;
         st.right_trigger = 0f;
         st.left_bumper = false;
@@ -74,8 +80,10 @@ public class GamepadState {
 
         st.gamepad2_left_stick_x = 0f;
         st.gamepad2_left_stick_y = 0f;
+        st.gamepad2_left_stick_button = false;
         st.gamepad2_right_stick_x = 0f;
         st.gamepad2_right_stick_y = 0f;
+        st.gamepad2_right_stick_button = false;
         st.gamepad2_left_trigger = 0f;
         st.gamepad2_right_trigger = 0f;
         st.gamepad2_left_bumper = false;
@@ -97,8 +105,10 @@ public class GamepadState {
     public GamepadState(Gamepad gamepad, GamepadState history) {
         this.left_stick_x = gamepad.left_stick_x;
         this.left_stick_y = gamepad.left_stick_y;
+        this.left_stick_button = gamepad.left_stick_button;
         this.right_stick_x = gamepad.right_stick_x;
         this.right_stick_y = gamepad.right_stick_y;
+        this.right_stick_button = gamepad.right_stick_button;
         this.left_trigger = gamepad.left_trigger;
         this.right_trigger = gamepad.right_trigger;
         this.left_bumper = gamepad.left_bumper;
@@ -138,8 +148,10 @@ public class GamepadState {
 
         this.gamepad2_left_stick_x = gamepad2.left_stick_x;
         this.gamepad2_left_stick_y = gamepad2.left_stick_y;
+        this.left_stick_button = gamepad2.left_stick_button;
         this.gamepad2_right_stick_x = gamepad2.right_stick_x;
         this.gamepad2_right_stick_y = gamepad2.right_stick_y;
+        this.right_stick_button = gamepad2.right_stick_button;
         this.gamepad2_left_trigger = gamepad2.left_trigger;
         this.gamepad2_right_trigger = gamepad2.right_trigger;
         this.gamepad2_left_bumper = gamepad2.left_bumper;
@@ -170,11 +182,15 @@ public class GamepadState {
                 return this.left_stick_x;
             case "left_stick_y":
                 return this.left_stick_y;
+            case "left_stick_button":
+                return this.left_stick_button?1f:0f;
 
             case "right_stick_x":
                 return this.right_stick_x;
             case "right_stick_y":
                 return this.right_stick_y;
+            case "right_stick_button":
+                return this.right_stick_button?1f:0f;
 
             case "left_trigger":
                 return this.left_trigger;
@@ -212,11 +228,15 @@ public class GamepadState {
                 return this.gamepad2_left_stick_x;
             case "gamepad2_left_stick_y":
                 return this.gamepad2_left_stick_y;
+            case "gamepad2_left_stick_button":
+                return this.gamepad2_left_stick_button?1f:0f;
 
             case "gamepad2_right_stick_x":
                 return this.gamepad2_right_stick_x;
             case "gamepad2_right_stick_y":
                 return this.gamepad2_right_stick_y;
+            case "gamepad2_right_stick_button":
+                return this.gamepad2_right_stick_button?1f:0f;
 
             case "gamepad2_left_trigger":
                 return this.gamepad2_left_trigger;

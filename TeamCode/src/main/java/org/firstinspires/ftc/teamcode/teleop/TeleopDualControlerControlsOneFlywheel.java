@@ -54,10 +54,12 @@ public class TeleopDualControlerControlsOneFlywheel extends OpMode {
                         hardwareMap.get(Servo.class, "wobbleArmRight"),
                         hardwareMap.get(Servo.class, "wobbleArmLeft"),
                         hardwareMap.get(Servo.class, "wobbleGrabRight"),
-                        hardwareMap.get(Servo.class, "wobbleGrabLeft")
+                        hardwareMap.get(Servo.class, "wobbleGrabLeft"),
+                        hardwareMap.get(Servo.class, "shoulderLeft"),
+                        hardwareMap.get(Servo.class, "shoulderRight")
                 },
                 new String[] {
-                        "wobbleArmRight","wobbleArmLeft" , "wobbleGrabRight","wobbleGrabLeft"
+                        "wobbleArmRight","wobbleArmLeft" , "wobbleGrabRight","wobbleGrabLeft", "shoulderLeft", "shoulderRight"
                 },
                 new DcMotor[] {
                         hardwareMap.get(DcMotor.class, "drum"),
@@ -108,6 +110,9 @@ public class TeleopDualControlerControlsOneFlywheel extends OpMode {
             limbs.setServoPosition("wobbleGrabLeft", input.getScalar("wobbleGrabLeft"));
             limbs.setServoPosition("wobbleArmRight", input.getScalar("wobbleArmRight"));
             limbs.setServoPosition("wobbleArmLeft", input.getScalar("wobbleArmLeft"));
+
+            limbs.setServoPosition("shoulderLeft", input.getScalar("shoulderLeft"));
+            limbs.setServoPosition("shoulderRight", input.getScalar("shoulderRight"));
 
 
             if(input.getGamepad().dpad_right) {
