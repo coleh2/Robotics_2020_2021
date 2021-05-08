@@ -45,10 +45,10 @@ public class TeleopDualControlerControlsOneFlywheel extends OpMode {
 
         limbs = new ManipulationManager(
                 new CRServo[] {
-                        hardwareMap.get(CRServo.class, "shooterArm")
+
                 },
                 new String[] {
-                        "shooterArm",
+
                 },
                 new Servo[] {
                         hardwareMap.get(Servo.class, "wobbleArmRight"),
@@ -57,10 +57,11 @@ public class TeleopDualControlerControlsOneFlywheel extends OpMode {
                         hardwareMap.get(Servo.class, "wobbleGrabLeft"),
                         hardwareMap.get(Servo.class, "shoulderLeft"),
                         hardwareMap.get(Servo.class, "shoulderRight"),
-                        hardwareMap.get(Servo.class, "shooterStop")
+                        hardwareMap.get(Servo.class, "shooterStop"),
+                        hardwareMap.get(Servo.class, "shooterArm")
                 },
                 new String[] {
-                        "wobbleArmRight","wobbleArmLeft" , "wobbleGrabRight","wobbleGrabLeft", "shoulderLeft", "shoulderRight", "shooterStop"
+                        "wobbleArmRight","wobbleArmLeft" , "wobbleGrabRight","wobbleGrabLeft", "shoulderLeft", "shoulderRight", "shooterStop", "shooterArm"
                 },
                 new DcMotor[] {
                         hardwareMap.get(DcMotor.class, "drum"),
@@ -78,10 +79,8 @@ public class TeleopDualControlerControlsOneFlywheel extends OpMode {
 
             limbs.getServo("wobbleArmLeft").setDirection(Servo.Direction.REVERSE);
             limbs.getServo("wobbleGrabRight").setDirection(Servo.Direction.REVERSE);
-            limbs.resetEncoders("flywheel");
-            limbs.runUsingEncoders("flywheel");
-       // driver.resetEncoders();
-      //  driver.runUsingEncoders();
+
+            limbs.setMotorModes(DcMotor.RunMode.RUN_USING_ENCODER);
 
         } catch (Exception e) {
             
@@ -105,7 +104,7 @@ public class TeleopDualControlerControlsOneFlywheel extends OpMode {
 
             limbs.setMotorPower("drum", input.getScalar("drum"));
             limbs.setMotorPower("flywheel", speed*input.getScalar("flywheel"));
-            limbs.setServoPower("shooterArm", input.getScalar("shooterArm"));
+            limbs.setServoPosition("shooterArm", input.getScalar("shooterArm"));
 
             limbs.setServoPosition("wobbleGrabRight", input.getScalar("wobbleGrabRight"));
             limbs.setServoPosition("wobbleGrabLeft", input.getScalar("wobbleGrabLeft"));
@@ -151,9 +150,12 @@ public class TeleopDualControlerControlsOneFlywheel extends OpMode {
         telemetry.addData("BR Power: ", driver.backRight.getPower());
         telemetry.addData("BR Port: ", driver.backRight.getPortNumber());
 
+        telemetry.addData("Shooter Arm", limbs.getServoPosition("shooterArm"));
+
         telemetry.addData("Drum Power", limbs.getMotorPower("drum"));
         telemetry.addData("Intake Power", limbs.getMotorPower("intake"));
         telemetry.addData("Flywheel Power", limbs.getMotorPower("flywheel"));
+        telemetry.addData("Flywheel Position", limbs.motors[2].getCurrentPosition());
         telemetry.addData("Orientation", imu.getOrientation().toString());
 
         telemetry.addData("shoulderLeft", limbs.getServoPosition("shoulderLeft"));
