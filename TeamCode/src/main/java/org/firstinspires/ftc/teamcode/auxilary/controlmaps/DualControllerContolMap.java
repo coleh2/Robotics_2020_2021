@@ -8,9 +8,10 @@ public class DualControllerContolMap extends ControlMap {
     public static String flywheel = "scale(ternary(gamepad2Cross, -0.3, ternary(greaterThan(gamepad2LeftTrigger, 0.3), 1, 0)), 1)";
     public static String wobbleGrabRight = "ternary(gamepad2RightBumper, 1, 0)";
     public static String wobbleGrabLeft = "ternary(gamepad2RightBumper, 1, 0)";
-    public static String wobbleArmRight = "ternary(gamepad2LeftBumper, 0.055, 0.086)";
-    public static String wobbleArmLeft = "ternary(gamepad2LeftBumper, 0.055, 0.086)";
-    public static String shoulderLeft = "togglebetween(or(gamepad2RightStickButton, gamepad2LeftStickButton), 0, 0.1)";
-    public static String shoulderRight = "togglebetween(or(gamepad2RightStickButton, gamepad2LeftStickButton), 0, 0.1)";
+    public static String wobbleArmRight = "ternary(gamepad2LeftBumper, 1, 0.1774)";
+    public static String wobbleArmLeft = "ternary(gamepad2LeftBumper, 1, 0.1774)";
+    public static String shoulderLeft = "ternary(gamepad2DpadLeft, 0, 0.1)";
+    public static String shoulderRight = "ternary(gamepad2DpadLeft, 0, 0.1)";
+    public static String shooterStop = "ternary(greaterThan(gamepad2RightTrigger, 0.1), 0.57, 0.25)";
 
 }

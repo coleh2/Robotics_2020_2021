@@ -56,10 +56,11 @@ public class TeleopDualControlerControlsOneFlywheel extends OpMode {
                         hardwareMap.get(Servo.class, "wobbleGrabRight"),
                         hardwareMap.get(Servo.class, "wobbleGrabLeft"),
                         hardwareMap.get(Servo.class, "shoulderLeft"),
-                        hardwareMap.get(Servo.class, "shoulderRight")
+                        hardwareMap.get(Servo.class, "shoulderRight"),
+                        hardwareMap.get(Servo.class, "shooterStop")
                 },
                 new String[] {
-                        "wobbleArmRight","wobbleArmLeft" , "wobbleGrabRight","wobbleGrabLeft", "shoulderLeft", "shoulderRight"
+                        "wobbleArmRight","wobbleArmLeft" , "wobbleGrabRight","wobbleGrabLeft", "shoulderLeft", "shoulderRight", "shooterStop"
                 },
                 new DcMotor[] {
                         hardwareMap.get(DcMotor.class, "drum"),
@@ -114,6 +115,8 @@ public class TeleopDualControlerControlsOneFlywheel extends OpMode {
             limbs.setServoPosition("shoulderLeft", input.getScalar("shoulderLeft"));
             limbs.setServoPosition("shoulderRight", input.getScalar("shoulderRight"));
 
+            limbs.setServoPosition("shooterStop", input.getScalar("shooterStop"));
+
 
             if(input.getGamepad().dpad_right) {
                 if(!upPressed) {
@@ -152,6 +155,11 @@ public class TeleopDualControlerControlsOneFlywheel extends OpMode {
         telemetry.addData("Intake Power", limbs.getMotorPower("intake"));
         telemetry.addData("Flywheel Power", limbs.getMotorPower("flywheel"));
         telemetry.addData("Orientation", imu.getOrientation().toString());
+
+        telemetry.addData("shoulderLeft", limbs.getServoPosition("shoulderLeft"));
+        telemetry.addData("shoulderRight", limbs.getServoPosition("shoulderRight"));
+
+        telemetry.addData("shooterStop", limbs.getServoPosition("shooterStop"));
 
         telemetry.addData("speed: ", speed);
 

@@ -93,11 +93,12 @@ public class ManipulationManager extends FeatureManager {
     public double getServoPower(int i) {
         return crservos[i].getPower();
     }
-//    public double getServoPosition(String name) {
-//        int index = (Arrays.asList(servoNames)).indexOf(name);
-//        if(index == -1) throw new IllegalArgumentException("Servo " + name + " does not exist or is not registered");
-//        return servos[index].getPosition();
-//    }
+
+    public double getServoPosition(String name) {
+        int index = (Arrays.asList(servoNames)).indexOf(name);
+        if(index == -1) throw new IllegalArgumentException("Servo " + name + " does not exist or is not registered");
+        return servos[index].getPosition();
+    }
 
     public void setMotorModes(DcMotor.RunMode mode) {
         for(DcMotor motor : motors) motor.setMode(mode);
