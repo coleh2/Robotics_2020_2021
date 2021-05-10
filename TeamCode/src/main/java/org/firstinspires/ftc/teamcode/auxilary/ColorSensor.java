@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.auxilary.*;
 import org.firstinspires.ftc.teamcode.managers.*;
 import org.firstinspires.ftc.teamcode.teleop.*;
 
-public class ColorSensor {
+public class ColorSensor extends Sensor {
     /** The colorSensor field will contain a reference to our color sensor hardware object */
     NormalizedColorSensor colorSensor;
     HardwareMap hardwareMap;

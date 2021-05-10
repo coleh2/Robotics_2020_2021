@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.auxilary.ColorSensor;
+import org.firstinspires.ftc.teamcode.auxilary.EncodedMotor;
 import org.firstinspires.ftc.teamcode.auxilary.controlmaps.DualControllerContolMap;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 import org.firstinspires.ftc.teamcode.managers.ImuManager;
@@ -66,12 +67,14 @@ public class TeleopDualControlerControlsOneFlywheel extends OpMode {
                 new DcMotor[] {
                         hardwareMap.get(DcMotor.class, "drum"),
                         hardwareMap.get(DcMotor.class, "intake"),
-                        hardwareMap.get(DcMotor.class, "flywheel")
+                        new EncodedMotor(hardwareMap.get(DcMotor.class, "flywheel"), 1000),
+                        hardwareMap.get(DcMotor.class, "spinnyThingUpTop")
                 },
                 new String[] {
                         "drum",
                         "intake",
-                        "flywheel"
+                        "flywheel",
+                        "spinnyThingUpTop"
                 }
 
         );
@@ -80,7 +83,7 @@ public class TeleopDualControlerControlsOneFlywheel extends OpMode {
             limbs.getServo("wobbleArmLeft").setDirection(Servo.Direction.REVERSE);
             limbs.getServo("wobbleGrabRight").setDirection(Servo.Direction.REVERSE);
 
-            limbs.setMotorModes(DcMotor.RunMode.RUN_USING_ENCODER);
+            //limbs.setMotorModes(DcMotor.RunMode.RUN_USING_ENCODER);
 
         } catch (Exception e) {
             
@@ -89,7 +92,7 @@ public class TeleopDualControlerControlsOneFlywheel extends OpMode {
     }
     float target = 0.1f;
     boolean uped = false;
-    float speed = 0.8f;
+    float speed = 1f;
     boolean upPressed = false;
     boolean downPressed = false;
 
@@ -103,6 +106,8 @@ public class TeleopDualControlerControlsOneFlywheel extends OpMode {
             limbs.setMotorPower("intake", 0.8*input.getScalar("intake"));
 
             limbs.setMotorPower("drum", input.getScalar("drum"));
+            limbs.setMotorPower("spinnyThingUpTop", input.getScalar("spinnyThingUpTop"));
+
             limbs.setMotorPower("flywheel", speed*input.getScalar("flywheel"));
             limbs.setServoPosition("shooterArm", input.getScalar("shooterArm"));
 
@@ -150,6 +155,8 @@ public class TeleopDualControlerControlsOneFlywheel extends OpMode {
         telemetry.addData("BR Power: ", driver.backRight.getPower());
         telemetry.addData("BR Port: ", driver.backRight.getPortNumber());
 
+        telemetry.addData("Flywheel Input", input.getScalar("flywheel"));
+
         telemetry.addData("Shooter Arm", limbs.getServoPosition("shooterArm"));
 
         telemetry.addData("Drum Power", limbs.getMotorPower("drum"));
@@ -162,6 +169,7 @@ public class TeleopDualControlerControlsOneFlywheel extends OpMode {
         telemetry.addData("shoulderRight", limbs.getServoPosition("shoulderRight"));
 
         telemetry.addData("shooterStop", limbs.getServoPosition("shooterStop"));
+        telemetry.addData("FL ticks", driver.getTicks());
 
         telemetry.addData("speed: ", speed);
 

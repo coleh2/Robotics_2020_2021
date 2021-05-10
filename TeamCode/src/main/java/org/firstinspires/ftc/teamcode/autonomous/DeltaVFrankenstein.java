@@ -74,7 +74,7 @@ public class DeltaVFrankenstein extends StepAuto {
 //        driver.getMotor()[3].setDirection(DcMotorSimple.Direction.FORWARD);
 
         SensorManager sense = new SensorManager(
-                new ColorSensor[] {
+                new Sensor[] {
                         new ColorSensor(hardwareMap.get(NormalizedColorSensor.class, "sensorOne")),
                         new ColorSensor(hardwareMap.get(NormalizedColorSensor.class, "sensorFour"))
                 },

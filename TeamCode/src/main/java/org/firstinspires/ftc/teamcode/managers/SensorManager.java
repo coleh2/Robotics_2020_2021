@@ -12,16 +12,17 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.auxilary.ColorSensor;
 import org.firstinspires.ftc.teamcode.auxilary.PaulMath;
+import org.firstinspires.ftc.teamcode.auxilary.Sensor;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.ParserTools;
 
 import java.util.Arrays;
 
 public class SensorManager extends FeatureManager {
-    public ColorSensor[] sensors;
+    public Sensor[] sensors;
 
     public String[] sensorNames;
 
-    public SensorManager(ColorSensor[] _sensors, String[] _sensorNames) {
+    public SensorManager(Sensor[] _sensors, String[] _sensorNames) {
         if(_sensorNames.length != _sensors.length) throw new IllegalArgumentException("Sensor Names must be the same length as Sensors");
         this.sensors = _sensors;
         this.sensorNames = _sensorNames;
@@ -39,12 +40,12 @@ public class SensorManager extends FeatureManager {
     }
 
     public float[] getHSL(int index) {
-        NormalizedRGBA color = this.sensors[index].getNormalizedColors();
+        NormalizedRGBA color = ((ColorSensor)this.sensors[index]).getNormalizedColors();
         return PaulMath.rgbToHsl(color.red, color.green, color.blue);
     }
 
     public int getColorInteger(int index) {
-        NormalizedRGBA color = this.sensors[index].getNormalizedColors();
+        NormalizedRGBA color = ((ColorSensor)this.sensors[index]).getNormalizedColors();
         float scale = 256; int min = 0, max = 255;
         return (Range.clip((int)(color.alpha * scale), min, max) << 24) |
                 (Range.clip((int)(color.red   * scale), min, max) << 16) |
@@ -53,7 +54,7 @@ public class SensorManager extends FeatureManager {
     }
 
     public boolean isSpecial(int index) {
-        return sensors[index].isSpecial1();
+        return ((ColorSensor)this.sensors[index]).isSpecial1();
     }
 
 

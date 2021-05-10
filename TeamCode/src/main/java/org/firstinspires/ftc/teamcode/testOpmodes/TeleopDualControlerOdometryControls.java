@@ -63,11 +63,13 @@ public class TeleopDualControlerOdometryControls extends OpMode {
                         hardwareMap.get(DcMotor.class, "drum"),
                         hardwareMap.get(DcMotor.class, "intake"),
                         hardwareMap.get(DcMotor.class, "flywheel"),
+                        hardwareMap.get(DcMotor.class, "spinnyThingUpTop")
                 },
                 new String[] {
                         "drum",
                         "intake",
                         "flywheel",
+                        "spinnyThingUpTop"
                 }
 
         );

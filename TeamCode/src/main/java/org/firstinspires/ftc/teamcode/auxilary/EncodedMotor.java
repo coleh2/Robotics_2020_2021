@@ -30,6 +30,8 @@ public class EncodedMotor implements DcMotor {
         this.lastMotorPositionRecordingTime = System.currentTimeMillis();
         this.ticksPerRotation = _ticksPerSecond;
 
+        this.motor.setMode(RunMode.RUN_WITHOUT_ENCODER);
+
         this.runLoop = true;
 
         this.updateLoop = new Thread(new MotorUpdateLooper());
@@ -42,6 +44,8 @@ public class EncodedMotor implements DcMotor {
         this.lastMotorPosition = motor.getCurrentPosition();
         this.lastMotorPositionRecordingTime = System.currentTimeMillis();
         this.ticksPerRotation = DEFAULT_TICKS_PER_ROT;
+
+        this.motor.setMode(RunMode.RUN_WITHOUT_ENCODER);
 
         this.runLoop = true;
 
