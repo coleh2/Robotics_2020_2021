@@ -68,13 +68,13 @@ public class TeleopDualControlerControlsOneFlywheel extends OpMode {
                         hardwareMap.get(DcMotor.class, "drum"),
                         hardwareMap.get(DcMotor.class, "intake"),
                         new EncodedMotor(hardwareMap.get(DcMotor.class, "flywheel"), 1000),
-                        hardwareMap.get(DcMotor.class, "spinnyThingUpTop")
+                        hardwareMap.get(DcMotor.class, "spinner")
                 },
                 new String[] {
                         "drum",
                         "intake",
                         "flywheel",
-                        "spinnyThingUpTop"
+                        "spinner"
                 }
 
         );
@@ -122,19 +122,19 @@ public class TeleopDualControlerControlsOneFlywheel extends OpMode {
             limbs.setServoPosition("shooterStop", input.getScalar("shooterStop"));
 
 
-            if(input.getGamepad().dpad_right) {
-                if(!upPressed) {
-                    speed = speed + 0.01f;
-                    upPressed = true;
-                }
-            } else upPressed = false;
-
-            if (input.getGamepad().dpad_left) {
-                if(!downPressed) {
-                    speed = speed - 0.01f;
-                    downPressed = true;
-                }
-            } else downPressed = false;
+//            if(input.getGamepad().dpad_right) {
+//                if(!upPressed) {
+//                    speed = speed + 0.01f;
+//                    upPressed = true;
+//                }
+//            } else upPressed = false;
+//
+//            if (input.getGamepad().dpad_left) {
+//                if(!downPressed) {
+//                    speed = speed - 0.01f;
+//                    downPressed = true;
+//                }
+//            } else downPressed = false;
 
 
             telemetry.addData("Verticle Position", driver.getVerticalTicks());
