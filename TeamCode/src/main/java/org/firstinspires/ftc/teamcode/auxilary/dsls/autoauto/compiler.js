@@ -44,22 +44,22 @@ function processTemplate(template, className, frontMatter, javaStringFileSource)
 }
 
 function buildServoNames(servos) {
-    if(servos === undefined) return `"wobbleArmRight","wobbleArmLeft" , "wobbleGrabRight","wobbleGrabLeft"`;
+    if(servos === undefined) return `"wobbleArmRight","wobbleArmLeft" , "wobbleGrabRight","wobbleGrabLeft", "shooterArm"`;
     else return servos.map(x=> `"${x}"`).join(", ");
 }
 
 function buildCrServoNames(crServos) {
-    if(crServos === undefined) return `"shooterArm"`;
+    if(crServos === undefined) return ``;
     else return servos.map(x=> `"${x}"`).join(", ");
 }
 
 function buildCrServos(crServos) {
-    if(crServos === undefined) return `hardwareMap.get(CRServo.class, "shooterArm")`;
+    if(crServos === undefined) return ``;
     else return crServos.map(x=> `hardwareMap.get(CRServo.class, "${x}")`).join(", ");
 }
 
 function buildServos(servos) {
-    if(servos === undefined) return `hardwareMap.get(Servo.class, "wobbleArmRight"), hardwareMap.get(Servo.class, "wobbleArmLeft"), hardwareMap.get(Servo.class, "wobbleGrabRight"), hardwareMap.get(Servo.class, "wobbleGrabLeft")`;
+    if(servos === undefined) return `hardwareMap.get(Servo.class, "wobbleArmRight"), hardwareMap.get(Servo.class, "wobbleArmLeft"), hardwareMap.get(Servo.class, "wobbleGrabRight"), hardwareMap.get(Servo.class, "wobbleGrabLeft"), hardwareMap.get(Servo.class, "shooterArm")`;
     else return servos.map(x=> `hardwareMap.get(Servo.class, "${x}")`).join(", ");
 }
 

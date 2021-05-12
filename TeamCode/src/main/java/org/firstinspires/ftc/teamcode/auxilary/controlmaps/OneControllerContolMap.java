@@ -8,7 +8,7 @@ public class OneControllerContolMap extends ControlMap {
     public static String flywheel = "scale(ternary(triangle, -0.3, ternary(greaterThan(rightTrigger, 0.3), 1, 0)), 1)";
     public static String wobbleGrabRight = "ternary(rightBumper, 1, 0)";
     public static String wobbleGrabLeft = "ternary(rightBumper, 1, 0)";
-    public static String wobbleArmRight = "ternary(leftBumper, 0.055, 0.086)";
-    public static String wobbleArmLeft = "ternary(leftBumper, 0.055, 0.086)";
+    public static String wobbleArmRight = "ternary(leftBumper, 0, 0.2164)";
+    public static String wobbleArmLeft = "ternary(leftBumper, 0, 0.2164)";
 
 }

@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.auxilary.EncodedMotor;
 import org.firstinspires.ftc.teamcode.auxilary.controlmaps.OneControllerContolMap;
 import org.firstinspires.ftc.teamcode.auxilary.controlmaps.ShootingTogglesControlMap;
 import org.firstinspires.ftc.teamcode.auxilary.ColorSensor;
@@ -39,29 +40,35 @@ public class TeleopControls extends OpMode {
         imu = new ImuManager(hardwareMap.get(com.qualcomm.hardware.bosch.BNO055IMU.class, "imu"));
         limbs = new ManipulationManager(
                 new CRServo[] {
-                        hardwareMap.get(CRServo.class, "shooterArm")
+
                 },
                 new String[] {
-                        "shooterArm",
+
                 },
                 new Servo[] {
                         hardwareMap.get(Servo.class, "wobbleArmRight"),
                         hardwareMap.get(Servo.class, "wobbleArmLeft"),
                         hardwareMap.get(Servo.class, "wobbleGrabRight"),
-                        hardwareMap.get(Servo.class, "wobbleGrabLeft")
+                        hardwareMap.get(Servo.class, "wobbleGrabLeft"),
+                        hardwareMap.get(Servo.class, "shoulderLeft"),
+                        hardwareMap.get(Servo.class, "shoulderRight"),
+                        hardwareMap.get(Servo.class, "shooterStop"),
+                        hardwareMap.get(Servo.class, "shooterArm")
                 },
                 new String[] {
-                        "wobbleArmRight","wobbleArmLeft" , "wobbleGrabRight","wobbleGrabLeft"
+                        "wobbleArmRight","wobbleArmLeft" , "wobbleGrabRight","wobbleGrabLeft", "shoulderLeft", "shoulderRight", "shooterStop", "shooterArm"
                 },
                 new DcMotor[] {
                         hardwareMap.get(DcMotor.class, "drum"),
                         hardwareMap.get(DcMotor.class, "intake"),
-                        hardwareMap.get(DcMotor.class, "flywheel"),
+                        new EncodedMotor(hardwareMap.get(DcMotor.class, "flywheel"), 1000),
+                        hardwareMap.get(DcMotor.class, "spinnyThingUpTop")
                 },
                 new String[] {
                         "drum",
                         "intake",
-                        "flywheel"
+                        "flywheel",
+                        "spinnyThingUpTop"
                 }
 
         );
@@ -89,7 +96,7 @@ public class TeleopControls extends OpMode {
 
         limbs.setMotorPower("drum", input.getScalar("drum"));
         limbs.setMotorPower("flywheel", speed*input.getScalar("flywheel"));
-        limbs.setServoPower("shooterArm", input.getScalar("shooterArm"));
+        limbs.setServoPosition("shooterArm", input.getScalar("shooterArm"));
 
         limbs.setServoPosition("wobbleGrabRight", input.getScalar("wobbleGrabRight"));
         limbs.setServoPosition("wobbleGrabLeft", input.getScalar("wobbleGrabLeft"));
