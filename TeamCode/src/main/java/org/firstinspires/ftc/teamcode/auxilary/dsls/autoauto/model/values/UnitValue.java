@@ -47,6 +47,9 @@ public class UnitValue extends Value {
         } else if(unit.startsWith("rots")) {
             timeParsedMs *= 135;
             unitType = UnitType.DISTANCE;
+        } else if((unit.charAt(0) == 'h' || unit.charAt(0) == 'v') && unit.substring(1).startsWith("ticks")) {
+            timeParsedMs *= 1;
+            unitType = UnitType.DISTANCE;
         }
 
         this.baseAmount = (long)timeParsedMs;

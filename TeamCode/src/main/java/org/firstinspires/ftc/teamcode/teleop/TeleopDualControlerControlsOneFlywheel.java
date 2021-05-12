@@ -136,6 +136,10 @@ public class TeleopDualControlerControlsOneFlywheel extends OpMode {
                 }
             } else downPressed = false;
 
+
+            telemetry.addData("Verticle Position", driver.getVerticalTicks());
+//            telemetry.addData("Horisontal Position", driver.getHorizontalTicks());
+
             telemetry.addData("wobbleGrabRight", limbs.getServo("wobbleGrabRight").getPosition());
             telemetry.addData("wobbleGrabLeft", limbs.getServo("wobbleGrabLeft").getPosition());
             telemetry.addData("wobbleArmRight", limbs.getServo("wobbleArmRight").getPosition());

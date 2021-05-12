@@ -24,6 +24,9 @@ public class AutoautoProgram {
         this.currentPath.stepInit();
     }
 
+    public AutoautoProgram(HashMap<String, Statepath> s) {
+        this.paths = s;
+    }
     public AutoautoProgram(String src) {
         //first off, nilch the comments
         src = ParserTools.removeComments(src);

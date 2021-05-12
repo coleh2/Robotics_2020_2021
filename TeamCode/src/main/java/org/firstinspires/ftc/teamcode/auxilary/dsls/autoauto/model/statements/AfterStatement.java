@@ -48,7 +48,11 @@ public class AfterStatement extends Statement {
         } else if(wait.unitType == UnitValue.UnitType.DISTANCE) {
             int tarTicks = (int) wait.baseAmount;
             int ticksReferPoint = stepStartTick;
-            int cTicks = (int)program.autoautoRuntime.functions.get("getTicks", 0).call(new float[0][0])[0];
+            int cTicks = (int)program.autoautoRuntime.functions.get(
+                wait.unit.equals("ticks") ? "getTicks" :
+                    wait.unit.equals("hticks") ? "getHorizontalTicks" :
+                        wait.unit.equals("vticks") ? "getVerticalTicks" : "ERROR BAD BAD UNIT"
+                , 0).call(new float[0][0])[0];
             
             if(Math.abs(cTicks - ticksReferPoint) >= Math.abs(tarTicks)) action.loop();
         }
