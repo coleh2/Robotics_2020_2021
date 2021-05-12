@@ -106,7 +106,7 @@ public class TeleopDualControlerControlsOneFlywheel extends OpMode {
             limbs.setMotorPower("intake", 0.8*input.getScalar("intake"));
 
             limbs.setMotorPower("drum", input.getScalar("drum"));
-            limbs.setMotorPower("spinnyThingUpTop", input.getScalar("spinnyThingUpTop"));
+            limbs.setMotorPower("spinner", input.getScalar("spinner"));
 
             limbs.setMotorPower("flywheel", speed*input.getScalar("flywheel"));
             limbs.setServoPosition("shooterArm", input.getScalar("shooterArm"));
