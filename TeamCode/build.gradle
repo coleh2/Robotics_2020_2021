@@ -35,3 +35,9 @@ task generateAutoautoSources {
         script.waitFor()
     }
 }
+
+android {
+    gradle.projectsEvaluated {
+        preBuild.dependsOn(generateAutoautoSources)
+    }
+}
