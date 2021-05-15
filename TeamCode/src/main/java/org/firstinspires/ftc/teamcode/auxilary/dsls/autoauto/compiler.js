@@ -53,7 +53,7 @@ function processTemplate(template, className, frontMatter, javaStringFileSource,
         .replace("/*CRSERVO_NAMES*/", buildCrServoNames(frontMatter.crServos))
         .replace("/*CRSERVOS*/", buildCrServos(frontMatter.crServos))
         .replace("/*PACKAGE_DECLARATION*/", PACKAGE_DECLARATION)
-        .replace("/*TESTITERATIONS*/", frontMatter.testIterations === undefined ? 3 : frontMatter.testIterations);
+        .replace("/*TESTITERATIONSCOMPARISON*/", "i < " + (frontMatter.testIterations === undefined ? 3 : frontMatter.testIterations));
 }
 
 function buildServoNames(servos) {
