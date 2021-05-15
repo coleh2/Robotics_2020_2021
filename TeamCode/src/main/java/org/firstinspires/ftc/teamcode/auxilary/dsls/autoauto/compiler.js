@@ -23,6 +23,13 @@ for(var i = 0; i < autoautoFiles.length; i++) {
     var className = fileName.replace(".autoauto", "__autoauto");
     var javaFileName = className + ".java";
 
+    var resultFile = compiledResultDirectory + "/" + javaFileName;
+
+    if(fileSource.trim() == "") {
+        fs.writeFileSync(resultFile, "");
+        continue;
+    }
+
     var uncommentedFileSource = parserTools.stripComments(fileSource);
 
     var frontMatter = stripAndParseFrontMatter(uncommentedFileSource);
@@ -36,7 +43,7 @@ for(var i = 0; i < autoautoFiles.length; i++) {
         
         var javaCreationCode = astJavaify(parsedModel);
 
-        fs.writeFileSync(compiledResultDirectory + "/" + javaFileName, processTemplate(template, className, frontMatter.frontMatter, javaStringFileSource, javaCreationCode));
+        fs.writeFileSync(resultFile, processTemplate(template, className, frontMatter.frontMatter, javaStringFileSource, javaCreationCode));
     } catch(e) {
         console.error("AUTOAUTOERROR: Could not parse " + className + "\n" + (e.location ? e.location.start.line + ":" + e.location.start.column : "") + "\t" + e.toString());
         process.exit(1);
