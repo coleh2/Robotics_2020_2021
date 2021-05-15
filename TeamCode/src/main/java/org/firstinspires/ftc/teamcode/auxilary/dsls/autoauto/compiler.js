@@ -26,6 +26,7 @@ for(var i = 0; i < autoautoFiles.length; i++) {
     var resultFile = compiledResultDirectory + "/" + javaFileName;
 
     if(fileSource.trim() == "") {
+        console.warn("WARNING: Empty autoauto file " + className)
         fs.writeFileSync(resultFile, "");
         continue;
     }

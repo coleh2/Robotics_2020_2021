@@ -31,7 +31,10 @@ task generateAutoautoSources {
     doFirst {
         def script = "node TeamCode/src/main/java/org/firstinspires/ftc/teamcode/auxilary/dsls/autoauto/compiler.js".execute()
         script.in.eachLine { line -> println line }
-        script.err.eachLine { line -> println "ERROR: " + line }
+        script.err.eachLine { line ->
+            if(!line.startsWith("WARNING: ")) println "ERROR: " + line;
+            else println line;
+        }
         script.waitFor()
     }
 }
