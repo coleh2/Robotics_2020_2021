@@ -29,7 +29,7 @@ public class ColorSensor extends Sensor {
         this.weShouldRead = true;
         this.colorSensor = sensor;
         //hardwareMap.get(NormalizedColorSensor.class, "sensor"); // set the colorSensor to the actual hardware color sensor
-        // this.runSample(); // actually execute the sampling code; start up the loop
+        this.runSample(); // actually execute the sampling code; start up the loop
     }
     public ColorSensor(HardwareMap _hardwareMap) {
         this.hardwareMap = _hardwareMap; //since we don't get the hardwaremap by default-- this isn't an OpMode-- we have to set it manually
@@ -85,6 +85,11 @@ public class ColorSensor extends Sensor {
     //Test if we're seeing gold
     public boolean isSpecial2() {
         return PaulMath.delta(46 / 360, hsvValues[0]) < 0.075f && PaulMath.delta(0.27f, hsvValues[1]) < 0.075f && PaulMath.delta(0.23f, hsvValues[2]) < 0.075f;
+    }
+
+    @Override
+    public void update() {
+        this.runSample();
     }
 
     public void runSample() {

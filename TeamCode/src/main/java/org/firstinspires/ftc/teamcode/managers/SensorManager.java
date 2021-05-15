@@ -44,6 +44,16 @@ public class SensorManager extends FeatureManager {
         return PaulMath.rgbToHsl(color.red, color.green, color.blue);
     }
 
+    public void update() {
+        for(Sensor s : sensors) {
+            s.update();
+        }
+    }
+
+    public void update(int index) {
+        this.sensors[index].update();
+    }
+
     public int getColorInteger(int index) {
         NormalizedRGBA color = ((ColorSensor)this.sensors[index]).getNormalizedColors();
         float scale = 256; int min = 0, max = 255;
@@ -54,9 +64,11 @@ public class SensorManager extends FeatureManager {
     }
 
     public boolean isSpecial(int index) {
+        update(index);
         return ((ColorSensor)this.sensors[index]).isSpecial1();
     }
     public boolean isSpecial1(int index) {
+        update(index);
         return ((ColorSensor)this.sensors[index]).isSpecial1();
     }
 

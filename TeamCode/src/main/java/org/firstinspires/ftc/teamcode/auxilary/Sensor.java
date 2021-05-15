@@ -4,4 +4,6 @@ import com.qualcomm.robotcore.hardware.I2cAddr;
 
 public class Sensor {
 
+    public void update() {
+    }
 }
