@@ -7,7 +7,7 @@ var parserTools = require("./parser-tools.js");
 
 var directory = __dirname.split(path.sep);
 
-console.log(directory);
+var PACKAGE_DECLARATION = "package org.firstinspires.ftc.teamcode.__compiledautoauto;";
 
 var template = fs.readFileSync(__dirname + path.sep + "template.notjava").toString();
 
@@ -47,12 +47,13 @@ for(var i = 0; i < autoautoFiles.length; i++) {
 function processTemplate(template, className, frontMatter, javaStringFileSource, javaCreationCode) {
     return template
         .replace("public class template", "public class " + className)
-        .replace("NSERVO_NAMES", buildServoNames(frontMatter.servos))
-        .replace("NSERVOS", buildServos(frontMatter.servos))
-        .replace("{{JAVA_CREATION_CODE}}", javaCreationCode)
-        .replace("CRSERVO_NAMES", buildCrServoNames(frontMatter.crServos))
-        .replace("CRSERVOS", buildCrServos(frontMatter.crServos))
-        .replace("TESTITERATIONS", frontMatter.testIterations === undefined ? 3 : frontMatter.testIterations);
+        .replace("/*NSERVO_NAMES*/", buildServoNames(frontMatter.servos))
+        .replace("/*NSERVOS*/", buildServos(frontMatter.servos))
+        .replace("/*JAVA_CREATION_CODE*/", javaCreationCode)
+        .replace("/*CRSERVO_NAMES*/", buildCrServoNames(frontMatter.crServos))
+        .replace("/*CRSERVOS*/", buildCrServos(frontMatter.crServos))
+        .replace("/*PACKAGE_DECLARATION*/", PACKAGE_DECLARATION)
+        .replace("/*TESTITERATIONS*/", frontMatter.testIterations === undefined ? 3 : frontMatter.testIterations);
 }
 
 function buildServoNames(servos) {

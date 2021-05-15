@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.__compiledautoauto;
+/*PACKAGE_DECLARATION*/
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -36,13 +36,13 @@ public class template extends OpMode {
                 hardwareMap.get(DcMotor.class, "br"));
         limbs = new ManipulationManager(
                 new CRServo[] {
-                        CRSERVOS
+                        /*CRSERVOS*/
                 },
                 new String[] {
-                        CRSERVO_NAMES
+                        /*CRSERVO_NAMES*/
                 },
-                new Servo[] { NSERVOS },
-                new String[] { NSERVO_NAMES },
+                new Servo[] { /*NSERVOS*/ },
+                new String[] { /*NSERVO_NAMES*/ },
                 new DcMotor[] {
                         hardwareMap.get(DcMotor.class, "drum"),
                         hardwareMap.get(DcMotor.class, "intake"),
@@ -71,7 +71,7 @@ public class template extends OpMode {
             imu = new ImuManager(hardwareMap.get(com.qualcomm.hardware.bosch.BNO055IMU.class, "imu"));
 
 
-            {{JAVA_CREATION_CODE}}
+            /*JAVA_CREATION_CODE*/
         FeatureManager.logger.log(runtime.program.toString());
     }
 
@@ -87,11 +87,13 @@ public class template extends OpMode {
         this.hardwareMap = new DummyHardwareMap();
         this.init();
         FeatureManager.logger.log(runtime.program.toString());
-        for(int i = 0; i < TESTITERATIONS; i++) this.loop();
+        for(int i = 0; /*TESTITERATIONSCOMPARISON*/; i++) this.loop();
     }
 
     @Override
     public void stop() {
         this.limbs.closeMotors();
     }
+
+    /*USER_DEFINED_FUNCTIONS*/
 }
