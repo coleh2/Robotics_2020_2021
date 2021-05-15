@@ -13,9 +13,20 @@ public class BooleanOperator extends Value {
     Value a;
     Value b;
 
-    Statement statement;
-
     FunctionCall function;
+
+    public BooleanOperator(Value a, Value b, String operator) {
+        this.a = a;
+        this.b = b;
+        switch (operator) {
+            case "<": this.type = Type.LESS_THAN; break;
+            case "<=": this.type = Type.LESS_EQUAL_THAN; break;
+            case ">": this.type = Type.GREATER_THAN; break;
+            case ">=": this.type = Type.GREATER_EQUAL_THAN; break;
+            case "==": this.type = Type.EQUAL; break;
+            case "!=": this.type = Type.NOT_EQUAL; break;
+        }
+    }
 
     public BooleanOperator(String src) {
         int lteIndex = src.indexOf("<=");

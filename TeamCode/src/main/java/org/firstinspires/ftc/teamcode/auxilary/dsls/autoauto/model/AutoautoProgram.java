@@ -24,8 +24,12 @@ public class AutoautoProgram {
         this.currentPath.stepInit();
     }
 
-    public AutoautoProgram(HashMap<String, Statepath> s) {
+    public AutoautoProgram(HashMap<String, Statepath> s, String initial) {
         this.paths = s;
+        this.currentPathName = initial;
+        this.currentPath = paths.get(initial);
+
+        for(Statepath p : this.paths.values()) p.setProgram(this);
     }
     public AutoautoProgram(String src) {
         //first off, nilch the comments

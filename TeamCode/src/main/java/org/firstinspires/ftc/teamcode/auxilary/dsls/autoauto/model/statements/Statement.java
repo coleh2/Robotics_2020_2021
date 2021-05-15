@@ -12,6 +12,18 @@ public class Statement {
     public Statepath statepath;
     public State state;
 
+    public void setProgram(AutoautoProgram program) {
+        this.program = program;
+    }
+
+    public void setStatepath(Statepath statepath) {
+        this.statepath = statepath;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
     public Statement(AutoautoProgram program, Statepath statepath, State state) {
         this.program = program;
         this.statepath = statepath;

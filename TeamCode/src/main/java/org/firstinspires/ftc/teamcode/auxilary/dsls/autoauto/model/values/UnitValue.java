@@ -9,6 +9,16 @@ public class UnitValue extends Value {
     public long baseAmount;
     public String unit;
 
+    public UnitValue(long baseAmount, String unit) {
+        this.baseAmount = baseAmount;
+        this.unit = unit;
+        if(unit.startsWith("ticks") || unit.startsWith("rots") || ((unit.charAt(0) == 'h' || unit.charAt(0) == 'v') && unit.substring(1).startsWith("ticks"))) {
+            this.unitType = UnitType.DISTANCE;
+        } else {
+            this.unitType = UnitType.TIME;
+        }
+    }
+
     public UnitValue(String src) {
         String timeNumber = "";
         int unitIndex = 0;

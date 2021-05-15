@@ -10,11 +10,15 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.auxilary.EncodedMotor;
 import org.firstinspires.ftc.teamcode.auxilary.ColorSensor;
-import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.Autoauto;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.*;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.statements.*;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values.*;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.AutoautoRuntime;
 import org.firstinspires.ftc.teamcode.managers.*;
 import org.junit.Test;
 import org.firstinspires.ftc.teamcode.unitTests.dummy.DummyHardwareMap;
+
+import java.util.HashMap;
 
 @Autonomous
 public class template extends OpMode {
@@ -67,7 +71,7 @@ public class template extends OpMode {
             imu = new ImuManager(hardwareMap.get(com.qualcomm.hardware.bosch.BNO055IMU.class, "imu"));
 
 
-        runtime = Autoauto.executeAutoautoProgram("{{javaStringFileSource}}", driver, limbs, sense, imu);
+            {{JAVA_CREATION_CODE}}
         FeatureManager.logger.log(runtime.program.toString());
     }
 

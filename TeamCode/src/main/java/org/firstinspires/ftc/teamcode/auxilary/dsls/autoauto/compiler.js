@@ -1,6 +1,8 @@
 var fs = require("fs");
 var path = require("path");
 
+var aaParser = require("./aa-parser.js");
+var astJavaify = require("./ast-tools.js");
 var parserTools = require("./parser-tools.js");
 
 var directory = __dirname.split(path.sep);
@@ -27,17 +29,27 @@ for(var i = 0; i < autoautoFiles.length; i++) {
 
     console.log("frontmatter : " + JSON.stringify(frontMatter.frontMatter));
 
-    var javaStringFileSource = frontMatter.stripped.replace(/\r?\n/g, " ").replace(/"/g, "\\\"");
+    var javaStringFileSource = frontMatter.stripped;
+    
+    try {
+        var parsedModel = aaParser.parse(uncommentedFileSource);
+        
+        var javaCreationCode = astJavaify(parsedModel);
 
-    fs.writeFileSync(compiledResultDirectory + "/" + javaFileName, processTemplate(template, className, frontMatter.frontMatter, javaStringFileSource));
+        fs.writeFileSync(compiledResultDirectory + "/" + javaFileName, processTemplate(template, className, frontMatter.frontMatter, javaStringFileSource, javaCreationCode));
+    } catch(e) {
+        console.error("AUTOAUTOERROR: Could not parse " + className + "\n" + (e.location ? e.location.start.line + ":" + e.location.start.column : "") + "\t" + e.toString());
+        process.exit(1);
+    }
+    
 }
 
-function processTemplate(template, className, frontMatter, javaStringFileSource) {
+function processTemplate(template, className, frontMatter, javaStringFileSource, javaCreationCode) {
     return template
         .replace("public class template", "public class " + className)
-        .replace("{{javaStringFileSource}}", javaStringFileSource)
         .replace("NSERVO_NAMES", buildServoNames(frontMatter.servos))
         .replace("NSERVOS", buildServos(frontMatter.servos))
+        .replace("{{JAVA_CREATION_CODE}}", javaCreationCode)
         .replace("CRSERVO_NAMES", buildCrServoNames(frontMatter.crServos))
         .replace("CRSERVOS", buildCrServos(frontMatter.crServos))
         .replace("TESTITERATIONS", frontMatter.testIterations === undefined ? 3 : frontMatter.testIterations);

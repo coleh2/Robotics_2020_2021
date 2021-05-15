@@ -10,6 +10,10 @@ import org.jetbrains.annotations.NotNull;
 public class FunctionCallStatement extends Statement {
     public FunctionCall function;
 
+    public FunctionCallStatement(FunctionCall f) {
+        this.function = f;
+    }
+
     public FunctionCallStatement(String src, AutoautoProgram program, Statepath statepath, State state) {
         super(program, statepath, state);
         this.function = new FunctionCall(src);

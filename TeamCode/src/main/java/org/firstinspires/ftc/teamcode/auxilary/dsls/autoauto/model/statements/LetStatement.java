@@ -4,12 +4,23 @@ import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.AutoautoProgr
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.State;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.Statepath;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values.Value;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values.VariableReference;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 
 public class LetStatement extends Statement {
     public String variable;
 
     public Value value;
+
+    public LetStatement(VariableReference var, Value val) {
+        this.variable = var.getName();
+        this.value = val;
+    }
+
+    public LetStatement(String var, Value val) {
+        this.variable = var;
+        this.value = val;
+    }
 
     public LetStatement(String src, AutoautoProgram program, Statepath statepath, State state) {
         super(program, statepath, state);

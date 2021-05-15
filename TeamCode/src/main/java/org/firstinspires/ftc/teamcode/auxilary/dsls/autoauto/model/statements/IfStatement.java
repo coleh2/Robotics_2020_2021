@@ -5,6 +5,8 @@ import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.AutoautoProgr
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.State;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.Statepath;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values.BooleanOperator;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values.NumericValue;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values.Value;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 
 import java.util.Arrays;
@@ -12,6 +14,30 @@ import java.util.Arrays;
 public class IfStatement extends Statement {
     BooleanOperator conditional;
     Statement subject;
+
+    public IfStatement(Value v, Statement s) {
+        conditional = new BooleanOperator(v, new NumericValue(0), ">");
+        subject = s;
+    }
+    public IfStatement(BooleanOperator b, Statement s) {
+        conditional = b;
+        subject = s;
+    }
+
+    public void setProgram(AutoautoProgram program) {
+        super.setProgram(program);
+        subject.setProgram(program);
+    }
+
+    public void setStatepath(Statepath statepath) {
+        super.setStatepath(statepath);
+        subject.setStatepath(statepath);
+    }
+
+    public void setState(State state) {
+        super.setState(state);
+        subject.setState(state);
+    }
 
     public IfStatement(String src, AutoautoProgram program, Statepath statepath, State state) {
         super(program, statepath, state);

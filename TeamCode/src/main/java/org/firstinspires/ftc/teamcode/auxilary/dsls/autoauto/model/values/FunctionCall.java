@@ -14,6 +14,11 @@ public class FunctionCall extends Value {
     public Value[] args;
     public String name;
 
+    public FunctionCall(String n, Value[] a) {
+        this.name = n;
+        this.args = a;
+    }
+
     public FunctionCall(String src) {
         this.name = "";
         for(char c : src.toCharArray()) {

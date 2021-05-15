@@ -14,6 +14,20 @@ public class Statepath {
     public String name;
     public AutoautoProgram program;
 
+    public void setProgram(AutoautoProgram p) {
+        this.program = p;
+        for(State s : states) s.setProgram(p);
+    }
+
+    public Statepath(State[] states, String name) {
+        this.states = states;
+        this.currentState = 0;
+        this.oldCurrentState = -1;
+        this.name = name;
+
+        for(State s : states) s.setStatepath(this);
+    }
+
     public Statepath(String src, AutoautoProgram program, String name) {
         this.currentState = 0;
         this.oldCurrentState = -1;

@@ -7,7 +7,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class SkipStatement extends Statement {
     public int delta;
-    public SkipStatement() {}
+    public SkipStatement(int delta) {
+        this.delta = delta;
+    }
     public SkipStatement(String src, AutoautoProgram program, Statepath statepath, State state) {
         super(program, statepath, state);
         this.delta = Integer.parseInt(src.substring("skip ".length()));

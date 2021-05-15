@@ -7,6 +7,10 @@ import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.Statepath;
 public class GotoStatement extends Statement {
     String gotoPath;
 
+    public GotoStatement(String path) {
+        this.gotoPath = path;
+    }
+
     public GotoStatement(String src, AutoautoProgram program, Statepath statepath, State state) {
         super(program, statepath, state);
         this.gotoPath = src.substring("goto ".length()).trim();

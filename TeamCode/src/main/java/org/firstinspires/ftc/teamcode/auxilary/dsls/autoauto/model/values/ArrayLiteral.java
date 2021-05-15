@@ -7,6 +7,9 @@ import java.util.Arrays;
 
 public class ArrayLiteral extends Value {
     Value[] elems;
+    public ArrayLiteral(Value[] e) {
+        this.elems = e;
+    }
     public ArrayLiteral(String src) {
         src = src.substring(1, src.length() - 1);
 

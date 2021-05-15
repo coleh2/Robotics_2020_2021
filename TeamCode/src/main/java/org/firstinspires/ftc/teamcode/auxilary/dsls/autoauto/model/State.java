@@ -11,6 +11,21 @@ public class State {
     public AutoautoProgram program;
     public Statepath statepath;
 
+    public void setProgram(AutoautoProgram program) {
+        this.program = program;
+        for(Statement p : this.statements) p.setProgram(program);
+    }
+
+    public void setStatepath(Statepath statepath) {
+        this.statepath = statepath;
+        for(Statement p : this.statements) p.setStatepath(statepath);
+    }
+
+    public State(Statement[] statements) {
+        this.statements = statements;
+        for(Statement p : this.statements) p.setState(this);
+    }
+
     public State(String src, AutoautoProgram program, Statepath statepath) {
         this.program = program;
         this.statepath = statepath;

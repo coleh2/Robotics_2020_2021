@@ -13,6 +13,26 @@ public class AfterStatement extends Statement {
     private long stepStartTime = 0;
     private int stepStartTick;
 
+    public void setProgram(AutoautoProgram program) {
+        super.setProgram(program);
+        action.setProgram(program);
+    }
+
+    public void setStatepath(Statepath statepath) {
+        super.setStatepath(statepath);
+        action.setStatepath(statepath);
+    }
+
+    public void setState(State state) {
+        super.setState(state);
+        action.setState(state);
+    }
+
+    public AfterStatement(UnitValue wait, Statement action) {
+        this.wait = wait;
+        this.action = action;
+    }
+
     public AfterStatement(String src, AutoautoProgram program, Statepath statepath, State state) {
         super(program, statepath, state);
         src = src.substring("after ".length());

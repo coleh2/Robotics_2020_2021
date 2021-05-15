@@ -9,6 +9,10 @@ public class VariableReference extends Value {
         this.name = n;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void loop() {
         this.returnValue = runtimeVariableStore.get(this.name);
     }
