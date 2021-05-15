@@ -42,18 +42,18 @@ public class TeleopColorSensor extends OpMode {
         imu = new ImuManager(hardwareMap.get(com.qualcomm.hardware.bosch.BNO055IMU.class, "imu"));
         limbs = new ManipulationManager(
                 new CRServo[] {
-                        hardwareMap.get(CRServo.class, "shooterArm"),
 
                 },
                 new String[] {
-                        "shooterArm",
 
                 },
                 new Servo[] {
+//                        hardwareMap.get(Servo.class, "shooterArm"),
 
 
                 },
                 new String[] {
+//                        "shooterArm",
 
                 },
                 new DcMotor[] {
@@ -104,25 +104,25 @@ public class TeleopColorSensor extends OpMode {
 
 
 
-        if(input.getGamepad().right_trigger > 0.1) {
-            limbs.setMotorPower("flywheel", -1);
-        } else {
-            limbs.setMotorPower("flywheel", 0);
-        }
-
-        if(input.getGamepad().a) {
-            limbs.setServoPower("shooterArm", 0.325);
-        } else {
-            limbs.setServoPower("shooterArm", 0.65);
-        }
-
-        limbs.setMotorPower("drum", (input.getGamepad().right_trigger > 0.1 || input.getScalar("fullIntake") == 1) ? -1 : 0);
-
-        if(input.getGamepad().dpad_up) {
-            limbs.setMotorPower("drum", -1);
-        } else if(input.getGamepad().dpad_down) {
-            limbs.setMotorPower("drum", 1);
-        }
+//        if(input.getGamepad().right_trigger > 0.1) {
+//            limbs.setMotorPower("flywheel", -1);
+//        } else {
+//            limbs.setMotorPower("flywheel", 0);
+//        }
+//
+//        if(input.getGamepad().a) {
+//            limbs.setServoPower("shooterArm", 0.325);
+//        } else {
+//            limbs.setServoPower("shooterArm", 0.65);
+//        }
+//
+//        limbs.setMotorPower("drum", (input.getGamepad().right_trigger > 0.1 || input.getScalar("fullIntake") == 1) ? -1 : 0);
+//
+//        if(input.getGamepad().dpad_up) {
+//            limbs.setMotorPower("drum", -1);
+//        } else if(input.getGamepad().dpad_down) {
+//            limbs.setMotorPower("drum", 1);
+//        }
 
 
 

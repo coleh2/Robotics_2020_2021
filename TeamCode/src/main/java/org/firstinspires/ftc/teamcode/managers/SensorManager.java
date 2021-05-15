@@ -56,6 +56,9 @@ public class SensorManager extends FeatureManager {
     public boolean isSpecial(int index) {
         return ((ColorSensor)this.sensors[index]).isSpecial1();
     }
+    public boolean isSpecial1(int index) {
+        return ((ColorSensor)this.sensors[index]).isSpecial1();
+    }
 
 
 
