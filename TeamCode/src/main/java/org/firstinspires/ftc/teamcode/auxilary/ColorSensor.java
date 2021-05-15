@@ -15,7 +15,6 @@ import org.firstinspires.ftc.teamcode.teleop.*;
 public class ColorSensor extends Sensor {
     /** The colorSensor field will contain a reference to our color sensor hardware object */
     NormalizedColorSensor colorSensor;
-    HardwareMap hardwareMap;
     boolean weShouldRead, weveInitiated;
     int colorReturned;
     Thread updateLoopThread;
@@ -28,16 +27,12 @@ public class ColorSensor extends Sensor {
         this.colorReturned = 0;
         this.weShouldRead = true;
         this.colorSensor = sensor;
-        //hardwareMap.get(NormalizedColorSensor.class, "sensor"); // set the colorSensor to the actual hardware color sensor
-        this.runSample(); // actually execute the sampling code; start up the loop
     }
     public ColorSensor(HardwareMap _hardwareMap) {
-        this.hardwareMap = _hardwareMap; //since we don't get the hardwaremap by default-- this isn't an OpMode-- we have to set it manually
         this.weveInitiated = true; //We have initiated the code
         this.colorReturned = 0;
         this.weShouldRead = false;
-        this.colorSensor = hardwareMap.get(NormalizedColorSensor.class, "sensor"); // set the colorSensor to the actual hardware color sensor
-        // this.runSample(); // actually execute the sampling code; start up the loop
+        this.colorSensor = _hardwareMap.get(NormalizedColorSensor.class, "sensor"); // set the colorSensor to the actual hardware color sensor
     }
 
     public void startAsyncLoop() {

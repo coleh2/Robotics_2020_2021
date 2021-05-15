@@ -89,4 +89,9 @@ public class template extends OpMode {
         FeatureManager.logger.log(runtime.program.toString());
         for(int i = 0; i < TESTITERATIONS; i++) this.loop();
     }
+
+    @Override
+    public void stop() {
+        this.limbs.closeMotors();
+    }
 }
