@@ -1,22 +1,21 @@
 #init:
-    setServoPosition(wobbleArmLeft, 0.055), setServoPosition(wobbleArmRight, 0.055), next;
-    setServoPosition(wobbleGrabLeft, 1), setServoPosition(wobbleGrabRight, 1), next;
+    setServoPosition(wobbleArmLeft, 0.7), setServoPosition(wobbleArmRight, 0.7), next;
+    setServoPosition(wobbleGrabLeft, 1), setServoPosition(wobbleGrabRight, -1), next;
     setServoPosition(shooterArm, 0.63), setMotorPower(drum, -0.5), setMotorPower(flywheel, -1.0), after 0.8s next;
     setMotorPower(drum, 0), setMotorPower(flywheel, 0), next;
     goto shooting
 
 #shooting:
     /*drive to sampling*/
-    driveRaw(0.4,0.4,-0.4,-0.4), after 1700vticks next/*, log(getTicks())*/;
-    driveRaw(0.4,-0.4,0.4,-0.4), after 250ticks next;
+    driveRaw(0.4,0.4,-0.4,-0.4), after 1670vticks next/*, log(getTicks())*/;
+    driveRaw(0.4,-0.4,0.4,-0.4), after 500ticks next;
 
     /*setting conditional*/
     let rings = 0, if(isSpecial(sensorOne) > 0) let rings = 1, if(isSpecial(sensorFour) > 0) let rings = 4, log(rings), after 0.5s next;
-    log(rings), after 5s next;
-    goto end;
 
     /*drive to line*/
-    driveRaw(0.4,0.4,-0.4,-0.4), after 1350vticks next;
+    driveRaw(0.4,0.4,-0.4,-0.4), after 900vticks next;
+
     driveRaw(0.4,-0.4,0.4,-0.4), after 300ticks next;
     let proportional = proportionalPID(getThirdAngleOrientation(), 180, 0.001f), driveRaw(prorpotional, -1*proportional, -1*proportional, proportional), if(getThirdAngleOrientation() == 179) next, after 0.5s next;
     driveRaw(0.0,0.0,0.0,0.0), next;
@@ -42,13 +41,14 @@
 
 #zeroRings:
     /*drive to correct position*/
-    driveRaw(0.4,0.4,-0.4,-0.4), after 1950vticks next;
-    driveRaw(-0.4,0.4,-0.4,0.4), after 2000ticks next;
+    driveRaw(0.4,0.4,-0.4,-0.4), after 1200vticks next;
+
+    driveRaw(-0.4,0.4,-0.4,0.4), after 1300ticks next;
 
     //release wobble goal
-    setServoPosition(wobbleArmLeft, 0.055), setServoPosition(wobbleArmRight, 0.055), after 2s next;
-    setServoPosition(wobbleGrabLeft, 0.2), setServoPosition(wobbleGrabRight, 0.2), after 2s next;
-    setServoPosition(wobbleArmLeft, 0.055), setServoPosition(wobbleArmRight, 0.055), driveRaw(0.4,-0.4,0.4,-0.4), after 1300ticks next;
+    setServoPosition(wobbleArmLeft, 0), setServoPosition(wobbleArmRight, 0), after 2s next;
+    setServoPosition(wobbleGrabLeft, 0), setServoPosition(wobbleGrabRight, 1), after 2s next;
+    setServoPosition(wobbleArmLeft, 0), setServoPosition(wobbleArmRight, 0), driveRaw(0.4,-0.4,0.4,-0.4), after 1300ticks next;
 
     //park on the line
     driveRaw(-0.4,-0.4,0.4,0.4), after 750vticks goto end

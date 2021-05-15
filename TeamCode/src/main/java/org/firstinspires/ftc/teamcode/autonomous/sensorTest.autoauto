@@ -1,0 +1,2 @@
+#init:
+    log("sensor 1 id: " + sensorOne + " sensor 4 id: " + sensorFour), log("sensor 1 special?" + isSpecialOne(sensorOne)), log("sensor 4 special?" + isSpecialOne(sensorFour))

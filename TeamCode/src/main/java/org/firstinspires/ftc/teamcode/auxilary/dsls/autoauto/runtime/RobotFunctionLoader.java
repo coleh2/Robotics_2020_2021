@@ -51,6 +51,7 @@ public class RobotFunctionLoader {
 
         GetHSLFunction getHSL = new GetHSLFunction(sense); getHSL.setName("getHSL"); getHSL.setArgCount(1); functions.add(getHSL);
         IsSpecialFunction isSpecial = new IsSpecialFunction(sense); isSpecial.setName("isSpecial"); isSpecial.setArgCount(1); functions.add(isSpecial);
+        IsSpecialOneFunction isSpecialOne = new IsSpecialOneFunction(sense); isSpecialOne.setName("isSpecialOne"); isSpecialOne.setArgCount(1); functions.add(isSpecialOne);
 
         OmniCalcFunction omniCalc = new OmniCalcFunction(); omniCalc.setName("omniCalc"); omniCalc.setArgCount(3); functions.add(omniCalc);
         ProportionalPIDFunction proportionalPID = new ProportionalPIDFunction(); proportionalPID.setName("proportionalPID"); proportionalPID.setArgCount(3); functions.add(proportionalPID);
