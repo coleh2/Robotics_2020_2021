@@ -79,9 +79,9 @@ public class template extends OpMode {
     }
 
     public void loop() {
-        FeatureManager.logger.log("=====");
-        FeatureManager.logger.log("Statepath: " +runtime.program.currentPathName);
-        FeatureManager.logger.log("State: " +runtime.program.currentPath.currentState);
+        telemetry.addData("Autoauto Build Name", "/*BUILD_NAME*/");
+        telemetry.addData("Statepath", runtime.program.currentPathName);
+        telemetry.addData("State", runtime.program.currentPath.currentState);
         runtime.loop();
     }
 
