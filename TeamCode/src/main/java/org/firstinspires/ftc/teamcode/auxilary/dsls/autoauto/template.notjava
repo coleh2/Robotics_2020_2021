@@ -46,12 +46,14 @@ public class template extends OpMode {
                 new DcMotor[] {
                         hardwareMap.get(DcMotor.class, "drum"),
                         hardwareMap.get(DcMotor.class, "intake"),
-                        hardwareMap.get(DcMotor.class, "flywheel")
+                        new EncodedMotor(hardwareMap.get(DcMotor.class, "flywheel"), 1000),
+                        hardwareMap.get(DcMotor.class, "spinner")
                 },
                 new String[] {
                         "drum",
                         "intake",
                         "flywheel",
+                        "spinner"
                 }
         );
         driver.resetEncoders();
