@@ -67,7 +67,8 @@ public class TeleopDualControlerControlsOneFlywheel extends OpMode {
                 new DcMotor[] {
                         hardwareMap.get(DcMotor.class, "drum"),
                         hardwareMap.get(DcMotor.class, "intake"),
-                        new EncodedMotor(hardwareMap.get(DcMotor.class, "flywheel"), 1000),
+                        new EncodedMotor(hardwareMap.get(DcMotor.class, "flywheel"), 70),
+                        //hardwareMap.get(DcMotor.class, "flywheel")
                         hardwareMap.get(DcMotor.class, "spinner")
                 },
                 new String[] {
@@ -92,7 +93,7 @@ public class TeleopDualControlerControlsOneFlywheel extends OpMode {
     }
     float target = 0.1f;
     boolean uped = false;
-    float speed = 1f;
+    float speed = 0.2f;
     boolean upPressed = false;
     boolean downPressed = false;
 
