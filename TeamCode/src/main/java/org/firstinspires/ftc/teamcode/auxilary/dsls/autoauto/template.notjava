@@ -75,7 +75,6 @@ public class template extends OpMode {
 
 
             /*JAVA_CREATION_CODE*/
-        FeatureManager.logger.log(runtime.program.toString());
     }
 
     public void loop() {
