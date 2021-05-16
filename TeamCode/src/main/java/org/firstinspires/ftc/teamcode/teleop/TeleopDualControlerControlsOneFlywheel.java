@@ -67,7 +67,7 @@ public class TeleopDualControlerControlsOneFlywheel extends OpMode {
                 new DcMotor[] {
                         hardwareMap.get(DcMotor.class, "drum"),
                         hardwareMap.get(DcMotor.class, "intake"),
-                        /*new EncodedMotor(*/hardwareMap.get(DcMotor.class, "flywheel")/*, 1000)*/,
+                        new EncodedMotor(hardwareMap.get(DcMotor.class, "flywheel"), 1000),
                         hardwareMap.get(DcMotor.class, "spinner")
                 },
                 new String[] {
@@ -83,7 +83,7 @@ public class TeleopDualControlerControlsOneFlywheel extends OpMode {
             limbs.getServo("wobbleArmLeft").setDirection(Servo.Direction.REVERSE);
             limbs.getServo("wobbleGrabRight").setDirection(Servo.Direction.REVERSE);
 
-            limbs.setMotorModes(DcMotor.RunMode.RUN_USING_ENCODER);
+//            limbs.setMotorModes(DcMotor.RunMode.RUN_USING_ENCODER);
 
         } catch (Exception e) {
             
@@ -137,6 +137,8 @@ public class TeleopDualControlerControlsOneFlywheel extends OpMode {
 //            } else downPressed = false;
 
 
+            telemetry.addData("Flywheel control", input.getControl("flywheel").toString());
+            telemetry.addData("gamepad 2 triangle: ", input.gamepad2.y);
             telemetry.addData("Verticle Position", driver.getVerticalTicks());
             telemetry.addData("Position", driver.getTicks());
 

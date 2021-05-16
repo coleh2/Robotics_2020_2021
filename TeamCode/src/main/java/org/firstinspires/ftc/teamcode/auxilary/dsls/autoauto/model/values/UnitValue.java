@@ -17,6 +17,34 @@ public class UnitValue extends Value {
         } else {
             this.unitType = UnitType.TIME;
         }
+
+        if(unit.startsWith("ms")) {
+            this.baseAmount *= 1;
+            unitType = UnitType.TIME;
+        } else if(unit.startsWith("s")) {
+            this.baseAmount *= 1000;
+            unitType = UnitType.TIME;
+        } else if (unit.startsWith("m")) {
+            this.baseAmount *= 60 * 1000;
+            unitType = UnitType.TIME;
+        } else if(unit.startsWith("h")) {
+            this.baseAmount *= 60 * 60 * 1000;
+            unitType = UnitType.TIME;
+        } else if (unit.startsWith("d")) {
+            this.baseAmount *= 24 * 60 * 60 * 1000;
+            unitType = UnitType.TIME;
+        }
+
+        if(unit.startsWith("ticks")) {
+            this.baseAmount *= 1;
+            unitType = UnitType.DISTANCE;
+        } else if(unit.startsWith("rots")) {
+            this.baseAmount *= 135;
+            unitType = UnitType.DISTANCE;
+        } else if((unit.charAt(0) == 'h' || unit.charAt(0) == 'v') && unit.substring(1).startsWith("ticks")) {
+            this.baseAmount *= 1;
+            unitType = UnitType.DISTANCE;
+        }
     }
 
     public UnitValue(String src) {
