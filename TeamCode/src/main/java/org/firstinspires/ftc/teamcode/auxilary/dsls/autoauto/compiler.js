@@ -7,7 +7,7 @@ var parserTools = require("./parser-tools.js");
 
 var directory = __dirname.split(path.sep);
 
-console.log(directory);
+var PACKAGE_DECLARATION = "package org.firstinspires.ftc.teamcode.__compiledautoauto;";
 
 var template = fs.readFileSync(__dirname + path.sep + "template.notjava").toString();
 
@@ -23,6 +23,14 @@ for(var i = 0; i < autoautoFiles.length; i++) {
     var className = fileName.replace(".autoauto", "__autoauto");
     var javaFileName = className + ".java";
 
+    var resultFile = compiledResultDirectory + "/" + javaFileName;
+
+    if(fileSource.trim() == "") {
+        console.warn("WARNING: Empty autoauto file " + className)
+        fs.writeFileSync(resultFile, "");
+        continue;
+    }
+
     var uncommentedFileSource = parserTools.stripComments(fileSource);
 
     var frontMatter = stripAndParseFrontMatter(uncommentedFileSource);
@@ -36,7 +44,7 @@ for(var i = 0; i < autoautoFiles.length; i++) {
         
         var javaCreationCode = astJavaify(parsedModel);
 
-        fs.writeFileSync(compiledResultDirectory + "/" + javaFileName, processTemplate(template, className, frontMatter.frontMatter, javaStringFileSource, javaCreationCode));
+        fs.writeFileSync(resultFile, processTemplate(template, className, frontMatter.frontMatter, javaStringFileSource, javaCreationCode));
     } catch(e) {
         console.error("AUTOAUTOERROR: Could not parse " + className + "\n" + (e.location ? e.location.start.line + ":" + e.location.start.column : "") + "\t" + e.toString());
         process.exit(1);
@@ -47,12 +55,13 @@ for(var i = 0; i < autoautoFiles.length; i++) {
 function processTemplate(template, className, frontMatter, javaStringFileSource, javaCreationCode) {
     return template
         .replace("public class template", "public class " + className)
-        .replace("NSERVO_NAMES", buildServoNames(frontMatter.servos))
-        .replace("NSERVOS", buildServos(frontMatter.servos))
-        .replace("{{JAVA_CREATION_CODE}}", javaCreationCode)
-        .replace("CRSERVO_NAMES", buildCrServoNames(frontMatter.crServos))
-        .replace("CRSERVOS", buildCrServos(frontMatter.crServos))
-        .replace("TESTITERATIONS", frontMatter.testIterations === undefined ? 3 : frontMatter.testIterations);
+        .replace("/*NSERVO_NAMES*/", buildServoNames(frontMatter.servos))
+        .replace("/*NSERVOS*/", buildServos(frontMatter.servos))
+        .replace("/*JAVA_CREATION_CODE*/", javaCreationCode)
+        .replace("/*CRSERVO_NAMES*/", buildCrServoNames(frontMatter.crServos))
+        .replace("/*CRSERVOS*/", buildCrServos(frontMatter.crServos))
+        .replace("/*PACKAGE_DECLARATION*/", PACKAGE_DECLARATION)
+        .replace("/*TESTITERATIONSCOMPARISON*/", "i < " + (frontMatter.testIterations === undefined ? 3 : frontMatter.testIterations));
 }
 
 function buildServoNames(servos) {
