@@ -87,7 +87,8 @@ public class TeleopDualControlerControlsOneFlywheel extends OpMode {
 //            limbs.setMotorModes(DcMotor.RunMode.RUN_USING_ENCODER);
 
         } catch (Exception e) {
-            
+            FeatureManager.logger.log("ERROR");
+            FeatureManager.logger.log(e.toString());
 
         }
     }

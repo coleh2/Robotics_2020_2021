@@ -5,13 +5,15 @@ var aaParser = require("./aa-parser.js");
 var astJavaify = require("./ast-tools.js");
 var parserTools = require("./parser-tools.js");
 
+var DEFAULT_SERVOS = ["wobbleArmRight","wobbleArmLeft" , "wobbleGrabRight","wobbleGrabLeft", "shooterStop", "shooterArm"];
+var DEFAULT_CRSERVOS = [];
 var LAST_BUILD_NUMBER_FILE = path.join(__dirname, "last-build.json");
 
 if(!fs.existsSync(LAST_BUILD_NUMBER_FILE)) fs.writeFileSync(LAST_BUILD_NUMBER_FILE, "0");
 
 var buildNumber = require(LAST_BUILD_NUMBER_FILE);
 
-fs.writeFileSync(LAST_BUILD_NUMBER_FILE, buildNumber + 1);
+fs.writeFileSync(LAST_BUILD_NUMBER_FILE, (buildNumber + 1).toString());
 
 var username = require("os").userInfo().username;
 
@@ -48,18 +50,19 @@ for(var i = 0; i < autoautoFiles.length; i++) {
     console.log("frontmatter : " + JSON.stringify(frontMatter.frontMatter));
 
     var javaStringFileSource = frontMatter.stripped;
-    
+
     try {
         var parsedModel = aaParser.parse(uncommentedFileSource);
-        
+
         var javaCreationCode = astJavaify(parsedModel);
 
         fs.writeFileSync(resultFile, processTemplate(template, className, frontMatter.frontMatter, javaStringFileSource, javaCreationCode));
     } catch(e) {
         console.error("AUTOAUTOERROR: Could not parse " + className + "\n" + (e.location ? e.location.start.line + ":" + e.location.start.column : "") + "\t" + e.toString());
+        console.error(e.stack);
         process.exit(1);
     }
-    
+
 }
 
 function processTemplate(template, className, frontMatter, javaStringFileSource, javaCreationCode) {
@@ -76,23 +79,23 @@ function processTemplate(template, className, frontMatter, javaStringFileSource,
 }
 
 function buildServoNames(servos) {
-    if(servos === undefined) return `"wobbleArmRight","wobbleArmLeft" , "wobbleGrabRight","wobbleGrabLeft", "shooterArm", "shooterStop"`;
-    else return servos.map(x=> `"${x}"`).join(", ");
+    if(servos === undefined) servos = DEFAULT_SERVOS;
+    return servos.map(x=> `"${x}"`).join(", ");
 }
 
 function buildCrServoNames(crServos) {
-    if(crServos === undefined) return ``;
-    else return servos.map(x=> `"${x}"`).join(", ");
+    if(crServos === undefined) crServos = DEFAULT_CRSERVOS;
+    return crServos.map(x=> `"${x}"`).join(", ");
 }
 
 function buildCrServos(crServos) {
-    if(crServos === undefined) return ``;
-    else return crServos.map(x=> `hardwareMap.get(CRServo.class, "${x}")`).join(", ");
+    if(crServos === undefined) crServos = DEFAULT_CRSERVOS;
+    return crServos.map(x=> `hardwareMap.get(CRServo.class, "${x}")`).join(", ");
 }
 
 function buildServos(servos) {
-    if(servos === undefined) return `hardwareMap.get(Servo.class, "wobbleArmRight"), hardwareMap.get(Servo.class, "wobbleArmLeft"), hardwareMap.get(Servo.class, "wobbleGrabRight"), hardwareMap.get(Servo.class, "wobbleGrabLeft"), hardwareMap.get(Servo.class, "shooterArm"), hardwareMap.get(Servo.class, "shooterStop")`;
-    else return servos.map(x=> `hardwareMap.get(Servo.class, "${x}")`).join(", ");
+    if(servos === undefined) servos = DEFAULT_SERVOS;
+    return servos.map(x=> `hardwareMap.get(Servo.class, "${x}")`).join(", ");
 }
 
 function stripAndParseFrontMatter(src) {
