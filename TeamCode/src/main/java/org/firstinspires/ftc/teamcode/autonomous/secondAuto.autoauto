@@ -1,6 +1,6 @@
 #init:
     setServoPosition(shooterStop, 0.57), next;
-    setMotorPower(flywheel, 0.7), setServoPosition(wobbleArmLeft, 0.7), setServoPosition(wobbleArmRight, 0.7), after 1s next;
+    setMotorPower(flywheel, 0.7), setServoPosition(wobbleArmLeft, 0.6), setServoPosition(wobbleArmRight, 0.6), after 1s next;
     setServoPosition(wobbleGrabLeft, 1), setServoPosition(wobbleGrabRight, -1),setServoPosition(shooterArm, 0.63), setMotorPower(drum, -0.5), after 1s next;
     setMotorPower(drum, 0), next;
     goto shooting
@@ -50,7 +50,7 @@
     //release wobble goal
     setServoPosition(wobbleArmLeft, 0), setServoPosition(wobbleArmRight, 0), after 3s next;
     setServoPosition(wobbleGrabLeft, 0), setServoPosition(wobbleGrabRight, 1), after 3s next;
-    setServoPosition(wobbleArmLeft, 0), setServoPosition(wobbleArmRight, 0), driveRaw(0.6,-0.6,0.6,-0.6), after 1300ticks next;
+    setServoPosition(wobbleArmLeft, 0.6), setServoPosition(wobbleArmRight, 0.6), driveRaw(0.6,-0.6,0.6,-0.6), after 1300ticks next;
 
     //park on the line
     driveRaw(-0.4,-0.4,0.4,0.4), after 600vticks goto end
@@ -62,7 +62,7 @@
     //release wobble goal
         setServoPosition(wobbleArmLeft, 0), setServoPosition(wobbleArmRight, 0), after 2s next;
         setServoPosition(wobbleGrabLeft, 0), setServoPosition(wobbleGrabRight, 1), after 2s next;
-        setServoPosition(wobbleArmLeft, 0), setServoPosition(wobbleArmRight, 0), driveRaw(0.6,-0.6,0.6,-0.6), after 1300ticks next;
+        setServoPosition(wobbleArmLeft, 0.6), setServoPosition(wobbleArmRight, 0.6), driveRaw(0.6,-0.6,0.6,-0.6), after 1300ticks next;
 
     //park on the line
     driveRaw(-0.6,-0.6,0.6,0.6), after 1400vticks goto end
@@ -76,9 +76,9 @@
     driveRaw(-0.6,-0.6,0.6,0.6), after 700ticks next;
 
     //release wobble goal
-    setServoPosition(wobbleArmLeft, 0.055), setServoPosition(wobbleArmRight, 0.055), after 1s next;
+    setServoPosition(wobbleArmLeft, 0), setServoPosition(wobbleArmRight, 0), after 1s next;
     setServoPosition(wobbleGrabLeft, 0.2), setServoPosition(wobbleGrabRight, 0.2), after 1s next;
-    setServoPosition(wobbleArmLeft, 0.055), setServoPosition(wobbleArmRight, 0.055), next;
+    setServoPosition(wobbleArmLeft, 0.6), setServoPosition(wobbleArmRight, 0.6), next;
     driveRaw(0.6,-0.6,0.6,-0.6), after 2300ticks goto end
 
 #end:
