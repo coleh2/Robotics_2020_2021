@@ -74,6 +74,7 @@ public class template extends OpMode {
             imu = new ImuManager(hardwareMap.get(com.qualcomm.hardware.bosch.BNO055IMU.class, "imu"));
 
 
+        limbs.getServo("wobbleGrabRight").setDirection(Servo.Direction.REVERSE);
             /*JAVA_CREATION_CODE*/
     }
 
