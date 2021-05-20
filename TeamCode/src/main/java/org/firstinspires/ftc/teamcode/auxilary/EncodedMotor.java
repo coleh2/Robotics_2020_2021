@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.auxilary;
 
+import com.qualcomm.robotcore.eventloop.EventLoopManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerNotifier;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
@@ -36,14 +37,14 @@ public class EncodedMotor implements DcMotor {
 
         this.runLoop = true;
 
+        addListener();
+
         this.updateLoop = new Thread(new MotorUpdateLooper());
         updateLoop.start();
-
-        addListener();
     }
 
     private void addListener() {
-
+        FeatureManager.setIsOpModeRunning(true);
     }
 
     public EncodedMotor(DcMotor _motor) {
@@ -57,10 +58,10 @@ public class EncodedMotor implements DcMotor {
 
         this.runLoop = true;
 
+        addListener();
+
         this.updateLoop = new Thread(new MotorUpdateLooper());
         updateLoop.start();
-
-        addListener();
     }
 
     @Override

@@ -39,6 +39,10 @@ public class FeatureManager {
         opModeManager = o;
     }
 
+    public static void setIsOpModeRunning(boolean b) {
+        isOpModeRunning = b;
+    }
+
     public static class Logger {
         private Telemetry.Log backend;
         private PrintStream fallbackBackend;

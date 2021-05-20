@@ -75,7 +75,7 @@ public class template extends OpMode {
             imu = new ImuManager(hardwareMap.get(com.qualcomm.hardware.bosch.BNO055IMU.class, "imu"));
 
 
-            /*JAVA_CREATION_CODE*/
+/*JAVA_CREATION_CODE*/
     }
 
     public void loop() {
@@ -95,7 +95,7 @@ public class template extends OpMode {
 
     @Override
     public void stop() {
-        FeatureManager.isOpModeRunning = false;
+        FeatureManager.setIsOpModeRunning(false);
     }
 
     /*USER_DEFINED_FUNCTIONS*/

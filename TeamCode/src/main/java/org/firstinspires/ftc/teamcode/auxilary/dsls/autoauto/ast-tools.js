@@ -1,10 +1,14 @@
 var nonce = "";
-module.exports = function process(ast) {
+module.exports = function astToString(ast) {
+    function process(child) {
+        return indent(astToString(child));
+    }
+
     switch(ast.type) {
         case "FrontMatter":
             return "";
         case "Program":
-            nonce = Math.random().toString(16).substring(2);
+            nonce = genNonce();
             return `HashMap<String, Statepath> paths${nonce} = new HashMap<String, Statepath>();
             ${ast.statepaths.map(x=>process(x)).join("\n")}\n
             AutoautoProgram program${nonce} = new AutoautoProgram(paths${nonce}, ${process(ast.statepaths[0].label.variable)});
@@ -53,4 +57,22 @@ module.exports = function process(ast) {
         console.error(ast);
         
     }
+}
+
+function genNonce() {
+    var r = "";
+    for(var i = 0; i < 4; i++) r +=Math.random().toString(16).substring(2);
+    return r;
+}
+
+function indent(str) {
+    var lines = (str + "").split("\n");
+    if(lines.length == 1) return str;
+
+    for(var i = 0; i < lines.length; i++) {
+        lines[i] = "    " + lines[i];
+    }
+    return (lines[0] == "" ? "" : "\n") + //add starting blank line ONLY if it doesn't have one already
+        lines.join("\n") +
+        (lines[lines.length - 1] == "" ? "" : "\n"); //add ending blank line ONLY if it doesn't have one already
 }
