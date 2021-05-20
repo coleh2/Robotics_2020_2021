@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.managers;
 
+import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.autonomous.*;
 import org.firstinspires.ftc.teamcode.auxilary.*;
@@ -28,6 +30,14 @@ public class FeatureManager {
     public static final FeatureManager.Logger logger = new Logger();
 
     public static boolean debug = false;
+
+    public static boolean isOpModeRunning = false;
+
+    public static OpModeManager opModeManager;
+
+    public static void setOpModeManager(OpModeManager o) {
+        opModeManager = o;
+    }
 
     public static class Logger {
         private Telemetry.Log backend;

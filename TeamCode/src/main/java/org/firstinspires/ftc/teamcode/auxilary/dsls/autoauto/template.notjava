@@ -30,6 +30,7 @@ public class template extends OpMode {
     AutoautoRuntime runtime;
     public void init() {
         if(this.internalOpModeServices!=null) FeatureManager.logger.setBackend(telemetry.log());
+
         driver = new MovementManager(hardwareMap.get(DcMotor.class, "fl"),
                 hardwareMap.get(DcMotor.class, "fr"),
                 hardwareMap.get(DcMotor.class, "bl"),
@@ -95,7 +96,7 @@ public class template extends OpMode {
 
     @Override
     public void stop() {
-        this.limbs.closeMotors();
+        FeatureManager.isOpModeRunning = false;
     }
 
     /*USER_DEFINED_FUNCTIONS*/

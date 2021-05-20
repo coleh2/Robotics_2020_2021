@@ -33,6 +33,7 @@ public class TeleopDualControlerControlsOneFlywheel extends OpMode {
 
     public void init() {
         try {
+        FeatureManager.isOpModeRunning = true;
         FeatureManager.logger.setBackend(telemetry.log());
 
         driver = new MovementManager(hardwareMap.get(DcMotor.class, "fl"),
@@ -187,5 +188,10 @@ public class TeleopDualControlerControlsOneFlywheel extends OpMode {
         } catch (Exception e) {
             FeatureManager.logger.log(e.toString());
         }
+    }
+
+    @Override
+    public void stop() {
+        FeatureManager.isOpModeRunning = false;
     }
 }
