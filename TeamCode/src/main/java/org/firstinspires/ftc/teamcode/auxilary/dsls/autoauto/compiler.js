@@ -5,6 +5,8 @@ var aaParser = require("./aa-parser.js");
 var astJavaify = require("./ast-tools.js");
 var parserTools = require("./parser-tools.js");
 
+var GITIGNORED = ["last-build.json", "*__autoauto.java"];
+
 var DEFAULT_SERVOS = ["wobbleArmRight","wobbleArmLeft" , "wobbleGrabRight","wobbleGrabLeft", "shooterStop", "shooterArm"];
 var DEFAULT_CRSERVOS = [];
 var LAST_BUILD_NUMBER_FILE = path.join(__dirname, "last-build.json");
@@ -22,6 +24,20 @@ var directory = __dirname.split(path.sep);
 var PACKAGE_DECLARATION = "package org.firstinspires.ftc.teamcode.__compiledautoauto;";
 
 var template = fs.readFileSync(__dirname + path.sep + "template.notjava").toString();
+
+var rootDirectory = directory.slice(0, directory.indexOf("TeamCode")).join(path.sep);
+
+
+//update gitignore with autoauto files
+var gitignore = fs.readFileSync(path.join(rootDirectory, ".gitignore")).toString();
+var gitignoreLines = gitignore.split(/\r?\n/);
+
+for(var i = 0; i < GITIGNORED.length; i++) {
+    if(gitignoreLines.indexOf(GITIGNORED[i]) == -1) gitignoreLines.push(GITIGNORED[i]);
+}
+
+gitignore = gitignoreLines.join("\n");
+fs.writeFileSync(path.join(rootDirectory, ".gitignore"), gitignore);
 
 var srcDirectory = directory.slice(0, directory.indexOf("src") + 1);
 var compiledResultDirectory = path.join(srcDirectory.join(path.sep), "main/java/org/firstinspires/ftc/teamcode/__compiledautoauto");

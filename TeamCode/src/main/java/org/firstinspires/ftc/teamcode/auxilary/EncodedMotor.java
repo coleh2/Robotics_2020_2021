@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode.auxilary;
 
+import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerNotifier;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
+import org.firstinspires.ftc.robotcore.internal.opmode.OpModeManagerImpl;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 
 public class EncodedMotor implements DcMotor {
@@ -36,6 +38,12 @@ public class EncodedMotor implements DcMotor {
 
         this.updateLoop = new Thread(new MotorUpdateLooper());
         updateLoop.start();
+
+        addListener();
+    }
+
+    private void addListener() {
+
     }
 
     public EncodedMotor(DcMotor _motor) {
@@ -51,6 +59,8 @@ public class EncodedMotor implements DcMotor {
 
         this.updateLoop = new Thread(new MotorUpdateLooper());
         updateLoop.start();
+
+        addListener();
     }
 
     @Override
@@ -171,13 +181,12 @@ public class EncodedMotor implements DcMotor {
     @Override
     public void close() {
         motor.close();
-        this.runLoop = false;
     }
 
     private class MotorUpdateLooper implements Runnable {
         @Override
         public void run() {
-            while(runLoop) {
+            while(FeatureManager.isOpModeRunning) {
                 int currentMotorPosition = motor.getCurrentPosition();
                 long currentMotorPositionRecordingTime = System.currentTimeMillis();
                 float velocityPerMillisecond = (currentMotorPosition - lastMotorPosition) / (currentMotorPositionRecordingTime - lastMotorPositionRecordingTime);
