@@ -29,8 +29,8 @@ public class ImuManager extends FeatureManager {
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
         parameters.useExternalCrystal = true;
-        parameters.loggingEnabled  = false;
-        parameters.accelerationIntegrationAlgorithm = new NavUtilAccelerationIntegrator();
+        parameters.loggingEnabled  = true;
+        parameters.loggingTag = "Imu";
 
         imu.initialize(parameters);
         imu.startAccelerationIntegration(new Position(DistanceUnit.CM, 0.0, 0.0, 0.0, System.nanoTime()),
@@ -72,59 +72,4 @@ public class ImuManager extends FeatureManager {
     }
 
 
-    private static class NavUtilAccelerationIntegrator implements BNO055IMU.AccelerationIntegrator {
-
-        Position position;
-        Velocity velocity;
-        Acceleration acceleration;
-
-        long time;
-
-        @Override
-        public void initialize(BNO055IMU.Parameters parameters, Position initialPosition, Velocity initialVelocity) {
-            this.position = initialPosition;
-            this.velocity = initialVelocity;
-
-            time = position.acquisitionTime;
-        }
-
-        @Override
-        public Position getPosition() {
-            return position;
-        }
-
-        @Override
-        public Velocity getVelocity() {
-            return velocity;
-        }
-
-        @Override
-        public Acceleration getAcceleration() {
-            return acceleration;
-        }
-
-        @Override
-        public void update(Acceleration linearAcceleration) {
-            if (linearAcceleration.acquisitionTime != 0) {
-                // We can only integrate if we have a previous acceleration to baseline from
-                if (acceleration != null) {
-                    Acceleration accelPrev    = acceleration;
-                    Velocity     velocityPrev = velocity;
-
-                    acceleration = linearAcceleration;
-
-                    if (accelPrev.acquisitionTime != 0) {
-                        Velocity deltaVelocity = meanIntegrate(acceleration, accelPrev);
-                        velocity = plus(velocity, deltaVelocity);
-                    }
-
-                    if (velocityPrev.acquisitionTime != 0) {
-                        Position deltaPosition = meanIntegrate(velocity, velocityPrev);
-                        position = plus(position, deltaPosition);
-                    }
-                }
-                else acceleration = linearAcceleration;
-            }
-        }
-    }
 }
