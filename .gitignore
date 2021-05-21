@@ -92,4 +92,4 @@ lint/tmp/
 /AutoautoLanguagePlugin/gen/*
 /AutoautoLanguagePlugin/build/*
 /AutoautoLanguagePlugin/build.gradle
-last-build.json
+*/last-build.json

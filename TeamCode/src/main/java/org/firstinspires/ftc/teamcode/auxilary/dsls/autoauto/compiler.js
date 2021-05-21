@@ -5,7 +5,7 @@ var aaParser = require("./aa-parser.js");
 var astJavaify = require("./ast-tools.js");
 var parserTools = require("./parser-tools.js");
 
-var GITIGNORED = ["last-build.json", "*__autoauto.java"];
+var GITIGNORED = ["*/last-build.json", "*__autoauto.java"];
 
 var DEFAULT_SERVOS = ["wobbleArmRight","wobbleArmLeft" , "wobbleGrabRight","wobbleGrabLeft", "shooterStop", "shooterArm"];
 var DEFAULT_CRSERVOS = [];
