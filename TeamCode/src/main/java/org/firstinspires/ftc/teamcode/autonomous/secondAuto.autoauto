@@ -1,5 +1,5 @@
 #init:
-    setServoPosition(shooterStop, 0.57), next;
+    setServoPosition(shooterStop, 0.57), setServoPosition(shooterArm, 0.63), next;
     setMotorPower(flywheel, 0.55), setServoPosition(wobbleArmLeft, 0.65), setServoPosition(wobbleArmRight, 0.65), after 1s next;
     setServoPosition(wobbleGrabLeft, 0.8), setServoPosition(wobbleGrabRight, 0.8),setServoPosition(shooterArm, 0.63), setMotorPower(drum, -0.5), after 1s next;
     setMotorPower(drum, 0), next;
