@@ -16,14 +16,14 @@
     let rings = 0, if(isSpecial(sensorOne) > 0) let rings = 1, if(isSpecial(sensorFour) > 0) let rings = 4, log(rings), after 1s next;
 
     /*drive to line*/
-    driveRaw(0.6,0.6,-0.6,-0.6), after 900vticks next;
+    driveRaw(0.6,0.6,-0.6,-0.6), after 860vticks next;
 
-    driveRaw(0.6,-0.6,0.6,-0.6), after 1300ticks next;
-    let proportional = proportionalPID(getThirdAngleOrientation(), 180, 0.001f), driveRaw(proportional, -1*proportional, -1*proportional, proportional), if(getThirdAngleOrientation() == 179) next, after 1s next;
+    driveRaw(0.6,-0.6,0.6,-0.6), setServoPosition(shooterStop, 0.25), after 1400ticks next;
+    let proportional = proportionalPID(getThirdAngleOrientation(), 0, 0.001f), driveRaw(-1*proportional, proportional, proportional, -1*proportional), if(getThirdAngleOrientation() == 179) next, after 1s next;
 
 
     /*shooting*/
-    setServoPosition(shooterStop, 0.25), setMotorPower(drum, -0.5), setMotorPower(spinner, 0.7), after 0.8s next;
+     setMotorPower(drum, -0.5), setMotorPower(spinner, 0.7), after 0.8s next;
     setServoPosition(shooterArm, 0.4), after 1s next;
     setServoPosition(shooterArm, 0.63), after 2s next;
 
