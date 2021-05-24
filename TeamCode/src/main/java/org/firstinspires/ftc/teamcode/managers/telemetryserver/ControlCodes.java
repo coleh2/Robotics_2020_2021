@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.managers.telemetryserver;
 
 public abstract class ControlCodes {
-    public static final int OPMODE_ENDED = 3;
-    public static final int WOKEN_UP_AT_4AM = 2;
+    public static final String I_AM_DYING_FOR_REAL_THIS_TIME = "c1";
+    public static final String I_AM_DYING_BUT_I_MAY_BE_BACK_LATER = "c3";
+    public static final String WOKEN_UP_AT_4AM = "c2";
+    public static final String DO_NOT_FRET_MOTHER_I_AM_ALIVE_JUST_BORED = "h";
 }

@@ -41,21 +41,22 @@ public class RequestHandlerThread implements Runnable {
             if(path.equals("/stream")) {
                 writer.print("HTTP/1.1 200 OK" + HTTP_LINE_SEPARATOR + HTTP_LINE_SEPARATOR);
 
+                long streamStartedAt = System.currentTimeMillis();
                 while(socket.isConnected() && !socket.isClosed() && FeatureManager.isOpModeRunning) {
                     if(dataSource.hasNewData()) writer.print(dataSource.readData());
-                    else writer.print("h");
+                    else writer.print(ControlCodes.DO_NOT_FRET_MOTHER_I_AM_ALIVE_JUST_BORED);
 
                     writer.print("\n");
                     writer.flush();
 
                     try {
-                        Thread.sleep(75);
+                        Thread.sleep(1000/60);
                     } catch (InterruptedException e) {
-                        writer.write("c" + ControlCodes.WOKEN_UP_AT_4AM);
+                        writer.write(ControlCodes.WOKEN_UP_AT_4AM);
                     }
                 }
                 if(!FeatureManager.isOpModeRunning) {
-                    writer.print("c" + ControlCodes.OPMODE_ENDED);
+                    writer.print(ControlCodes.I_AM_DYING_BUT_I_MAY_BE_BACK_LATER);
                 }
             } else if(path.equals("/")){
                     writer.print("HTTP/1.1 200 OK" + HTTP_LINE_SEPARATOR
