@@ -86,6 +86,7 @@ public class TeleopDualControlerControlsOneFlywheel extends OpMode {
 
             limbs.getServo("wobbleArmLeft").setDirection(Servo.Direction.REVERSE);
             limbs.getServo("wobbleGrabRight").setDirection(Servo.Direction.REVERSE);
+//            limbs.getServo("sholderLeft").setDirection(Servo.Direction.REVERSE);
 
 //            limbs.setMotorModes(DcMotor.RunMode.RUN_USING_ENCODER);
 
