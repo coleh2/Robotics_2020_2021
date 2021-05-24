@@ -188,8 +188,6 @@ public abstract class PaulMath extends FeatureManager {
      * @param currentValue  the value we are currently at
      * @param expectedValue the value we want
      * @param Kp proportional coefficient. 0.007 by default
-     * @param clipMin Minimum absolute value that the output can be before it goes to 0. 0.2 by default.
-     * @param clipMax Maximum absolute value that the output can be. 0.5 by default.
      * @return a constant times the difference between the paramaters
      */
     public static float generalProportionalPID(float currentValue, float expectedValue, float Kp) {
@@ -199,5 +197,18 @@ public abstract class PaulMath extends FeatureManager {
 
             //abs val then multiply by sign of difference; easier than two ifs for positive clip and negative clip
             return Kp * difference;
+    }
+
+    /**
+     * Escape a string, so as to put it in a JSON object or Java source string
+     * @param value The string to escape
+     * @return Escaped string
+     */
+    public static String escapeString(String value) {
+        return value
+                .replace("\n", "\\n")
+                .replace("\"", "\\\"")
+                .replace("\t", "\\t")
+                .replace("\\", "\\\\");
     }
 }

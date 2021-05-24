@@ -29,6 +29,9 @@ public class template extends OpMode {
 
     AutoautoRuntime runtime;
     public void init() {
+        FeatureManager.isOpModeRunning = true;
+        telemetry = new TelemetryManager(telemetry);
+        
         if(this.internalOpModeServices!=null) FeatureManager.logger.setBackend(telemetry.log());
 
         driver = new MovementManager(hardwareMap.get(DcMotor.class, "fl"),

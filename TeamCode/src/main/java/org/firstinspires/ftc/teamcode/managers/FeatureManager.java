@@ -121,5 +121,10 @@ public class FeatureManager {
         public void add(String l) {
             log(l);
         }
+
+        public void logToPhone(String l) {
+            if(usesFallback) fallbackBackend.println(l);
+            else backend.add(l);
+        }
     }
 }

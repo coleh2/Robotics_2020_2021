@@ -14,6 +14,7 @@ import org.firstinspires.ftc.teamcode.managers.ImuManager;
 import org.firstinspires.ftc.teamcode.managers.InputManager;
 import org.firstinspires.ftc.teamcode.managers.ManipulationManager;
 import org.firstinspires.ftc.teamcode.managers.MovementManager;
+import org.firstinspires.ftc.teamcode.managers.TelemetryManager;
 
 
 @TeleOp
@@ -32,8 +33,9 @@ public class TeleopDualControlerControlsOneFlywheel extends OpMode {
     private static boolean toggleSpeed = false;
 
     public void init() {
-        try {
         FeatureManager.isOpModeRunning = true;
+        telemetry = new TelemetryManager(telemetry);
+        try {
         FeatureManager.logger.setBackend(telemetry.log());
 
         driver = new MovementManager(hardwareMap.get(DcMotor.class, "fl"),
