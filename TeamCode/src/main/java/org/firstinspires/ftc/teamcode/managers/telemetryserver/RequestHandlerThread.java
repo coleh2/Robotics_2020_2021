@@ -59,12 +59,13 @@ public class RequestHandlerThread implements Runnable {
                     writer.print(ControlCodes.I_AM_DYING_BUT_I_MAY_BE_BACK_LATER);
                 }
             } else if(path.equals("/")){
+                String file = ServerFiles.indexDotHtml;
                     writer.print("HTTP/1.1 200 OK" + HTTP_LINE_SEPARATOR
-                            //+ "Content-Length: " + (ServerFiles.indexDotHtml.getBytes(StandardCharsets.UTF_8).length * 2) + HTTP_LINE_SEPARATOR
+                            //+ "Content-Length: " + (file.getBytes(StandardCharsets.UTF_8).length) + HTTP_LINE_SEPARATOR
                             + "Content-Type: " + "text/html; charset=utf-8" + HTTP_LINE_SEPARATOR
                             + HTTP_LINE_SEPARATOR
                             + HTTP_LINE_SEPARATOR
-                            + ServerFiles.indexDotHtml);
+                            + file);
             } else {
                 String r = "not found";
                 writer.print("HTTP/1.1 404 NOT FOUND" + HTTP_LINE_SEPARATOR

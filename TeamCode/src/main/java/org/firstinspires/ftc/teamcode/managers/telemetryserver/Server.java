@@ -33,6 +33,12 @@ public class Server {
             if(serverSocket == null) d.addData("dashboard status","Could not reserve TCP port");
             else d.addData("dashboard status", "Go to http://192.168.43.1:" + port);
 
+            try {
+                ServerFiles.loadIndexDotHtml();
+            } catch(Exception e) {
+                FeatureManager.logger.log("Could not load index.html");
+            }
+
             if(!FeatureManager.isOpModeRunning) FeatureManager.logger.log("TELEMETRY SERVER WARNING: FeatureManager.isOpModeRunning has not been set to true. Server will immediately exit.");
         }
         @Override

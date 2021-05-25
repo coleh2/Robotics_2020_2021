@@ -23,6 +23,7 @@ public class TeleopDualControlerControlsOneFlywheel extends OpMode {
     InputManager input;
     MovementManager driver;
     ManipulationManager limbs;
+    TelemetryManager telemetryManagerActuallyThisTime;
     ColorSensor sensor;
     Servo grab;
     ImuManager imu;
@@ -34,7 +35,8 @@ public class TeleopDualControlerControlsOneFlywheel extends OpMode {
 
     public void init() {
         FeatureManager.isOpModeRunning = true;
-        telemetry = new TelemetryManager(telemetry);
+        telemetryManagerActuallyThisTime = new TelemetryManager(telemetry);
+        telemetry = telemetryManagerActuallyThisTime;
         try {
         FeatureManager.logger.setBackend(telemetry.log());
 
@@ -82,6 +84,8 @@ public class TeleopDualControlerControlsOneFlywheel extends OpMode {
                 }
 
         );
+
+            telemetryManagerActuallyThisTime.setGamepads(gamepad1, gamepad2);
 
 
             limbs.getServo("wobbleArmLeft").setDirection(Servo.Direction.REVERSE);
