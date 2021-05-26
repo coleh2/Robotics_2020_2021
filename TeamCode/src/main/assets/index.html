@@ -60,10 +60,7 @@
                     state.lastScrolledToBottom = scrolledToBottom;
                 }
             },
-            "chart.bar": {
-                init: function (parent) { },
-                ondata: function (data, parent) { }
-            },
+
             "chart.line": {
                 init: function (parent, state, config, box) {
                     //use object.assign to avoid mutation of original box
@@ -171,25 +168,153 @@
                     }
                 ]
             },
-            "chart.pie": {
-                init: function (parent) { },
-                ondata: function (data, parent) { }
-            },
+
             "number.single": {
-                init: function (parent) { },
-                ondata: function (data, parent) { }
+                init: function (parent, state) {
+                    state.num = document.createElement("h3");
+                    state.caption = document.createElement("span");
+
+                    parent.appendChild(state.caption);
+                    parent.appendChild(state.num);
+
+                    parent.classList.add("nopadding");
+                    parent.classList.add("nooverflow");
+                    parent.classList.add("center");
+                },
+                ondata: function (data, parent, state, config) {
+                    if (data.fields === undefined) return false;
+
+                    var num = data.fields[config.field];
+
+                    var numRounded = (Math.round(num / config.base10Precision) * config.base10Precision).toString();
+
+                    var greaterPart = numRounded.split(".")[0];
+                    var lesserPart = numRounded.split(".")[1];
+                    //if there's a decimal part...
+                    if (greaterPart != numRounded) {
+                        var decimalPartRoundingLength = (config.base10Precision.toString().split(".")[1] || "").length;
+                        numRounded = greaterPart + "." + lesserPart.substring(0, decimalPartRoundingLength);
+                    }
+
+                    state.num.textContent = numRounded;
+                    state.caption.textContent = config.label;
+                },
+                config: [
+                    {
+                        name: "field",
+                        type: "select",
+                        value: "field"
+                    },
+                    {
+                        name: "label",
+                        type: "text",
+                        default: ""
+                    },
+                    {
+                        name: "base10Precision",
+                        type: "number",
+                        default: 0.001
+                    }
+                ]
             },
-            "number.change": {
-                init: function (parent) { },
-                ondata: function (data, parent) { }
+            "number.delta": {
+                init: function (parent, state) {
+                    state.num = document.createElement("h3");
+                    var deltaParent = document.createElement("span");
+
+                    state.deltaIcon = document.createElement("span");
+                    state.delta = document.createElement("span");
+                    state.caption = document.createElement("span");
+
+                    deltaParent.appendChild(state.deltaIcon);
+                    deltaParent.appendChild(state.delta);
+
+                    parent.appendChild(state.caption);
+                    parent.appendChild(state.num);
+                    parent.appendChild(deltaParent);
+
+                    parent.classList.add("nopadding");
+                    parent.classList.add("nooverflow");
+                    parent.classList.add("center");
+                },
+                ondata: function (data, parent, state, config) {
+                    var num = data.fields[config.field] || 0;
+
+                    if (state.lastNum === undefined) state.lastNum = num;
+
+                    var numRounded = (Math.round(num / config.base10Precision) * config.base10Precision).toString();
+
+                    var greaterPart = numRounded.split(".")[0];
+                    var lesserPart = numRounded.split(".")[1];
+                    //if there's a decimal part...
+                    if (greaterPart != numRounded) {
+                        var decimalPartRoundingLength = (config.base10Precision.toString().split(".")[1] || "").length;
+                        numRounded = greaterPart + "." + lesserPart.substring(0, decimalPartRoundingLength);
+                    }
+
+                    state.num.textContent = numRounded;
+
+                    var deltaPercent = ((num - state.lastNum) / state.lastNum) * 100;
+                    if (deltaPercent > 0) {
+                        state.deltaIcon.textContent = "+";
+                        state.delta.style.color = "var(--data-green)";
+                    } else {
+                        state.deltaIcon.textContent = "";
+                        state.delta.style.color = "var(--data-red)";
+                    }
+                    state.delta.textContent = Math.round(deltaPercent) + "%";
+
+                    state.caption.textContent = config.label;
+
+                    state.lastNum = num;
+                },
+                config: [
+                    {
+                        name: "field",
+                        type: "select",
+                        value: "field"
+                    },
+                    {
+                        name: "label",
+                        type: "text",
+                        default: ""
+                    },
+                    {
+                        name: "base10Precision",
+                        type: "number",
+                        default: 0.001
+                    }
+                ]
             },
-            "string.singleline": {
-                init: function (parent) { },
-                ondata: function (data, parent) { }
-            },
-            "string.long": {
-                init: function (parent) { },
-                ondata: function (data, parent) { }
+            "string.stringfield": {
+                init: function (parent, state) {
+                    state.caption = document.createElement("span");
+                    state.field = document.createElement("p");
+
+                    parent.appendChild(state.caption);
+                    parent.appendChild(state.field);
+
+                    parent.classList.add("nopadding");
+                    parent.classList.add("center");
+                },
+                ondata: function (data, parent, state, config) {
+                    if (data.fields === undefined) return false;
+
+                    state.field.textContent = data.fields[config.field];
+                    state.caption.textContent = config.label;
+                },
+                config: [
+                    {
+                        name: "field",
+                        type: "select",
+                        value: "field"
+                    },
+                    {
+                        name: "label",
+                        type: "text",
+                        default: ""
+                    }
+                ]
             },
             "log.autoscroll": {
                 init: function (parent, state) {
@@ -234,6 +359,10 @@
 
                     parent.appendChild(state.num);
                     parent.appendChild(deltaParent);
+
+                    parent.classList.add("nopadding");
+                    parent.classList.add("nooverflow");
+                    parent.classList.add("center");
                 },
                 ondata: function (data, parent, state) {
                     var connectionLag = Date.now() - data.time;
@@ -243,36 +372,17 @@
                     state.num.textContent = connectionLag + "ms";
 
                     var deltaLag = ((connectionLag - state.lastConnectionLag) / state.lastConnectionLag) * 100;
-                    if (deltaLag > 0) state.deltaIcon.textContent = "+";
-                    else state.deltaIcon.textContent = "";
+                    if (deltaLag > 0) {
+                        state.deltaIcon.textContent = "+";
+                        state.delta.style.color = "var(--data-green)";
+                    } else {
+                        state.deltaIcon.textContent = "";
+                        state.delta.style.color = "var(--data-red)";
+                    }
                     state.delta.textContent = Math.round(deltaLag) + "%";
 
                     state.lastConnectionLag = connectionLag;
                 }
-            },
-            "robot.motors": {
-                init: function (parent) { },
-                ondata: function (data, parent) { }
-            },
-            "robot.motor": {
-                init: function (parent) { },
-                ondata: function (data, parent) { }
-            },
-            "sensor.color": {
-                init: function (parent) { },
-                ondata: function (data, parent) { }
-            },
-            "autoauto.stategraph": {
-                init: function (parent) { },
-                ondata: function (data, parent) { }
-            },
-            "autoauto.variables": {
-                init: function (parent) { },
-                ondata: function (data, parent) { }
-            },
-            "autoauto.currentstate": {
-                init: function (parent) { },
-                ondata: function (data, parent) { }
             },
             "input.gamepad1": {
                 init: function (parent, state) {
@@ -289,22 +399,24 @@
 
                     var buttonElems = svg.querySelectorAll("[data-button]");
 
-                    for(var i = 0; i < buttonElems.length; i++) {
+                    for (var i = 0; i < buttonElems.length; i++) {
                         buttons[buttonElems[i].getAttribute("data-button")] = buttonElems[i];
                     }
 
                     state.buttons = buttons;
 
+                    parent.classList.add("nopadding");
+                    parent.classList.add("nooverflow");
                 },
                 ondata: function (data, parent, state) {
-                    if(data.gamepad1) {
+                    if (data.gamepad1) {
 
                         var entries = Object.entries(state.buttons);
-                        for(var i = 0; i < entries.length; i++) {
-                            if(data.gamepad1[entries[i][0]]) {
-                                entries[i][1].style.fill =  "var(--widget-text-color)";
+                        for (var i = 0; i < entries.length; i++) {
+                            if (data.gamepad1[entries[i][0]]) {
+                                entries[i][1].style.fill = "var(--widget-text-color)";
                             } else {
-                                entries[i][1].style.fill =  "var(--widget-inner-background-color)";
+                                entries[i][1].style.fill = "var(--widget-inner-background-color)";
                             }
 
                         }
@@ -332,7 +444,7 @@
 
                     var buttonElems = svg.querySelectorAll("[data-button]");
 
-                    for(var i = 0; i < buttonElems.length; i++) {
+                    for (var i = 0; i < buttonElems.length; i++) {
                         buttons[buttonElems[i].getAttribute("data-button")] = buttonElems[i];
                     }
 
@@ -340,14 +452,14 @@
 
                 },
                 ondata: function (data, parent, state) {
-                    if(data.gamepad2) {
+                    if (data.gamepad2) {
 
                         var entries = Object.entries(state.buttons);
-                        for(var i = 0; i < entries.length; i++) {
-                            if(data.gamepad2[entries[i][0]]) {
-                                entries[i][1].style.fill =  "var(--widget-text-color)";
+                        for (var i = 0; i < entries.length; i++) {
+                            if (data.gamepad2[entries[i][0]]) {
+                                entries[i][1].style.fill = "var(--widget-text-color)";
                             } else {
-                                entries[i][1].style.fill =  "var(--widget-inner-background-color)";
+                                entries[i][1].style.fill = "var(--widget-inner-background-color)";
                             }
 
                         }
@@ -689,6 +801,11 @@
                         lbl.appendChild(
                             createNumberControl(widgetsReg[id].config, configOption.name, configOption.default)
                         );
+                    } else if (configOption.type == "text") {
+
+                        lbl.appendChild(
+                            createTextControl(widgetsReg[id].config, configOption.name, configOption.default)
+                        );
                     }
 
                     sidebar.appendChild(lbl);
@@ -727,6 +844,19 @@
             return input;
         }
 
+        function createTextControl(config, key, defaultValue) {
+            if (config[key] === undefined) {
+                config[key] = defaultValue || "";
+            }
+            var input = document.createElement("input");
+            input.value = config[key];
+            input.addEventListener("change", function () {
+                config[key] = input.value;
+            });
+
+            return input;
+        }
+
         function startDataRequest() {
             var xhr = new XMLHttpRequest();
 
@@ -743,7 +873,7 @@
 
                 var validChunkGlob = "";
                 //must be a valid chunk!!
-                if(currentChunkGlob.indexOf("\n") != -1) {
+                if (currentChunkGlob.indexOf("\n") != -1) {
                     validChunkGlob = currentChunkGlob.substring(0, currentChunkGlob.lastIndexOf("\n"));
                     currentChunkGlob = currentChunkGlob.substring(currentChunkGlob.lastIndexOf("\n"));
                 } else {
@@ -751,6 +881,7 @@
                 }
 
                 var streamChunks = validChunkGlob.split("\n");
+
                 for (var i = 0; i < streamChunks.length; i++) {
                     if (streamChunks[i].startsWith("{")) processData(streamChunks[i]);
                     //else console.log("Control code: " + streamChunks[i]);
@@ -804,8 +935,6 @@
 
             var range = max - min;
 
-            console.log(range, datapoints);
-
             var path = "";
 
             for (var i = 0; i < datapoints.length; i++) {
@@ -856,6 +985,7 @@
             --widget-settings-color: #0092CC;
             --sidebar-lightbox: #1B1D22cc;
             --data-green: #10BC8B;
+            --data-red: #e72f2f;
             --graph-label: #3E4247;
         }
 
@@ -869,6 +999,7 @@
             --widget-settings-color: #0075A3;
             --sidebar-lightbox: #98A0AEcc;
             --data-green: #007a58;
+            --data-red: #a50909;
             --graph-label: #a8a8a8;
         }
 
@@ -1008,6 +1139,14 @@
             color: var(--widget-text-color);
             overflow: auto;
             padding: 0.5em;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .widget--content h3 {
+            font-size: 2em;
+            margin-top: 0;
+            margin-bottom: 0.125em;
         }
 
         .widget--content.nopadding {
@@ -1020,6 +1159,18 @@
 
         .widget--content pre {
             margin: 0;
+        }
+
+        .widget--content.center p {
+            font-weight: bold;
+            word-wrap: break-word;
+            max-width: 100%;
+        }
+
+        .widget--content.center {
+            align-items: center;
+            justify-content: center;
+            text-align: center;
         }
 
         #config-sidebar {
@@ -1075,6 +1226,10 @@
             flex-grow: 1;
         }
 
+        .sidebar--config-fields label {
+            display: block;
+        }
+
         .sidebar--config-fields.no-settings {
             background: var(--widget-background-color);
         }
@@ -1111,8 +1266,9 @@
         #line-graph-fill-gradient-color {
             stop-color: var(--data-green);
         }
-        .st1{
-            fill:var(--widget-text-color);
+
+        .st1 {
+            fill: var(--widget-text-color);
         }
     </style>
 </head>
