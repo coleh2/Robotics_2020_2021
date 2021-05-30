@@ -1,10 +1,14 @@
 package org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.robotfunctions;
 
-import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.Function;
+import org.firstinspires.ftc.teamcode.auxilary.PaulMath;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values.AutoautoPrimitive;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values.AutoautoUndefined;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values.AutoautoValue;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values.NumericValue;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.NativeRobotFunction;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
-import org.firstinspires.ftc.teamcode.managers.MovementManager;
 
-public class SetTargetPositionsFunction extends Function {
+public class SetTargetPositionsFunction extends NativeRobotFunction {
     public String name = "setTargetPositions";
     public int argCount = 4;
     public Class<?> declaringClass = org.firstinspires.ftc.teamcode.managers.MovementManager.class;
@@ -15,8 +19,9 @@ public class SetTargetPositionsFunction extends Function {
         this.manager = (org.firstinspires.ftc.teamcode.managers.MovementManager)manager;
     }
 
-    public float[] call(float[][] args) {
-        manager.setTargetPositions((int)args[0][0], (int)args[1][0], (int)args[2][0], (int)args[3][0]);
-        return new float[0];
+    public AutoautoPrimitive call(AutoautoPrimitive[] args) {
+        manager.setTargetPositions((int)((NumericValue)args[0]).getFloat(), (int)((NumericValue)args[1]).getFloat(), (int)((NumericValue)args[2]).getFloat(),
+                (int)((NumericValue)args[3]).getFloat());
+        return new AutoautoUndefined();
     }
 }

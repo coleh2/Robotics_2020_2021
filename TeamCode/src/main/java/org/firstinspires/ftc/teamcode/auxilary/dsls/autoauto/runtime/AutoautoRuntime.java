@@ -7,21 +7,19 @@ import org.firstinspires.ftc.teamcode.managers.MovementManager;
 import org.firstinspires.ftc.teamcode.managers.SensorManager;
 
 public class AutoautoRuntime {
-    public VariableStore variables;
-    public FunctionStore functions;
+    public AutoautoRuntimeVariableScope globalScope;
     public AutoautoProgram program;
 
     public AutoautoRuntime(AutoautoProgram program, MovementManager drive, ManipulationManager manip, SensorManager sense, ImuManager imu) {
-        this.variables = new VariableStore();
-        this.functions = new FunctionStore();
+        this.globalScope = new AutoautoRuntimeVariableScope();
 
         this.program = program;
-        this.program.autoautoRuntime = this;
+        this.program.setScope(globalScope);
 
-        Function[] builtInFunctions = RobotFunctionLoader.loadFunctions(drive, manip, sense, imu);
-        RobotFunctionLoader.addFunctionsToStore(builtInFunctions, functions);
+        NativeRobotFunction[] builtInFunctions = RobotFunctionLoader.loadFunctions(drive, manip, sense, imu);
+        RobotFunctionLoader.addFunctionsToStore(builtInFunctions, globalScope);
 
-        ManagerDeviceScanner.scan(variables, manip, sense);
+        ManagerDeviceScanner.scan(globalScope, manip, sense);
 
         this.program.init();
         this.program.stepInit();

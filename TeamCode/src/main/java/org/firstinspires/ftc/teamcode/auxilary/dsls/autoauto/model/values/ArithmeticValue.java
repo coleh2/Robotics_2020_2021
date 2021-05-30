@@ -1,156 +1,113 @@
 package org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values;
 
-import org.firstinspires.ftc.teamcode.auxilary.dsls.ParserTools;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.Location;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.AutoautoRuntimeVariableScope;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 import org.jetbrains.annotations.NotNull;
-import org.xml.sax.Parser;
 
 import java.util.Arrays;
 
-public class ArithmeticValue extends Value {
+public class ArithmeticValue extends AutoautoValue {
     String operator;
-    Value right;
-    Value left;
+    AutoautoValue right;
+    AutoautoValue left;
 
-    //TODO: parsing!!
-    public ArithmeticValue(Value left, String operator, Value right) {
+    AutoautoPrimitive returnValue;
+
+    private AutoautoRuntimeVariableScope scope;
+    private Location location;
+
+    public ArithmeticValue(AutoautoValue left, String operator, AutoautoValue right) {
         this.left = left;
         this.operator = operator;
         this.right = right;
     }
-
-    public ArithmeticValue(String src) {
-        src = ParserTools.wrapLiteralsWithParens(src);
-
-        int additionIndex = ParserTools.groupAwareIndexOf(src, '+');
-        int subtractionIndex = ParserTools.groupAwareIndexOf(src, '-');
-
-        //lowest index that isn't -1
-        int asGemdasIndex = Math.min(
-                additionIndex < 0 ? subtractionIndex : additionIndex,
-                subtractionIndex < 0 ? additionIndex : subtractionIndex);
-
-        if(asGemdasIndex > -1) {
-            this.left = Value.createProperValueType(src.substring(0, asGemdasIndex));
-            this.operator = "" + src.charAt(asGemdasIndex);
-            this.right = Value.createProperValueType(src.substring(asGemdasIndex + 1));
-            return;
-        }
-
-        int multiplicationIndex = ParserTools.groupAwareIndexOf(src, '*');
-        int divisionIndex = ParserTools.groupAwareIndexOf(src, '/');
-
-        //lowest index that isn't -1
-        int mdGemdasIndex = Math.min(
-                multiplicationIndex < 0 ? divisionIndex : multiplicationIndex,
-                divisionIndex < 0 ? multiplicationIndex : divisionIndex);
-
-        if(mdGemdasIndex > -1) {
-            this.left = Value.createProperValueType(src.substring(0, mdGemdasIndex));
-            this.operator = "" + src.charAt(mdGemdasIndex);
-            this.right = Value.createProperValueType(src.substring(mdGemdasIndex + 1));
-            return;
-        }
-
-        int exponentIndex = ParserTools.groupAwareIndexOf(src, '^');
-        if(exponentIndex > -1) {
-            this.left = Value.createProperValueType(src.substring(0, exponentIndex));
-            this.operator = "^";
-            this.right = Value.createProperValueType(src.substring(exponentIndex + 1));
-            return;
-        }
-
-        int moduloIndex = ParserTools.groupAwareIndexOf(src, '%');
-        if(moduloIndex > -1) {
-            this.left = Value.createProperValueType(src.substring(0, moduloIndex));
-            this.operator = "%";
-            this.right = Value.createProperValueType(src.substring(moduloIndex + 1));
-            return;
-        }
-
-        //fallback
-        this.left = Value.createProperValueType(src, true);
-        this.operator = "+";
-        this.right = Value.createProperValueType("0");
-    }
-
     @Override
     public void init() {
-        if(left != null) {
-            left.setRuntimeReferences(this.runtimeFunctionStore, this.runtimeVariableStore);
-            left.init();
-        }
-
-        if(right != null) {
-            right.setRuntimeReferences(this.runtimeFunctionStore, this.runtimeVariableStore);
-            right.init();
-        }
+        left.init();
+        right.init();
     }
 
     public void loop() {
         left.loop();
         right.loop();
 
-        if(
-            (left.getReturnValue().length >= 2 && left.getReturnValue()[0] == '"' && left.getReturnValue()[left.getReturnValue().length - 1] == '"') ||
-            (right.getReturnValue().length >= 2 && right.getReturnValue()[0] == '"' && right.getReturnValue()[right.getReturnValue().length - 1] == '"')
-            ) {
-            if(operator.equals("+")) concatenate(left, right);
+        AutoautoValue leftRes = left.getResolvedValue();
+        AutoautoValue rightRes = right.getResolvedValue();
+
+        if(leftRes instanceof AutoautoString || rightRes instanceof AutoautoString) {
+            if(operator.equals("+")) concatenate((AutoautoString)left, (AutoautoString)right);
             else FeatureManager.logger.log("[AUTOAUTO ERROR] Bad operator " + operator + "on string value.");
 
             return;
         }
 
+        float a = ((NumericValue)leftRes).getFloat();
+        float b = ((NumericValue)rightRes).getFloat();
+
         switch(operator) {
             case "%":
-                this.returnValue = new float[] { left.getReturnValue()[0] % right.getReturnValue()[0] };
+                this.returnValue = new NumericValue(a % b);
                 break;
             case "^":
-                this.returnValue = new float[] { (float)Math.pow(left.getReturnValue()[0], right.getReturnValue()[0]) };
+                this.returnValue = new NumericValue((float) Math.pow(a, b));
                 break;
             case "*":
-                this.returnValue = new float[] { left.getReturnValue()[0] * right.getReturnValue()[0] };
+                this.returnValue = new NumericValue(a * b);
                 break;
             case "/":
-                this.returnValue = new float[] { left.getReturnValue()[0] / right.getReturnValue()[0] };
+                this.returnValue = new NumericValue(a / b);
                 break;
             case "+":
-                this.returnValue = new float[] { left.getReturnValue()[0] + right.getReturnValue()[0] };
+                this.returnValue = new NumericValue(a + b);
                 break;
             case "-":
-                this.returnValue = new float[] { left.getReturnValue()[0] - right.getReturnValue()[0] };
+                this.returnValue = new NumericValue(a - b);
                 break;
             default:
-                this.returnValue = left.getReturnValue();
+                this.returnValue = new NumericValue(a);
                 break;
         }
-
     }
 
-    private void concatenate(Value a, Value b) {
-        String aStr = "";
-        String bStr = "";
+    @Override
+    public String getString() {
+        return returnValue.getString();
+    }
 
-        if(StringLiteral.isStringCode(a.getReturnValue())) aStr = StringLiteral.codesToString(a.getReturnValue());
-        else if(a instanceof UnitValue) aStr += a.toString();
-        else if(a.getReturnValue().length == 1) aStr = a.getReturnValue()[0] + "";
-        else aStr += Arrays.toString(a.getReturnValue());
-
-        if(StringLiteral.isStringCode(b.getReturnValue())) bStr = StringLiteral.codesToString(b.getReturnValue());
-        else if(b instanceof UnitValue) bStr += b.toString();
-        else if(b.getReturnValue().length == 1) bStr = b.getReturnValue()[0] + "";
-        else bStr += Arrays.toString(b.getReturnValue());
-
-        this.returnValue = (new StringLiteral("\"" + aStr + bStr + "\"")).getReturnValue();
+    private void concatenate(AutoautoString a, AutoautoString b) {
+        this.returnValue = new AutoautoString(a.getString() + b.getString());
     }
 
     @NotNull
     public String toString() {
-        return "(" + (left == null ? "<null>" : left.toString()) + ")" + operator + "(" + (right == null ? "<null>" : right.toString()) + ")";
+        return left + " " + operator + " " + right;
     }
 
     @Override
-    public float[] getReturnValue() {
+    public AutoautoPrimitive getResolvedValue() {
         return this.returnValue;
+    }
+
+    @Override
+    public AutoautoRuntimeVariableScope getScope() {
+        return scope;
+    }
+
+    @Override
+    public void setScope(AutoautoRuntimeVariableScope scope) {
+        this.scope = scope;
+        left.setScope(scope);
+        right.setScope(scope);
+    }
+
+    @Override
+    public Location getLocation() {
+        return location;
+    }
+
+    @Override
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }

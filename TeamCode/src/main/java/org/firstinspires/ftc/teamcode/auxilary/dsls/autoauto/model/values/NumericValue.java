@@ -1,24 +1,50 @@
 package org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values;
 
-import org.firstinspires.ftc.teamcode.managers.FeatureManager;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.AutoautoProgramElement;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.Location;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.AutoautoRuntimeVariableScope;
 
-import java.util.Arrays;
+public class NumericValue extends AutoautoPrimitive {
+    public float value;
 
-public class NumericValue extends Value {
-    public float[] returnValue;
+    private Location location;
+    private AutoautoRuntimeVariableScope scope;
+
     public NumericValue(float value) {
-        this.returnValue = new float[] { value };
-    }
-    public NumericValue(String value) {
-        this.returnValue = new float[] { Float.parseFloat(value) };
+        this.value = value;
     }
     public void loop() {}
 
-    @Override
-    public float[] getReturnValue() {
-        return this.returnValue;
+    public float getFloat() {
+        return value;
     }
+
     public String toString() {
-        return this.returnValue[0] + "";
+        return this.value + "";
+    }
+
+    @Override
+    public AutoautoRuntimeVariableScope getScope() {
+        return scope;
+    }
+
+    @Override
+    public void setScope(AutoautoRuntimeVariableScope scope) {
+        this.scope = scope;
+    }
+
+    @Override
+    public Location getLocation() {
+        return location;
+    }
+
+    @Override
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    @Override
+    public String getString() {
+        return value + "";
     }
 }

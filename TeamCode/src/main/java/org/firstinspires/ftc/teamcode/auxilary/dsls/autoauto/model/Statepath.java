@@ -1,56 +1,58 @@
 package org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model;
 
 import org.firstinspires.ftc.teamcode.auxilary.dsls.ParserTools;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values.NumericValue;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.AutoautoRuntimeVariableScope;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.AutoautoSystemVariableNames;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-public class Statepath {
+public class Statepath implements AutoautoProgramElement {
     public State[] states;
-    public int currentState;
     private int oldCurrentState;
+
+    Location location;
+    AutoautoRuntimeVariableScope scope;
 
     public String name;
     public AutoautoProgram program;
 
-    public void setProgram(AutoautoProgram p) {
-        this.program = p;
-        for(State s : states) s.setProgram(p);
-    }
-
     public Statepath(State[] states, String name) {
         this.states = states;
-        this.currentState = 0;
         this.oldCurrentState = -1;
         this.name = name;
-
-        for(State s : states) s.setStatepath(this);
     }
 
-    public Statepath(String src, AutoautoProgram program, String name) {
-        this.currentState = 0;
-        this.oldCurrentState = -1;
-        this.program = program;
-        this.name = name;
+    @Override
+    public AutoautoRuntimeVariableScope getScope() {
+        return scope;
+    }
 
-        String[] stateSources = ParserTools.groupAwareSplit(src, ';');
+    @Override
+    public void setScope(AutoautoRuntimeVariableScope scope) {
+        this.scope = scope;
+        for(State s : states) s.setScope(scope);
+    }
 
-        this.states = new State[stateSources.length];
+    @Override
+    public Location getLocation() {
+        return location;
+    }
 
-        for(int i = stateSources.length - 1; i >= 0; i--) {
-            String tr = stateSources[i].trim();
-            if(tr.equals("")) {
-                FeatureManager.logger.log("[AUTOAUTO ERROR] Empty state in statepath `" + name + "`! Defaulting to `next`");
-                this.states[i] = new State("next", program, this);
-                continue;
-            }
-            states[i] = new State(tr, program, this);
-        }
+    @Override
+    public void setLocation(Location location) {
+        this.location = location;
+
+        Location childLocation = location.clone();
+        childLocation.statepath = this.name;
+        for(State s : states) s.setLocation(childLocation);
     }
 
     public void init() {
         for(State s : this.states) s.init();
+        this.scope.systemSet(AutoautoSystemVariableNames.STATE_COUNT_OF_PREFIX + name, new NumericValue(this.states.length));
     }
 
     public void stepInit() {
@@ -58,13 +60,15 @@ public class Statepath {
     }
 
     public void loop() {
+        int currentState = (int)((NumericValue)(scope.get(AutoautoSystemVariableNames.STATE_NUMBER))).getFloat();
+
         //if steps have changed, init the new one
-        if(this.currentState != this.oldCurrentState) {
-            this.states[this.currentState].stepInit();
-            this.oldCurrentState = this.currentState;
+        if(currentState != this.oldCurrentState) {
+            this.states[currentState].stepInit();
+            this.oldCurrentState = currentState;
         }
 
-        this.states[this.currentState].loop();
+        this.states[currentState].loop();
     }
 
     @NotNull

@@ -1,22 +1,22 @@
 package org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.statements;
 
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.AutoautoProgram;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.Location;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.State;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.Statepath;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values.FunctionCall;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.AutoautoRuntimeVariableScope;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 import org.jetbrains.annotations.NotNull;
 
 public class FunctionCallStatement extends Statement {
     public FunctionCall function;
 
+    AutoautoRuntimeVariableScope scope;
+    Location location;
+
     public FunctionCallStatement(FunctionCall f) {
         this.function = f;
-    }
-
-    public FunctionCallStatement(String src, AutoautoProgram program, Statepath statepath, State state) {
-        super(program, statepath, state);
-        this.function = new FunctionCall(src);
     }
 
     @NotNull
@@ -30,11 +30,31 @@ public class FunctionCallStatement extends Statement {
 
     @Override
     public void init() {
-        this.function.setRuntimeReferences(this.program.autoautoRuntime.functions, this.program.autoautoRuntime.variables);
         this.function.init();
     }
 
     @Override
     public void stepInit() {
+    }
+
+    @Override
+    public AutoautoRuntimeVariableScope getScope() {
+        return scope;
+    }
+
+    @Override
+    public void setScope(AutoautoRuntimeVariableScope scope) {
+        this.scope = scope;
+        function.setScope(scope);
+    }
+
+    @Override
+    public Location getLocation() {
+        return location;
+    }
+
+    @Override
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }

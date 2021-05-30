@@ -17,6 +17,7 @@ import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.AutoautoRun
 import org.firstinspires.ftc.teamcode.managers.*;
 import org.junit.Test;
 import org.firstinspires.ftc.teamcode.unitTests.dummy.DummyHardwareMap;
+import static org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.Location.L;
 
 import java.util.HashMap;
 
@@ -30,7 +31,8 @@ public class template extends OpMode {
     AutoautoRuntime runtime;
     public void init() {
         FeatureManager.isOpModeRunning = true;
-        telemetry = new TelemetryManager(telemetry);
+        TelemetryManager telemetryManager = new TelemetryManager(telemetry);
+        telemetry = telemetryManager;
         
         if(this.internalOpModeServices!=null) FeatureManager.logger.setBackend(telemetry.log());
 
@@ -78,13 +80,16 @@ public class template extends OpMode {
             imu = new ImuManager(hardwareMap.get(com.qualcomm.hardware.bosch.BNO055IMU.class, "imu"));
 
         limbs.getServo("wobbleGrabRight").setDirection(Servo.Direction.REVERSE);
+        StringBuilder programJson = new StringBuilder();
+
+
 /*JAVA_CREATION_CODE*/
+        AutoautoProgram.fileName = "/*SOURCE_FILE_NAME*/";
+        telemetryManager.autoauto.setProgramJson(programJson.toString());
     }
 
     public void loop() {
         telemetry.addData("Autoauto Build Name", "/*BUILD_NAME*/");
-        telemetry.addData("Statepath", runtime.program.currentPathName);
-        telemetry.addData("State", runtime.program.currentPath.currentState);
         runtime.loop();
     }
 
@@ -93,7 +98,9 @@ public class template extends OpMode {
         this.hardwareMap = new DummyHardwareMap();
         this.init();
         FeatureManager.logger.log(runtime.program.toString());
-        for(int i = 0; /*TESTITERATIONSCOMPARISON*/; i++) this.loop();
+        final int TEST_ITERATIONS = Integer.parseInt("/*TEST_ITERATIONS*/");
+        for(int i = 0; i < TEST_ITERATIONS; i++) this.loop();
+        this.stop();
     }
 
     @Override

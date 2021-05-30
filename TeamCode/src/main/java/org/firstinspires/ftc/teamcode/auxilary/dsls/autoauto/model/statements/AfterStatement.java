@@ -1,46 +1,30 @@
 package org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.statements;
 
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.AutoautoProgram;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.Location;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.State;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.Statepath;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values.AutoautoCallableValue;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values.AutoautoPrimitive;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values.AutoautoValue;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values.NumericValue;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values.UnitValue;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.AutoautoRuntimeVariableScope;
 import org.jetbrains.annotations.NotNull;
 
 public class AfterStatement extends Statement {
     UnitValue wait;
     Statement action;
 
+    Location location;
+    AutoautoRuntimeVariableScope scope;
+
     private long stepStartTime = 0;
     private int stepStartTick;
-
-    public void setProgram(AutoautoProgram program) {
-        super.setProgram(program);
-        action.setProgram(program);
-    }
-
-    public void setStatepath(Statepath statepath) {
-        super.setStatepath(statepath);
-        action.setStatepath(statepath);
-    }
-
-    public void setState(State state) {
-        super.setState(state);
-        action.setState(state);
-    }
 
     public AfterStatement(UnitValue wait, Statement action) {
         this.wait = wait;
         this.action = action;
-    }
-
-    public AfterStatement(String src, AutoautoProgram program, Statepath statepath, State state) {
-        super(program, statepath, state);
-        src = src.substring("after ".length());
-
-        int afterTimeUnit = src.indexOf(' ');
-
-        this.wait = new UnitValue(src.substring(0, afterTimeUnit));
-        this.action = Statement.createProperStatementType(src.substring(afterTimeUnit + 1), program, statepath, state);
     }
 
     @NotNull
@@ -51,15 +35,20 @@ public class AfterStatement extends Statement {
     @Override
     public void init() {
         action.init();
-
-        wait.setRuntimeReferences(program.autoautoRuntime.functions, program.autoautoRuntime.variables);
         wait.init();
     }
 
     @Override
     public void stepInit() {
         this.stepStartTime = System.currentTimeMillis();
-        this.stepStartTick = (int)program.autoautoRuntime.functions.get("getTicks", 0).call(new float[0][0])[0];
+
+        if(wait.unit.equals("ticks") || wait.unit.equals("hticks") || wait.unit.equals("vticks")) {
+            AutoautoCallableValue getTicks = (AutoautoCallableValue) scope.get(
+                    wait.unit.equals("ticks") ? "getTicks" :
+                            wait.unit.equals("hticks") ? "getHorizontalTicks" :
+                                    wait.unit.equals("vticks") ? "getVerticalTicks" : "");
+            this.stepStartTick = (int)((NumericValue)getTicks.call(new AutoautoPrimitive[0])).getFloat();
+        }
     }
 
     public void loop() {
@@ -68,13 +57,37 @@ public class AfterStatement extends Statement {
         } else if(wait.unitType == UnitValue.UnitType.DISTANCE) {
             int tarTicks = (int) wait.baseAmount;
             int ticksReferPoint = stepStartTick;
-            int cTicks = (int)program.autoautoRuntime.functions.get(
+            AutoautoCallableValue cTicksFunction =  (AutoautoCallableValue)scope.get(
                 wait.unit.equals("ticks") ? "getTicks" :
                     wait.unit.equals("hticks") ? "getHorizontalTicks" :
-                        wait.unit.equals("vticks") ? "getVerticalTicks" : "ERROR BAD BAD UNIT"
-                , 0).call(new float[0][0])[0];
+                        wait.unit.equals("vticks") ? "getVerticalTicks" : "ERROR BAD BAD UNIT");
+
+            int cTicks = (int)((NumericValue)cTicksFunction.call(new AutoautoPrimitive[0])).getFloat();
+
             
             if(Math.abs(cTicks - ticksReferPoint) >= Math.abs(tarTicks)) action.loop();
         }
+    }
+
+    @Override
+    public AutoautoRuntimeVariableScope getScope() {
+        return scope;
+    }
+
+    @Override
+    public void setScope(AutoautoRuntimeVariableScope scope) {
+        this.scope = scope;
+        action.setScope(scope);
+        wait.setScope(scope);
+    }
+
+    @Override
+    public Location getLocation() {
+        return location;
+    }
+
+    @Override
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }

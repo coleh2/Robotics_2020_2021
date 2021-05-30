@@ -1,21 +1,24 @@
 package org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values;
 
-import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.statements.Statement;
-import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.Function;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.Location;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.AutoautoRuntimeVariableScope;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 
 enum Type {LESS_THAN, LESS_EQUAL_THAN, EQUAL, GREATER_THAN, GREATER_EQUAL_THAN, NOT_EQUAL, FUNC_CALL, HUH}
 
-public class BooleanOperator extends Value {
+public class BooleanOperator extends AutoautoValue {
 
     Type type;
 
-    Value a;
-    Value b;
+    AutoautoValue a;
+    AutoautoValue b;
 
-    FunctionCall function;
+    BooleanValue resolvedValue;
 
-    public BooleanOperator(Value a, Value b, String operator) {
+    private AutoautoRuntimeVariableScope scope;
+    private Location location;
+
+    public BooleanOperator(AutoautoValue a, AutoautoValue b, String operator) {
         this.a = a;
         this.b = b;
         switch (operator) {
@@ -27,104 +30,106 @@ public class BooleanOperator extends Value {
             case "!=": this.type = Type.NOT_EQUAL; break;
         }
     }
-
-    public BooleanOperator(String src) {
-        int lteIndex = src.indexOf("<=");
-        int gteIndex = src.indexOf(">=");
-
-        int gtIndex = -1, ltIndex = -1;
-        if(lteIndex < 0 && gteIndex < 0) {
-            gtIndex = src.indexOf(">");
-            ltIndex = src.indexOf("<");
-        }
-
-        int eqIndex = src.indexOf("==");
-        int neqIndex = src.indexOf("!=");
-
-        int operatorIndex = lteIndex >= 0 ? lteIndex :
-                            gteIndex >= 0 ? gteIndex :
-                            gtIndex  >= 0 ? gtIndex  :
-                            ltIndex  >= 0 ? ltIndex  :
-                            eqIndex  >= 0 ? eqIndex  :
-                            neqIndex >= 0 ? neqIndex :
-                            -1;
-
-        if(operatorIndex == -1) {
-            FeatureManager.logger.log("[AUTOAUTO INFO] Boolean operator falling back to boolean function `" + src + "`");
-            this.type = Type.FUNC_CALL;
-            this.function = new FunctionCall(src);
-            return;
-        }
-
-        this.type = lteIndex >= 0 ? Type.LESS_EQUAL_THAN :
-                    gteIndex >= 0 ? Type.GREATER_EQUAL_THAN :
-                    gtIndex  >= 0 ? Type.GREATER_THAN  :
-                    ltIndex  >= 0 ? Type.LESS_THAN  :
-                    eqIndex  >= 0 ? Type.EQUAL  :
-                    neqIndex >= 0 ? Type.NOT_EQUAL :
-                    Type.HUH;
-
-        int operatorEndIndex = operatorIndex;
-        if(src.charAt(operatorEndIndex + 1) == '=') operatorEndIndex++;
-
-        this.a = Value.createProperValueType(src.substring(0, operatorIndex));
-        this.b = Value.createProperValueType(src.substring(operatorEndIndex + 1));
+    @Override
+    public AutoautoPrimitive getResolvedValue() {
+        return resolvedValue;
     }
 
-    @Override
-    public float[] getReturnValue() {
-        return this.returnValue;
+    public boolean getBoolean() {
+        return resolvedValue.getBoolean();
     }
 
     public void init() {
-        a.setRuntimeReferences(runtimeFunctionStore, runtimeVariableStore);
         a.init();
-        b.setRuntimeReferences(runtimeFunctionStore, runtimeVariableStore);
         b.init();
     }
 
     public void loop() {
-        if(this.type == Type.FUNC_CALL) {
-            this.function.loop();
-            if(this.function.returnValue[0] > 0) this.returnValue = new float[] {1};
-            else this.returnValue = new float[] {0};
-            return;
-        }
         a.loop();
         b.loop();
-        switch(type) {
-            case EQUAL:
-                if(a.getReturnValue()[0] == b.getReturnValue()[0]) this.returnValue = new float[] {1};
-                else this.returnValue = new float[] {0};
-            break;
-            case NOT_EQUAL:
-                if(a.getReturnValue()[0] != b.getReturnValue()[0]) this.returnValue = new float[] {1};
-                else this.returnValue = new float[] {0};
-            break;
-            case LESS_THAN:
-                    FeatureManager.logger.log(a.getReturnValue().length);
-                    if(a.getReturnValue()[0] < b.getReturnValue()[0]) this.returnValue = new float[] {1};
-                    else this.returnValue = new float[] {0};
-            break;
-            case GREATER_THAN:
-                if(a.getReturnValue()[0] > b.getReturnValue()[0]) this.returnValue = new float[] {1};
-                else this.returnValue = new float[] {0};
-            break;
-            case LESS_EQUAL_THAN:
-                if(a.getReturnValue()[0] <= b.getReturnValue()[0]) this.returnValue = new float[] {1};
-                else this.returnValue = new float[] {0};
-            break;
-            case GREATER_EQUAL_THAN:
-                if(a.getReturnValue()[0] >= b.getReturnValue()[0]) this.returnValue = new float[] {1};
-                else this.returnValue = new float[] {0};
-            break;
-            default:
-                this.returnValue = new float[] {0};
+
+        AutoautoValue aRes = a.getResolvedValue();
+        AutoautoValue bRes = b.getResolvedValue();
+
+        //string comparison
+        if(aRes instanceof AutoautoString || bRes instanceof AutoautoString) {
+            String a = null;
+            if (aRes instanceof AutoautoString) a = ((AutoautoString) aRes).getString();
+            else if (aRes instanceof NumericValue) a = ((NumericValue) aRes).getFloat() + "";
+            else if (aRes instanceof BooleanValue) a = ((BooleanValue) aRes).getBoolean() + "";
+
+            String b = null;
+            if (bRes instanceof AutoautoString) b = ((AutoautoString) bRes).getString();
+            else if (bRes instanceof NumericValue) b = ((NumericValue) bRes).getFloat() + "";
+            else if (bRes instanceof BooleanValue) b = ((BooleanValue) bRes).getBoolean() + "";
+
+            boolean equal = a.equals(b);
+
+            if (type.equals(Type.EQUAL)) resolvedValue = new BooleanValue(equal);
+            else if (type.equals(Type.NOT_EQUAL)) resolvedValue = new BooleanValue(!equal);
+            else if (type.equals(Type.GREATER_EQUAL_THAN)) resolvedValue = new BooleanValue(a.compareTo(b) >= 0);
+            else if (type.equals(Type.GREATER_THAN)) resolvedValue = new BooleanValue(a.compareTo(b) > 0);
+            else if (type.equals(Type.LESS_EQUAL_THAN)) resolvedValue = new BooleanValue(a.compareTo(b) <= 0);
+            else if (type.equals(Type.LESS_THAN)) resolvedValue = new BooleanValue(a.compareTo(b) < 0);
+        } else if(aRes instanceof NumericValue || bRes instanceof NumericValue) {
+            //if it's not a string, numeric...
+            float a = 0;
+            if(aRes instanceof NumericValue) a = ((NumericValue) aRes).getFloat();
+            else if (aRes instanceof BooleanValue) a = ((BooleanValue) aRes).getBoolean() ? 1f : 0f;
+
+            float b = 0;
+            if(bRes instanceof NumericValue) b = ((NumericValue) bRes).getFloat();
+            else if (bRes instanceof BooleanValue) b = ((BooleanValue) bRes).getBoolean() ? 1f : 0f;
+
+            if (type.equals(Type.EQUAL)) resolvedValue = new BooleanValue(a == b);
+            else if (type.equals(Type.NOT_EQUAL)) resolvedValue = new BooleanValue(a != b);
+            else if (type.equals(Type.GREATER_EQUAL_THAN)) resolvedValue = new BooleanValue(a >= b);
+            else if (type.equals(Type.GREATER_THAN)) resolvedValue = new BooleanValue(a > b);
+            else if (type.equals(Type.LESS_EQUAL_THAN)) resolvedValue = new BooleanValue(a <= b);
+            else if (type.equals(Type.LESS_THAN)) resolvedValue = new BooleanValue(a < b);
+        } else if(aRes instanceof BooleanValue || bRes instanceof BooleanValue) {
+            //booleans are the lowest in the implicit casting cascade
+            int a = ((BooleanValue) aRes).getBoolean() ? 1 : 0;
+
+            int b = ((BooleanValue) bRes).getBoolean() ? 1 : 0;
+
+            if (type.equals(Type.EQUAL)) resolvedValue = new BooleanValue(a == b);
+            else if (type.equals(Type.NOT_EQUAL)) resolvedValue = new BooleanValue(a != b);
+            else if (type.equals(Type.GREATER_EQUAL_THAN)) resolvedValue = new BooleanValue(a >= b);
+            else if (type.equals(Type.GREATER_THAN)) resolvedValue = new BooleanValue(a > b);
+            else if (type.equals(Type.LESS_EQUAL_THAN)) resolvedValue = new BooleanValue(a <= b);
+            else if (type.equals(Type.LESS_THAN)) resolvedValue = new BooleanValue(a < b);
         }
     }
 
+    @Override
+    public String getString() {
+        return resolvedValue.getString();
+    }
+
     public String toString() {
-        if(this.type == Type.FUNC_CALL) return this.function.toString();
-        else return this.a.toString() + " " + this.type.name() + " " + this.b.toString();
+        return this.a.toString() + " " + this.type.name() + " " + this.b.toString();
+    }
+
+    @Override
+    public AutoautoRuntimeVariableScope getScope() {
+        return this.scope;
+    }
+
+    @Override
+    public void setScope(AutoautoRuntimeVariableScope scope) {
+        this.scope = scope;
+        a.setScope(scope);
+        b.setScope(scope);
+    }
+
+    @Override
+    public Location getLocation() {
+        return location;
+    }
+
+    @Override
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }

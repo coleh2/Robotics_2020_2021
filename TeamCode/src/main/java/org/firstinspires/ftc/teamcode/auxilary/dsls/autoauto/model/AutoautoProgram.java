@@ -1,7 +1,11 @@
 package org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model;
 
 import org.firstinspires.ftc.teamcode.auxilary.dsls.ParserTools;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values.AutoautoString;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values.NumericValue;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.AutoautoRuntime;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.AutoautoRuntimeVariableScope;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.AutoautoSystemVariableNames;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 import org.jetbrains.annotations.NotNull;
 
@@ -9,72 +13,49 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AutoautoProgram {
+public class AutoautoProgram implements AutoautoProgramElement {
+    public static String fileName;
+    private String initialPathName;
+    private String oldPathName;
     public HashMap<String, Statepath> paths;
     public Statepath currentPath;
-    public String currentPathName;
-    int currentPathIndex;
 
-    public AutoautoRuntime autoautoRuntime;
+    AutoautoRuntimeVariableScope scope;
+    Location location;
 
-    public void setCurrentPath(String newPath) {
-        if(!paths.containsKey(newPath)) FeatureManager.logger.add("[AUTOAUTO ERROR] No such path `" + newPath + "`");
-        this.currentPath = paths.get(newPath);
-        this.currentPathName = newPath;
-        this.currentPath.stepInit();
+    public static String formatStack(Location location) {
+        return "\nat " + fileName + ":" + location.line + ":" + location.col + " at " + location.statepath + ", state " + location.stateNumber;
     }
 
-    public AutoautoProgram(HashMap<String, Statepath> s, String initial) {
+    public AutoautoProgram(HashMap<String, Statepath> s, String initialPathName) {
         this.paths = s;
-        this.currentPathName = initial;
-        this.currentPath = paths.get(initial);
-
-        for(Statepath p : this.paths.values()) p.setProgram(this);
+        this.initialPathName = initialPathName;
+        this.currentPath = paths.get(initialPathName);
     }
-    public AutoautoProgram(String src) {
-        //first off, nilch the comments
-        src = ParserTools.removeComments(src);
-
-        //split into the program's labeled statepaths
-        String[] LSPs = ParserTools.groupAwareSplit(src, '#', true);
-
-        paths = new HashMap<String, Statepath>();
-
-        this.currentPathIndex = LSPs.length + 1;
-
-        //process each labeled statepath, one by one
-        for(int i = LSPs.length - 1; i >= 0; i--) {
-            if(LSPs[i].equals("")) continue;
-
-            int colonIndex = LSPs[i].indexOf(':');
-            String lspName = "";
-            if(colonIndex < 0) {
-                FeatureManager.logger.log("[AUTOAUTO ERROR] Unlabelled statepath `" + LSPs[i] + "`, defaulting to " + i);
-                lspName = "" + i;
-                colonIndex = LSPs[i].indexOf(' ');
-            } else {
-                lspName = LSPs[i].substring(0, colonIndex);
-            }
-            Statepath newPath = new Statepath(LSPs[i].substring(colonIndex + 1), this, lspName);
-            paths.put(lspName, newPath);
-
-            if(i < currentPathIndex) {
-                this.currentPath = newPath;
-                this.currentPathName = lspName;
-            }
-        }
-    }
-
     public void loop() {
-        if(this.currentPath == null) FeatureManager.logger.log("current path is null");
+        String currentStatepathName = ((AutoautoString)(scope.get(AutoautoSystemVariableNames.STATEPATH_NAME))).getString();
+
+        //if steps have changed, init the new one
+        if(!currentStatepathName.equals(this.oldPathName)) {
+            //reset current state
+            scope.systemSet(AutoautoSystemVariableNames.STATE_NUMBER, new NumericValue(0));
+
+            this.currentPath = this.paths.get(currentStatepathName);
+            this.currentPath.stepInit();
+            this.oldPathName = currentStatepathName;
+        }
+
         this.currentPath.loop();
     }
 
     public void init() {
         for(Statepath p : this.paths.values()) p.init();
+        scope.systemSet(AutoautoSystemVariableNames.STATEPATH_NAME, new AutoautoString(this.initialPathName));
+        scope.systemSet(AutoautoSystemVariableNames.STATE_NUMBER, new NumericValue(0));
     }
 
     public void stepInit() {
+
         for(Statepath p : this.paths.values()) p.stepInit();
     }
 
@@ -87,7 +68,24 @@ public class AutoautoProgram {
         return pathsStr.toString();
     }
 
-    public String getCurrentPathName() {
-        return this.currentPathName;
+    @Override
+    public AutoautoRuntimeVariableScope getScope() {
+        return scope;
+    }
+
+    @Override
+    public void setScope(AutoautoRuntimeVariableScope scope) {
+        this.scope = scope;
+        for(Statepath s : paths.values()) s.setScope(scope);
+    }
+
+    @Override
+    public Location getLocation() {
+        return location;
+    }
+
+    @Override
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }

@@ -1,42 +1,41 @@
 package org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model;
 
-import org.firstinspires.ftc.teamcode.auxilary.dsls.ParserTools;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.statements.Statement;
-import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values.FunctionCall;
-import org.firstinspires.ftc.teamcode.managers.FeatureManager;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values.AutoautoCallableValue;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values.AutoautoPrimitive;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values.AutoautoUndefined;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values.AutoautoValue;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values.NumericValue;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.AutoautoRuntimeVariableScope;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.AutoautoSystemVariableNames;
 import org.jetbrains.annotations.NotNull;
 
-public class State {
+public class State implements AutoautoProgramElement {
     public Statement[] statements;
-    public AutoautoProgram program;
-    public Statepath statepath;
+    public AutoautoRuntimeVariableScope scope;
+    public Location location;
 
-    public void setProgram(AutoautoProgram program) {
-        this.program = program;
-        for(Statement p : this.statements) p.setProgram(program);
+    @Override
+    public AutoautoRuntimeVariableScope getScope() {
+        return scope;
     }
 
-    public void setStatepath(Statepath statepath) {
-        this.statepath = statepath;
-        for(Statement p : this.statements) p.setStatepath(statepath);
+    public void setScope(AutoautoRuntimeVariableScope scope) {
+        this.scope = scope;
+        for(Statement p : this.statements) p.setScope(scope);
+    }
+
+    @Override
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public State(Statement[] statements) {
         this.statements = statements;
-        for(Statement p : this.statements) p.setState(this);
-    }
-
-    public State(String src, AutoautoProgram program, Statepath statepath) {
-        this.program = program;
-        this.statepath = statepath;
-
-        String[] statementSources = ParserTools.groupAwareSplit(src, ',', true);
-
-        this.statements = new Statement[statementSources.length];
-
-        for(int i = statementSources.length - 1; i >= 0; i--) {
-            statements[i] = Statement.createProperStatementType(statementSources[i], program, statepath, this);
-        }
     }
 
     @NotNull
@@ -53,7 +52,7 @@ public class State {
             if(s != null) s.stepInit();
         }
         //stop when new steps start
-        program.autoautoRuntime.functions.get(new FunctionCall("stopDrive()")).call(new float[0][0]);
+        ((AutoautoCallableValue)scope.get("stopDrive")).call(new AutoautoPrimitive[0]);
     }
 
     public void init() {
@@ -63,10 +62,25 @@ public class State {
     }
 
     public void loop() {
+        this.returnValue = new AutoautoUndefined();
         for(Statement s : statements) {
-            if(this.statepath != this.program.currentPath) break;
-            if(this.statepath.states[this.statepath.currentState] != this) break;
+            if(!this.scope.get(AutoautoSystemVariableNames.STATEPATH_NAME).getString().equals(this.location.statepath)) break;
+            if(((NumericValue)this.scope.get(AutoautoSystemVariableNames.STATE_NUMBER)).getFloat() != this.location.stateNumber) break;
             if(s != null) s.loop();
+
+            //break if there's a return statement
+            if(returned) break;
         }
+    }
+
+    //for if it's being used as a function body
+    private AutoautoPrimitive returnValue;
+    private boolean returned;
+    public AutoautoPrimitive getReturnValue() {
+        return returnValue;
+    }
+    public void setReturnValue(AutoautoPrimitive returnValue) {
+        this.returnValue = returnValue;
+        this.returned = true;
     }
 }

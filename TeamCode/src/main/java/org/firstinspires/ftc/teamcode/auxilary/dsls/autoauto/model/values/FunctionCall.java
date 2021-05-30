@@ -1,97 +1,85 @@
 package org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values;
 
-import org.firstinspires.ftc.teamcode.auxilary.dsls.ParserTools;
-import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.statements.Statement;
-import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values.Value;
-import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.Function;
-import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.FunctionStore;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.AutoautoProgram;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.Location;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.AutoautoRuntimeVariableScope;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-
-public class FunctionCall extends Value {
-    public Value[] args;
+public class FunctionCall extends AutoautoValue {
+    public AutoautoValue[] args;
     public String name;
 
-    public FunctionCall(String n, Value[] a) {
+
+    public AutoautoPrimitive returnValue;
+
+    private AutoautoRuntimeVariableScope scope;
+    private Location location;
+
+    public FunctionCall(String n, AutoautoValue[] a) {
         this.name = n;
         this.args = a;
     }
 
-    public FunctionCall(String src) {
-        this.name = "";
-        for(char c : src.toCharArray()) {
-            if(Character.isAlphabetic(c)) this.name += c;
-            else break;
-        }
+    @Override
+    public AutoautoRuntimeVariableScope getScope() {
+        return scope;
+    }
 
-        if(src.indexOf('(') < 0 || src.indexOf(')') < 0) FeatureManager.logger.log("[AUTOAUTO ERROR] Could not parse function call `" + src + "`");
+    public void setScope(AutoautoRuntimeVariableScope scope) {
+        this.scope = scope;
+        for(int i = args.length - 1; i >= 0; i--) this.args[i].setScope(scope);
+    }
 
-        String argumentsSrc = src.substring(src.indexOf('(') + 1, src.lastIndexOf(')'));
-        String[] argsSources = ParserTools.groupAwareSplit(argumentsSrc, ',', true);
+    @Override
+    public Location getLocation() {
+        return location;
+    }
 
-        this.args = new Value[argsSources.length];
-
-        for(int i = argsSources.length - 1; i >= 0; i--) {
-            this.args[i] = Value.createProperValueType(argsSources[i]);
-        }
+    @Override
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public void init() {
         for(int i = args.length - 1; i >= 0; i--) {
-            if(this.args[i] == null) {
-                FeatureManager.logger.log("Null argument " + i + " in " + this.toString());
-                continue;
-            }
-            this.args[i].setRuntimeReferences(this.runtimeFunctionStore, this.runtimeVariableStore);
             this.args[i].init();
         }
     }
 
     public void loop() {
-        if(runtimeFunctionStore != null) {
-            Function fn = runtimeFunctionStore.get(this);
-            if(fn == null) FeatureManager.logger.add("[AUTOAUTO ERROR] Unknown function `" + this.name + "` with argument count + `" + this.args.length + "`");
+        AutoautoValue val = scope.get(name);
+        if(val == null) FeatureManager.logger.add("[AUTOAUTO ERROR] `" + this.name + "` is undefined" + AutoautoProgram.formatStack(location));
 
-            if(this.args.length > 0 && this.args[0] instanceof ArrayLiteral) {
-                resolveWithArray(fn);
-                return;
-            }
+        if(!(val instanceof AutoautoCallableValue)) FeatureManager.logger.add("[AUTOAUTO ERROR] `" + name + "` is not a function" + AutoautoProgram.formatStack(location));
 
-            float[][] argsResolved = new float[this.args.length][];
+        AutoautoCallableValue fn = (AutoautoCallableValue)val;
 
-            for(int i = this.args.length - 1; i >= 0; i--) {
-                this.args[i].loop();
-                argsResolved[i] = this.args[i].getReturnValue();
-                if(argsResolved[i].length == 0) FeatureManager.logger.log("[AA ERROR] " + this.args[i].toString() + "is 0-len");
-            }
+        //set the location that it's being called from. for error logging purposes
+        if(val.getLocation() == null) val.setLocation(this.location);
 
-            this.returnValue = fn.call(argsResolved);
-        };
+        for(int i = this.args.length - 1; i >= 0; i--) this.args[i].loop();
 
+        AutoautoPrimitive[] argsResolved = new AutoautoPrimitive[args.length];
+        for(int i = this.args.length - 1; i >= 0; i--) argsResolved[i] = this.args[i].getResolvedValue();
+
+        this.returnValue = fn.call(argsResolved);
     }
 
     @Override
-    public float[] getReturnValue() {
-        return this.returnValue;
+    public String getString() {
+        return returnValue.getString();
     }
 
-    public void resolveWithArray(Function fn) {
-        float[][] arrg = new float[1][args[0].returnValue.length];
-
-        args[0].loop();
-
-        for(int i = args[0].returnValue.length - 1; i >= 0; i--) arrg[0][i] = args[0].returnValue[i];
-
-        fn.call(arrg);
+    public AutoautoPrimitive getResolvedValue() {
+        return this.returnValue;
     }
 
     @NotNull
     public String toString() {
         StringBuilder str = new StringBuilder();
         str.append(this.name + "(");
-        for(Value arg : args) {
+        for(AutoautoValue arg : args) {
             if(arg == null) str.append("<null>");
             else str.append(arg.toString() + ", ");
         }

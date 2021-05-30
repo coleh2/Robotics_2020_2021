@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.robotfunctions;
 
-import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.Function;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values.AutoautoPrimitive;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values.AutoautoUndefined;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.model.values.AutoautoValue;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.NativeRobotFunction;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
-import org.firstinspires.ftc.teamcode.managers.MovementManager;
 
-public class StopDriveFunction extends Function {
+public class StopDriveFunction extends NativeRobotFunction {
     public String name = "stopDrive";
     public int argCount = 0;
     public Class<?> declaringClass = org.firstinspires.ftc.teamcode.managers.MovementManager.class;
@@ -15,8 +17,9 @@ public class StopDriveFunction extends Function {
         this.manager = (org.firstinspires.ftc.teamcode.managers.MovementManager)manager;
     }
 
-    public float[] call(float[][] args) {
+    @Override
+    public AutoautoPrimitive call(AutoautoPrimitive[] args) {
         manager.stopDrive();
-        return new float[0];
+        return new AutoautoUndefined();
     }
 }

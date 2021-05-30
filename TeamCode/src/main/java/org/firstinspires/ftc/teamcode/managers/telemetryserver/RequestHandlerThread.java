@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.managers.telemetryserver;
 
+import org.firstinspires.ftc.teamcode.auxilary.dsls.ParserTools;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 import org.firstinspires.ftc.teamcode.managers.TelemetryManager;
 
@@ -32,9 +33,9 @@ public class RequestHandlerThread implements Runnable {
             InputStream input = socket.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
 
-            String request = reader.readLine();
-            FeatureManager.logger.log("debug: request meta is " + request);
-            String[] terms = request.split(" ");
+            String requestMeta = reader.readLine();
+            FeatureManager.logger.log("debug: request meta is " + requestMeta);
+            String[] terms = requestMeta.split(" ");
             String verb = terms[0];
             String path = terms[1];
 
@@ -58,7 +59,7 @@ public class RequestHandlerThread implements Runnable {
                 if(!FeatureManager.isOpModeRunning) {
                     writer.print(ControlCodes.I_AM_DYING_BUT_I_MAY_BE_BACK_LATER);
                 }
-            } else if(path.equals("/")){
+            } else if(path.equals("/")) {
                 String file = ServerFiles.indexDotHtml;
                     writer.print("HTTP/1.1 200 OK" + HTTP_LINE_SEPARATOR
                             //+ "Content-Length: " + (file.getBytes(StandardCharsets.UTF_8).length) + HTTP_LINE_SEPARATOR
@@ -66,6 +67,29 @@ public class RequestHandlerThread implements Runnable {
                             + HTTP_LINE_SEPARATOR
                             + HTTP_LINE_SEPARATOR
                             + file);
+            } else if(path.equals("/command")) {
+                //consume & disregard headers
+                String line = requestMeta;
+                while(!line.equals("")) line = reader.readLine();
+
+                //body time!
+                StringBuilder reqBodyBuilder = new StringBuilder();
+                int nextChar;
+                while((nextChar = reader.read()) != -1) reqBodyBuilder.append((char)nextChar);
+
+                String body = reqBodyBuilder.toString();
+
+                String[] commaSepValues = ParserTools.groupAwareSplit(body, ',');
+
+                if(commaSepValues[0].trim().equals(ControlCodes.STRUCK_WITH_A_TUNING_FORK)) {
+                    String tuneName = commaSepValues[1];
+                    float[] values = new float[commaSepValues.length - 2];
+
+                    for(int i = 2; i < commaSepValues.length; i++) values[i] = Float.parseFloat(commaSepValues[i]);
+
+
+                }
+
             } else {
                 String r = "not found";
                 writer.print("HTTP/1.1 404 NOT FOUND" + HTTP_LINE_SEPARATOR

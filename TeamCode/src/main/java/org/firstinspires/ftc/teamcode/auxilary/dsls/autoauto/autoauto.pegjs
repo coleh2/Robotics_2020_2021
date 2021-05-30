@@ -1,7 +1,7 @@
 autoautoFile = 
   _ f:frontMatter? _ s:labeledStatepath+ _ {
   	return {
-      type: "Program",
+      type: "Program", location: location(),
       frontMatter: f,
       statepaths: s
     }
@@ -10,7 +10,7 @@ autoautoFile =
 frontMatter =
  DOLLAR_SIGN _ heads:(frontMatterKeyValue COMMA _)* tail:frontMatterKeyValue _ DOLLAR_SIGN {
    return {
-     type: "FrontMatter",
+     type: "FrontMatter", location: location(),
      values: heads.map(x=>x[0]).concat([tail])
    }
  }
@@ -18,7 +18,7 @@ frontMatter =
 frontMatterKeyValue =
  k:IDENTIFIER COLON _ v:value _ {
    return {
-     type: "FrontMatterKeyValue",
+     type: "FrontMatterKeyValue", location: location(),
      key: k,
      value: v
    }
@@ -28,14 +28,14 @@ commentOpportunity = _
 
 labeledStatepath =
  _ l:STATEPATH_LABEL_ID COLON _ s:statepath _  {
-   return { type: "LabeledStatepath", statepath: s, label: l }
+   return { type: "LabeledStatepath", location: location(), statepath: s, label: l }
  }
 
 
 statepath =
   _ heads:(state SEMICOLON)* tail:state SEMICOLON? _ {
   	return {
-      type: "Statepath",
+      type: "Statepath", location: location(),
       states: heads.map(x=>x[0]).concat([tail])
     }
   }
@@ -43,7 +43,7 @@ statepath =
 state =
   _ heads:(statement COMMA)* tail:statement COMMA? _ {
     return {
-      type: "State",
+      type: "State", location: location(),
       statement: heads.map(x=>x[0]).concat([tail])
     }
   }
@@ -54,25 +54,25 @@ statement =
   { return s; }
 
 afterStatement =
- AFTER _ u:unitValue _ s:statement { return { type: "AfterStatement", unitValue: u, statement: s } }
+ AFTER _ u:unitValue _ s:statement { return { type: "AfterStatement", location: location(), unitValue: u, statement: s } }
 
 functionCallStatement =
- f:functionCall { return { type: "FunctionCallStatement", call: f } }
+ f:functionCall { return { type: "FunctionCallStatement", location: location(), call: f } }
 
 gotoStatement =
- GOTO _ p:IDENTIFIER { return { type: "GotoStatement", path: p } } 
+ GOTO _ p:IDENTIFIER { return { type: "GotoStatement", location: location(), path: p } } 
 
 ifStatement =
- IF _ OPEN_PAREN t:value CLOSE_PAREN s:statement { return { type: "IfStatement", conditional: t, statement: s } }
+ IF _ OPEN_PAREN t:value CLOSE_PAREN s:statement { return { type: "IfStatement", location: location(), conditional: t, statement: s } }
 
 letStatement =
- LET _ v:variableReference _ EQUALS _ val:value { return { type: "LetStatement", variable: v, value: val } }  
+ LET _ v:variableReference _ EQUALS _ val:value { return { type: "LetStatement", location: location(), variable: v, value: val } }  
 
 nextStatement =
- NEXT { return { type: "NextStatement" }   } 
+ NEXT { return { type: "NextStatement", location: location() }   }
 
 skipStatement =
- SKIP s:NUMERIC_VALUE  { return { type: "SkipStatement", skip: s }   } 
+ SKIP s:NUMERIC_VALUE  { return { type: "SkipStatement", location: location(), skip: s }   } 
 
 value =
  _  b:boolean _ { return b }
@@ -82,23 +82,23 @@ valueInParens =
 
 modulo = 
  l:baseExpression o:MODULUS r:baseExpression { 
-    return { type: "OperatorExpression", operator: o, left: l, right: r }  
+    return { type: "OperatorExpression", location: location(), operator: o, left: l, right: r }  
 }
 / b:baseExpression  { return b; }
 
 exponent = 
  l:modulo o:EXPONENTIATE r:modulo { 
-    return { type: "OperatorExpression", operator: o, left: l, right: r }  
+    return { type: "OperatorExpression", location: location(), operator: o, left: l, right: r }  
 } 
 / m:modulo { return m; }
 
 product = 
  l:exponent tail:(o:(MULTIPLY / DIVIDE) r:product { return [o, r]; })+ {
-  var r = { type: "OperatorExpression", left: l };
+  var r = { type: "OperatorExpression", location: location(), left: l };
   var tar = r;
   for(var i = 0; i < tail.length - 1; i++) {
     tar.operator = tail[i][0];
-    var newTar = { type: "OperatorExpression", left: tail[i][1] };
+    var newTar = { type: "OperatorExpression", location: location(), left: tail[i][1] };
     tar.right = newTar;
     tar = newTar;
   }
@@ -109,11 +109,11 @@ product =
 / p:exponent { return p; }
  
 sum = l:product tail:(o:(PLUS / MINUS) r:product { return [o, r]; })+ {
-  var r = { type: "OperatorExpression", left: l };
+  var r = { type: "OperatorExpression", location: location(), left: l };
   var tar = r;
   for(var i = 0; i < tail.length - 1; i++) {
     tar.operator = tail[i][0];
-    var newTar = { type: "OperatorExpression", left: tail[i][1] };
+    var newTar = { type: "OperatorExpression", location: location(), left: tail[i][1] };
     tar.right = newTar;
     tar = newTar;
   }
@@ -133,20 +133,20 @@ baseExpression =
  }
 
 variableReference =
- i:IDENTIFIER { return { type: "VariableReference", variable: i }; }
+ i:IDENTIFIER { return { type: "VariableReference", location: location(), variable: i }; }
 
 arrayLiteral =
  OPEN_SQUARE_BRACKET a:argumentList? CLOSE_SQUARE_BRACKET { 
  return {
-   type: "ArrayLiteral",
-   elems: a || {type:"ArgumentList",args:[]}
+   type: "ArrayLiteral", location: location(),
+   elems: a || {type:"ArgumentList",args:[], location: location()}
  }
 }
 
 boolean =
- l:arithmeticValue o:comparisonOperator r:arithmeticValue { return { type: "ComparisonOperator", left: l, operator: o, right: r }; } 
- / TRUE { return { type: "BooleanLiteral", value: true }; }
- / FALSE { return { type: "BooleanLiteral", value: false }; }
+ l:arithmeticValue o:comparisonOperator r:arithmeticValue { return { type: "ComparisonOperator", location: location(), left: l, operator: o, right: r }; } 
+ / TRUE { return { type: "BooleanLiteral", location: location(), value: true }; }
+ / FALSE { return { type: "BooleanLiteral", location: location(), value: false }; }
  / r:arithmeticValue { return r; }
 
 comparisonOperator =
@@ -155,13 +155,13 @@ comparisonOperator =
 functionCall =
  f:IDENTIFIER _ OPEN_PAREN a:argumentList? CLOSE_PAREN { 
  return {
-   type: "FunctionCall",
-   func: f, args: a || {type:"ArgumentList",args:[]}
+   type: "FunctionCall", location: location(),
+   func: f, args: a || {type:"ArgumentList",args:[], location: location()}
  }
 }
 
 stringLiteral =
- DOUBLE_QUOTE q:NON_QUOTE_CHARACTER* DOUBLE_QUOTE { return { type: "StringLiteral", str: q.join("") } }
+ DOUBLE_QUOTE q:NON_QUOTE_CHARACTER* DOUBLE_QUOTE { return { type: "StringLiteral", location: location(), str: q.join("") } }
 
 unitValue =
  u:NUMERIC_VALUE_WITH_UNIT { return u; }
@@ -169,14 +169,18 @@ unitValue =
 argumentList =
  heads:(value COMMA)* tail:value { 
  return { 
-   type: "ArgumentList", 
+   type: "ArgumentList", location: location(), 
    len: heads.length + 1,
    args: heads.map(x=> x[0]).concat([tail])
  }
 }  
 
-_ = [ \t\n\r]*
-  
+_ = [ \t\n\r]* comment? [ \t\n\r]*
+
+comment = ("//" [^\n]* "\n")
+  / ("/*" commentText* "*/")
+
+commentText = !"*/" .
 
 NON_QUOTE_CHARACTER = [^"]
 DOUBLE_QUOTE = '"'
@@ -250,7 +254,7 @@ IDENTIFIER =
     if(reserved.indexOf(name) == -1) return true;
     else return false;
     }
-    { return { type: "Identifier", value: l.join("") } }
+    { return { type: "Identifier", location: location(), value: l.join("") } }
 DIGIT = [0-9]
 LETTER = [A-Za-z]
 STATEPATH_LABEL_ID = HASHTAG i:IDENTIFIER { return i; }
@@ -259,8 +263,8 @@ NUMERIC_VALUE = m:MINUS? v:(
     / 
     d:DIGIT+ { return d.join(""); }) 'f'?
 {
-    return { type: "NumericValue", v: parseFloat((m||"") + v ) }
+    return { type: "NumericValue", location: location(), v: parseFloat((m||"") + v ) }
 }  
 NUMERIC_VALUE_WITH_UNIT = n:NUMERIC_VALUE u:IDENTIFIER {
-    return { type: "UnitValue", value: n, unit: u }
+    return { type: "UnitValue", location: location(), value: n, unit: u }
 }

@@ -10,6 +10,8 @@ import java.util.Map;
 import org.firstinspires.ftc.robotcore.internal.webserver.WebHandler;
 import org.firstinspires.ftc.robotcore.internal.webserver.RobotControllerWebInfo;
 import org.firstinspires.ftc.teamcode.auxilary.PaulMath;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.AutoautoTelemetry;
+import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.FunctionStore;
 import org.firstinspires.ftc.teamcode.managers.telemetryserver.Server;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -17,6 +19,7 @@ import com.qualcomm.robotcore.util.WebServer;
 import com.qualcomm.robotcore.util.WebHandlerManager;
 
 public class TelemetryManager extends FeatureManager implements Telemetry {
+    public AutoautoTelemetry autoauto;
     private Telemetry backend;
     private LogCatcher backendLog;
 
@@ -25,7 +28,7 @@ public class TelemetryManager extends FeatureManager implements Telemetry {
 
     private Server server;
 
-    private HashMap<String, String> fields;
+    private HashMap<String, String> fields= new HashMap<String, String>();;
 
     private boolean hasNewData;
 
@@ -33,6 +36,7 @@ public class TelemetryManager extends FeatureManager implements Telemetry {
         this.backend = backend;
         this.backendLog = new LogCatcher(backend.log());
         this.server = new Server(this);
+        this.autoauto = new AutoautoTelemetry();
 
         this.fields = new HashMap<String, String>();
     }

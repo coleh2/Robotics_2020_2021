@@ -68,20 +68,20 @@ for(var i = 0; i < autoautoFiles.length; i++) {
     var javaStringFileSource = frontMatter.stripped;
 
     try {
-        var parsedModel = aaParser.parse(uncommentedFileSource);
+        var parsedModel = aaParser.parse(fileSource);
 
         var javaCreationCode = astJavaify(parsedModel);
 
-        fs.writeFileSync(resultFile, processTemplate(template, className, frontMatter.frontMatter, javaStringFileSource, javaCreationCode));
+        fs.writeFileSync(resultFile, processTemplate(template, className, frontMatter.frontMatter, javaStringFileSource, javaCreationCode, autoautoFiles[i]));
     } catch(e) {
-        console.error("AUTOAUTOERROR: Could not parse " + className + "\n" + (e.location ? e.location.start.line + ":" + e.location.start.column : "") + "\t" + e.toString());
-        console.error(e.stack);
+        console.error(autoautoFiles[i] + ":" + (e.location ? e.location.start.line + ":" + e.location.start.column + ":" : "") + "\t" + e.toString());
+        if(!e.location) console.error(e.stack);
         process.exit(1);
     }
 
 }
 
-function processTemplate(template, className, frontMatter, javaStringFileSource, javaCreationCode) {
+function processTemplate(template, className, frontMatter, javaStringFileSource, javaCreationCode, sourceFileName) {
     return template
         .replace("public class template", "public class " + className)
         .replace("/*NSERVO_NAMES*/", buildServoNames(frontMatter.servos))
@@ -90,8 +90,9 @@ function processTemplate(template, className, frontMatter, javaStringFileSource,
         .replace("/*CRSERVO_NAMES*/", buildCrServoNames(frontMatter.crServos))
         .replace("/*CRSERVOS*/", buildCrServos(frontMatter.crServos))
         .replace("/*PACKAGE_DECLARATION*/", PACKAGE_DECLARATION)
-        .replace("/*TESTITERATIONSCOMPARISON*/", "i < " + (frontMatter.testIterations === undefined ? 3 : frontMatter.testIterations))
-        .replace("/*BUILD_NAME*/", genRandomBuildName());
+        .replace("/*TEST_ITERATIONS*/",  (frontMatter.testIterations === undefined ? 3 : frontMatter.testIterations))
+        .replace("/*BUILD_NAME*/", genRandomBuildName())
+        .replace("/*SOURCE_FILE_NAME*/", JSON.stringify(sourceFileName).slice(1, -1));
 }
 
 function buildServoNames(servos) {
