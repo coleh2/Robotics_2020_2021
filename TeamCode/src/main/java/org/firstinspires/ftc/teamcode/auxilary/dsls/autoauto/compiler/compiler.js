@@ -1,7 +1,5 @@
 var fs = require("fs");
 var path = require("path");
-var os = require("os");
-var crypto = require("crypto");
 
 var aaParser = require("./aa-parser.js");
 var astJavaify = require("./ast-tools.js");
@@ -11,25 +9,12 @@ var GITIGNORED = ["*__autoauto.java"];
 
 var DEFAULT_SERVOS = ["wobbleArmRight","wobbleArmLeft" , "wobbleGrabRight","wobbleGrabLeft", "shooterStop", "shooterArm"];
 var DEFAULT_CRSERVOS = [];
-var HASH_SECRET = "autoauto family";
-
-var computerUniqueIdentifier = os.cpus()[0].model + "/" + os.hostname() + "/" + os.platform();
-
-var computerHash = crypto.createHmac("sha256", HASH_SECRET)
-    .update(computerUniqueIdentifier)
-    .digest("base64");
-
-var familyTreeRecordsDirectory = path.join(__dirname, "genealogy");
-var familyLineFile = path.join(familyTreeRecordsDirectory, computerHash + ".json");
-
-if(!fs.existsSync(familyTreeRecordsDirectory)) fs.mkdirSync(familyTreeRecordsDirectory);
-if(!fs.existsSync(familyLineFile)) fs.writeFileSync(familyLineFile, "{}");
 
 var directory = __dirname.split(path.sep);
 
 var PACKAGE_DECLARATION = "package org.firstinspires.ftc.teamcode.__compiledautoauto;";
 
-var template = fs.readFileSync(__dirname + path.sep + "template.notjava").toString();
+var template = fs.readFileSync(path.join(__dirname, "data" + path.sep + "template.notjava")).toString();
 
 var rootDirectory = directory.slice(0, directory.indexOf("TeamCode")).join(path.sep);
 

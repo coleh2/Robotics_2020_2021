@@ -1,0 +1,6 @@
+package org.firstinspires.ftc.teamcode.auxilary.buildhistory;
+
+public class BuildHistory {
+    public static String builderBrowserFingerprint = "BUILDER_BROWSER_FINGERPRINT";
+
+}

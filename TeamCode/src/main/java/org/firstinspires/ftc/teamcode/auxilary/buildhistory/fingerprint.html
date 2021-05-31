@@ -18,7 +18,17 @@ var FingerprintJS=function(e){"use strict";function t(e,t){e=[e[0]>>>16,65535&e[
 
     </script>
 <script>
+    FingerprintJS.load().then(fp => fp.get()).then(result => {
+        var id = result.visitorId;
 
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/handoff-browser-fingerprint/" + id);
+        xhr.onload = function() {
+            document.body.children[0].innerHTML = "Loaded!";
+            document.body.children[1].innerHTML = "You may now close this browser window."
+        }
+        xhr.send();
+    });
 </script>
 </body>
 </html>
