@@ -7,10 +7,6 @@ import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.AutoautoRun
 
 public abstract class AutoautoValue implements AutoautoProgramElement {
 
-    public boolean readOnly;
-    public boolean systemManaged;
-    public boolean tunable;
-
     public abstract AutoautoPrimitive getResolvedValue();
 
     public void init() {}

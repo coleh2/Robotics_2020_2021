@@ -2,5 +2,8 @@ package org.firstinspires.ftc.teamcode.auxilary.buildhistory;
 
 public class BuildHistory {
     public static String builderBrowserFingerprint = "BUILDER_BROWSER_FINGERPRINT";
+    public static String buildTimeIso = "BUILD_TIME_ISO";
+    public static String buildName = "BUILD_NAME";
+    public static String buildHistory = "BUILD_HISTORY";
 
 }
