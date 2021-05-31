@@ -82,10 +82,13 @@ public class template extends OpMode {
         limbs.getServo("wobbleGrabRight").setDirection(Servo.Direction.REVERSE);
         StringBuilder programJson = new StringBuilder();
 
+        VariableReference[] autoautoVariableNames;
+
 
 /*JAVA_CREATION_CODE*/
         AutoautoProgram.fileName = "/*SOURCE_FILE_NAME*/";
         telemetryManager.autoauto.setProgramJson(programJson.toString());
+        telemetryManager.autoauto.setVariables(autoautoVariableNames);
     }
 
     public void loop() {

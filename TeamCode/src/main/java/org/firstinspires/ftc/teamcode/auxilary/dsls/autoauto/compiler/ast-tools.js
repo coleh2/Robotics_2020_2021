@@ -2,6 +2,15 @@ var generalNumberToIncrementWhenSomethingNeedsToBeChanged = 0;
 var stringDefinitions = {};
 var locationSetters = [];
 var depthMappedDefinitions = [];
+var variables = [];
+
+function initFileState() {
+    generalNumberToIncrementWhenSomethingNeedsToBeChanged = 0;
+    stringDefinitions = {};
+    locationSetters = [];
+    depthMappedDefinitions = [];
+    variables = [];
+}
 
 var COLUMN_THRESHOLD = 120;
 var JAVA_TYPE_REGEX = /^\w+(<(\w+)( *,(\w+))+>)?(\[\])?/;
@@ -55,7 +64,8 @@ module.exports = function astToString(ast, programNonce, statepath, stateNumber,
             HashMap<String, Statepath> ${nonce} = new HashMap<String, Statepath>();
             ${childDefs.map((x, i) => `${nonce}.put(${stringDefinitions[ast.statepaths[i].label.value]}, ${x.varname});`).join("\n")}
             AutoautoProgram ${programName} = new AutoautoProgram(${nonce}, ${stringDefinitions[ast.statepaths[0].label.value]});
-            ${locationSetters.join("")}`;
+            ${locationSetters.join("")}
+            autoautoVariableNames = new VariableReference[] { ${variables.join(",")} };`;
             
             var runtimeSetup = `runtime = new AutoautoRuntime(${programName}, driver, limbs, sense, imu);`;
             
@@ -84,10 +94,7 @@ module.exports = function astToString(ast, programNonce, statepath, stateNumber,
                 result += "programJson.append(" + JSON.stringify(jsonProgram.substring(i, i + 1024)) + ");\n";
             }
             
-            stringDefinitions = {};
-            locationSetters = [];
-            depthMappedDefinitions = [];
-            generalNumberToIncrementWhenSomethingNeedsToBeChanged = 0;
+            initFileState();
             break;
         case "LabeledStatepath":
             var childDefs = ast.statepath.states.map((x,i) => process(x, i));
@@ -285,6 +292,8 @@ module.exports = function astToString(ast, programNonce, statepath, stateNumber,
         case "LetStatement":
             var variable = process(ast.variable);
             var value = process(ast.value);
+
+            variables.push(variable.varname);
             
             depthMappedDefinitions.push({
                 depth: depth,
