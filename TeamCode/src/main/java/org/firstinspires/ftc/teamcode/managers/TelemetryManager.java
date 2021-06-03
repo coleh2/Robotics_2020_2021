@@ -10,6 +10,7 @@ import java.util.Map;
 import org.firstinspires.ftc.robotcore.internal.webserver.WebHandler;
 import org.firstinspires.ftc.robotcore.internal.webserver.RobotControllerWebInfo;
 import org.firstinspires.ftc.teamcode.auxilary.PaulMath;
+import org.firstinspires.ftc.teamcode.auxilary.buildhistory.BuildHistory;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.AutoautoTelemetry;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.autoauto.runtime.FunctionStore;
 import org.firstinspires.ftc.teamcode.managers.telemetryserver.Server;
@@ -39,6 +40,8 @@ public class TelemetryManager extends FeatureManager implements Telemetry {
         this.autoauto = new AutoautoTelemetry();
 
         this.fields = new HashMap<String, String>();
+
+        BuildHistory.init();
     }
 
     @Override

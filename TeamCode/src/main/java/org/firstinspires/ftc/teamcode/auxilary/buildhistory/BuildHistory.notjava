@@ -1,9 +1,84 @@
 package org.firstinspires.ftc.teamcode.auxilary.buildhistory;
 
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import org.firstinspires.ftc.teamcode.auxilary.FileSaver;
+
 public class BuildHistory {
     public static String builderBrowserFingerprint = "BUILDER_BROWSER_FINGERPRINT";
     public static String buildTimeIso = "BUILD_TIME_ISO";
     public static String buildName = "BUILD_NAME";
     public static String buildHistory = "BUILD_HISTORY";
 
+    public static final String MEMORY_FILE = "build-history.csv";
+    public static final int MOST_RECENT_INCLUDE_NUM = 200;
+
+    public static void init() {
+        loadLocalMemory();
+    }
+    private static void loadLocalMemory() {
+        FileSaver localFile = new FileSaver(MEMORY_FILE);
+        String localFileContent = String.join("\n", localFile.readLines());
+
+        String[][] localBuildTable = parseCsvToTable(localFileContent);
+        String[][] builtBuildTable = getBuildHistoryAsTable();
+
+        HashMap<String, String> records = new HashMap<>();
+
+        for(String[] row : builtBuildTable) records.put(row[0], row[1]);
+        for(String[] row : localBuildTable) records.put(row[0], row[1]);
+
+
+        Set<Map.Entry<String, String>> entrySet = records.entrySet();
+
+        //find smallest & greatest nano-times
+        long minNano = Long.MAX_VALUE, maxNano = Long.MIN_VALUE;
+        for(Map.Entry<String, String> entry: entrySet) {
+            Instant instant = Instant.parse(entry.getValue());
+            long nano = instant.getEpochSecond() + instant.getNano();
+            if(nano > maxNano) maxNano = nano;
+            if(nano < minNano) minNano = nano;
+        }
+
+        long nanoRange = maxNano - minNano;
+
+        String[] rows = new String[builtBuildTable.length + localBuildTable.length];
+
+        //use smallest/greatest to place rows in-place
+        for(Map.Entry<String, String> entry: entrySet) {
+            Instant instant = Instant.parse(entry.getValue());
+            long nano = instant.getEpochSecond() + instant.getNano();
+
+            int index = (int) Math.floor(((nano - minNano) / (double)nanoRange) * rows.length);
+            while(rows[index] != null) index++;
+
+            rows[index] = entry.getKey() + "," + entry.getValue();
+        }
+
+        //only include the most recent 200 values
+        String[] sliceRows = new String[Math.min(rows.length, MOST_RECENT_INCLUDE_NUM)];
+        for(int i = sliceRows.length - 1; i >= 0; i--) {
+            sliceRows[i] = rows[i] + (rows.length - sliceRows.length);
+        }
+
+        //save values, both in the file and in the static variable so that others can have up-to-date data
+        String content = String.join("\n", sliceRows);
+        localFile.overwriteFile(content);
+        buildHistory = content;
+    }
+    public static String[][] getBuildHistoryAsTable() {
+        return parseCsvToTable(buildHistory);
+    }
+
+    private static String[][] parseCsvToTable(String csv) {
+        String[] rows = csv.split("\n");
+        String[][] table = new String[rows.length][];
+
+        for(int i = 0; i < rows.length; i++) {
+            table[i] = rows[i].split(",");
+        }
+        return table;
+    }
 }
