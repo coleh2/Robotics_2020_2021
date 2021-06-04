@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import org.firstinspires.ftc.teamcode.auxilary.FileSaver;
+import org.jetbrains.annotations.NotNull;
 
 public class BuildHistory {
     public static String builderBrowserFingerprint = "BUILDER_BROWSER_FINGERPRINT";
@@ -44,23 +45,35 @@ public class BuildHistory {
 
         long nanoRange = maxNano - minNano;
 
-        String[] rows = new String[builtBuildTable.length + localBuildTable.length];
+        //copy over to an array
+        BuildMemoryData[] rowData = new BuildMemoryData[builtBuildTable.length + localBuildTable.length];
+        int index = 0;
+        for(Map.Entry<String, String> entry : entrySet) {
+            rowData[index] = new BuildMemoryData(entry.getKey(), Instant.parse(entry.getValue()), entry.getValue());
+        }
 
-        //use smallest/greatest to place rows in-place
-        for(Map.Entry<String, String> entry: entrySet) {
-            Instant instant = Instant.parse(entry.getValue());
-            long nano = instant.getEpochSecond() + instant.getNano();
+        //sort ascending
+        for(int i = 0; i < rowData.length; i++) {
+            long maxTime = rowData[i].getTime().getEpochSecond();
+            int maxIndex = i;
 
-            int index = (int) Math.floor(((nano - minNano) / (double)nanoRange) * rows.length);
-            while(rows[index] != null) index++;
-
-            rows[index] = entry.getKey() + "," + entry.getValue();
+            for(int j = i + 1; j < rowData.length; j++) {
+                if(rowData[j].getTimeEpoch() > maxTime) {
+                    maxTime = rowData[j].getTimeEpoch();
+                    maxIndex = j;
+                }
+            }
+            if(maxIndex != i) {
+                BuildMemoryData swap = rowData[i];
+                rowData[i] = rowData[maxIndex];
+                rowData[maxIndex] = swap;
+            }
         }
 
         //only include the most recent 200 values
-        String[] sliceRows = new String[Math.min(rows.length, MOST_RECENT_INCLUDE_NUM)];
+        String[] sliceRows = new String[Math.min(rowData.length, MOST_RECENT_INCLUDE_NUM)];
         for(int i = sliceRows.length - 1; i >= 0; i--) {
-            sliceRows[i] = rows[i] + (rows.length - sliceRows.length);
+            sliceRows[i] = rowData[i + (rowData.length - sliceRows.length)].toString();
         }
 
         //save values, both in the file and in the static variable so that others can have up-to-date data
@@ -80,5 +93,49 @@ public class BuildHistory {
             table[i] = rows[i].split(",");
         }
         return table;
+    }
+    private static class BuildMemoryData {
+        public String name;
+        public Instant time;
+        public String isoTime;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public Instant getTime() {
+            return time;
+        }
+
+        public void setTime(Instant time) {
+            this.time = time;
+        }
+
+        public String getIsoTime() {
+            return isoTime;
+        }
+
+        public void setIsoTime(String isoTime) {
+            this.isoTime = isoTime;
+        }
+
+        public BuildMemoryData(String name, Instant time, String isoTime) {
+            this.name = name;
+            this.time = time;
+            this.isoTime = isoTime;
+        }
+
+        public long getTimeEpoch() {
+            return this.time.getEpochSecond();
+        }
+
+        @NotNull
+        public String toString() {
+            return this.name = "," + this.isoTime;
+        }
     }
 }
