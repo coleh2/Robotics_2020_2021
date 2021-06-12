@@ -1,0 +1,13 @@
+i think the speed is 1
+i think that the driveMotors are fl, fr, bl, and br
+
+the leftJoystickX, the leftJoystickY, and the rightJoystickX control the driveMotors with the omni calculation
+
+the slowSpeed is the speed with a scale of 0.5
+
+the gamepad2LeftJoystickX, the gamepad2LeftJoystickY, and the gamepad2RightJoystickX control the driveMotors with the higher priority, an omni calculation, and a scale of the slowSpeed
+
+the aButton sets the drumMotor to 1
+dpadDown sets the drumMotor to -1 with a lower priority
+the leftTrigger does the flywheel
+i promise that when the time is roughly 30,000, the shooterArm is 0.8. otherwise, it is 0.

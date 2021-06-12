@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.managers.telemetryserver;
 
+import org.firstinspires.ftc.teamcode.auxilary.PaulMath;
 import org.firstinspires.ftc.teamcode.auxilary.dsls.ParserTools;
 import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 import org.firstinspires.ftc.teamcode.managers.TelemetryManager;
@@ -13,6 +14,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.Stack;
 
 public class RequestHandlerThread implements Runnable {
     private static final String HTTP_LINE_SEPARATOR = "\r\n";
@@ -40,20 +42,29 @@ public class RequestHandlerThread implements Runnable {
             String path = terms[1];
 
             if(path.equals("/stream")) {
-                writer.print("HTTP/1.1 200 OK" + HTTP_LINE_SEPARATOR + HTTP_LINE_SEPARATOR);
+                writer.print("HTTP/1.1 200 OK" + HTTP_LINE_SEPARATOR
+                        + "Content-Type: " + "text/plain; charset=utf-8" + HTTP_LINE_SEPARATOR
+                        + HTTP_LINE_SEPARATOR);
 
                 long streamStartedAt = System.currentTimeMillis();
-                while(socket.isConnected() && !socket.isClosed() && FeatureManager.isOpModeRunning) {
-                    if(dataSource.hasNewData()) writer.print(dataSource.readData());
-                    else writer.print(ControlCodes.DO_NOT_FRET_MOTHER_I_AM_ALIVE_JUST_BORED);
-
-                    writer.print("\n");
-                    writer.flush();
-
+                while(socket.isConnected() && !socket.isClosed() && FeatureManager.isOpModeRunning && System.currentTimeMillis() - streamStartedAt < 30_000) {
                     try {
-                        Thread.sleep(1000/60);
-                    } catch (InterruptedException e) {
-                        writer.write(ControlCodes.WOKEN_UP_AT_4AM);
+                        long loopStart = System.currentTimeMillis();
+                        if (dataSource.hasNewData()) writer.print(dataSource.readData());
+                        else writer.print(ControlCodes.DO_NOT_FRET_MOTHER_I_AM_ALIVE_JUST_BORED);
+
+                        writer.print("\n");
+                        writer.flush();
+
+                        //block until the next send
+                        while(System.currentTimeMillis() - loopStart < 1000/60) {}
+                    } catch(Throwable e) {
+                        StringBuilder r = new StringBuilder(e.getMessage());
+                        for(StackTraceElement s : e.getStackTrace()) r.append("\n").append(s.toString());
+
+                        writer.print("{\"error\":" + '"' + PaulMath.escapeString(r.toString()) + '"' + "}");
+                        writer.print("\n");
+                        writer.flush();
                     }
                 }
                 if(!FeatureManager.isOpModeRunning) {
@@ -86,9 +97,14 @@ public class RequestHandlerThread implements Runnable {
                     float[] values = new float[commaSepValues.length - 2];
 
                     for(int i = 2; i < commaSepValues.length; i++) values[i] = Float.parseFloat(commaSepValues[i]);
-
-
                 }
+
+                writer.print("HTTP/1.1 200 OK" + HTTP_LINE_SEPARATOR
+                        //+ "Content-Length: " + (file.getBytes(StandardCharsets.UTF_8).length) + HTTP_LINE_SEPARATOR
+                        + "Content-Type: " + "text/plain; charset=utf-8" + HTTP_LINE_SEPARATOR
+                        + HTTP_LINE_SEPARATOR
+                        + HTTP_LINE_SEPARATOR
+                        + "200 OK");
 
             } else {
                 String r = "not found";
@@ -101,7 +117,7 @@ public class RequestHandlerThread implements Runnable {
             socket.close();
 
 
-        } catch(IOException e) {
+        } catch(Exception e) {
             dataSource.log().add("dashboard status" + e.toString());
         }
     }

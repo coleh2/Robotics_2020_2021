@@ -1,12 +1,24 @@
 package org.firstinspires.ftc.teamcode.auxilary.buildhistory;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import org.firstinspires.ftc.teamcode.auxilary.FileSaver;
+import org.firstinspires.ftc.teamcode.auxilary.PaulMath;
+import org.firstinspires.ftc.teamcode.managers.FeatureManager;
 import org.jetbrains.annotations.NotNull;
+import org.junit.Ignore;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class BuildHistory {
     public static String builderBrowserFingerprint = "BUILDER_BROWSER_FINGERPRINT";
     public static String buildTimeIso = "BUILD_TIME_ISO";
@@ -21,45 +33,48 @@ public class BuildHistory {
     }
     private static void loadLocalMemory() {
         FileSaver localFile = new FileSaver(MEMORY_FILE);
-        String localFileContent = String.join("\n", localFile.readLines());
+        String localFileContent = PaulMath.join("\n", localFile.readLines().toArray(new String[0]));
 
         String[][] localBuildTable = parseCsvToTable(localFileContent);
         String[][] builtBuildTable = getBuildHistoryAsTable();
 
         HashMap<String, String> records = new HashMap<>();
 
-        for(String[] row : builtBuildTable) records.put(row[0], row[1]);
-        for(String[] row : localBuildTable) records.put(row[0], row[1]);
+
+        for(String[] row : builtBuildTable) {
+            if(row.length < 2) continue;
+            records.put(row[0], row[1]);
+        }
+        for(String[] row : localBuildTable) {
+            if(row.length < 2) continue;
+            records.put(row[0], row[1]);
+        }
 
 
         Set<Map.Entry<String, String>> entrySet = records.entrySet();
 
-        //find smallest & greatest nano-times
-        long minNano = Long.MAX_VALUE, maxNano = Long.MIN_VALUE;
-        for(Map.Entry<String, String> entry: entrySet) {
-            Instant instant = Instant.parse(entry.getValue());
-            long nano = instant.getEpochSecond() + instant.getNano();
-            if(nano > maxNano) maxNano = nano;
-            if(nano < minNano) minNano = nano;
-        }
-
-        long nanoRange = maxNano - minNano;
-
         //copy over to an array
-        BuildMemoryData[] rowData = new BuildMemoryData[builtBuildTable.length + localBuildTable.length];
+        BuildMemoryData[] rowData = new BuildMemoryData[records.size()];
         int index = 0;
         for(Map.Entry<String, String> entry : entrySet) {
-            rowData[index] = new BuildMemoryData(entry.getKey(), Instant.parse(entry.getValue()), entry.getValue());
+            try {
+                Date date = (new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")).parse(entry.getValue());
+                long ms = date.getTime();
+                rowData[index] = new BuildMemoryData(entry.getKey(), ms, entry.getValue());
+            } catch (ParseException e) {
+                rowData[index] = new BuildMemoryData(entry.getKey(), 0, entry.getValue());
+            }
+            index++;
         }
 
         //sort ascending
         for(int i = 0; i < rowData.length; i++) {
-            long maxTime = rowData[i].getTime().getEpochSecond();
+            long maxTime = rowData[i].getTime();
             int maxIndex = i;
 
             for(int j = i + 1; j < rowData.length; j++) {
-                if(rowData[j].getTimeEpoch() > maxTime) {
-                    maxTime = rowData[j].getTimeEpoch();
+                if(rowData[j].getTime() > maxTime) {
+                    maxTime = rowData[j].getTime();
                     maxIndex = j;
                 }
             }
@@ -77,7 +92,7 @@ public class BuildHistory {
         }
 
         //save values, both in the file and in the static variable so that others can have up-to-date data
-        String content = String.join("\n", sliceRows);
+        String content = PaulMath.join("\n", sliceRows);
         localFile.overwriteFile(content);
         buildHistory = content;
     }
@@ -96,7 +111,7 @@ public class BuildHistory {
     }
     private static class BuildMemoryData {
         public String name;
-        public Instant time;
+        public long time;
         public String isoTime;
 
         public String getName() {
@@ -107,11 +122,11 @@ public class BuildHistory {
             this.name = name;
         }
 
-        public Instant getTime() {
+        public long getTime() {
             return time;
         }
 
-        public void setTime(Instant time) {
+        public void setTime(long time) {
             this.time = time;
         }
 
@@ -123,14 +138,10 @@ public class BuildHistory {
             this.isoTime = isoTime;
         }
 
-        public BuildMemoryData(String name, Instant time, String isoTime) {
+        public BuildMemoryData(String name, long time, String isoTime) {
             this.name = name;
             this.time = time;
             this.isoTime = isoTime;
-        }
-
-        public long getTimeEpoch() {
-            return this.time.getEpochSecond();
         }
 
         @NotNull

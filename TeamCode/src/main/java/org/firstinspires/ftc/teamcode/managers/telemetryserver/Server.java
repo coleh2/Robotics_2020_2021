@@ -31,7 +31,10 @@ public class Server {
                 }
             }
             if(serverSocket == null) d.addData("dashboard status","Could not reserve TCP port");
-            else d.addData("dashboard status", "Go to http://192.168.43.1:" + port);
+            else {
+                FeatureManager.logger.add("Go to http://192.168.43.1:" + port);
+                d.addData("dashboard status", "Go to http://192.168.43.1:" + port);
+            }
 
             try {
                 ServerFiles.loadIndexDotHtml();
@@ -51,6 +54,7 @@ public class Server {
                     new Thread(new RequestHandlerThread(socket, dataSource)).start();
                     FeatureManager.logger.log("debug: dashboard looping!!");
                 }
+                serverSocket.close();
             } catch(Exception e) {
                 dataSource.log().add("dashboard status" + e.toString());
             }

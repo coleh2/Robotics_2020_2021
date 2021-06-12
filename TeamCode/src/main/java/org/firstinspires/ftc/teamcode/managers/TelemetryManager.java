@@ -197,9 +197,12 @@ public class TelemetryManager extends FeatureManager implements Telemetry {
 
         r += "}";
 
+        r += ", \"log\": " + PaulMath.JSONify(backendLog.readLog());
 
-        r += ", \"gamepad1Info\": " + getGamepad1Info();
-        r += ", \"gamepad2Info\": " + getGamepad2Info();
+        r += ", \"gamepad1\": " + getGamepad1Info();
+        r += ", \"gamepad2\": " + getGamepad2Info();
+
+        r += ", \"autoautoVariables\": " + autoauto.getVariableValueJson();
 
                 r += "}";
 
@@ -216,12 +219,12 @@ public class TelemetryManager extends FeatureManager implements Telemetry {
     }
 
     public String getGamepad1Info() {
-        if(gamepad1 == null) return "{}";
+        if(gamepad1 == null) return "null";
         else return "{\"left_stick_x\":" + gamepad1.left_stick_x + ", \"left_stick_y\":" + gamepad1.left_stick_y + ", \"right_stick_x\":" + gamepad1.right_stick_x + ", \"right_stick_y\":" + gamepad1.right_stick_y + ", \"dpad_up\":" + gamepad1.dpad_up + ", \"dpad_down\":" + gamepad1.dpad_down + ", \"dpad_left\":" + gamepad1.dpad_left + ", \"dpad_right\":" + gamepad1.dpad_right + ", \"a\":" + gamepad1.a + ", \"b\":" + gamepad1.b + ", \"x\":" + gamepad1.x + ", \"y\":" + gamepad1.y + ", \"guide\":" + gamepad1.guide + ", \"start\":" + gamepad1.start + ", \"back\":" + gamepad1.back + ", \"left_bumper\":" + gamepad1.left_bumper + ", \"right_bumper\":" + gamepad1.right_bumper + ", \"left_stick_button\":" + gamepad1.left_stick_button + ", \"right_stick_button\":" + gamepad1.right_stick_button + ", \"left_trigger\":" + gamepad1.left_trigger + ", \"right_trigger\":" + gamepad1.right_trigger + ", \"circle\":" + gamepad1.circle + ", \"cross\":" + gamepad1.cross + ", \"triangle\":" + gamepad1.triangle + ", \"square\":" + gamepad1.square + ", \"share\":" + gamepad1.share + ", \"options\":" + gamepad1.options + ", \"touchpad\":" + gamepad1.touchpad + ", \"ps\":" + gamepad1.ps + "}";
 
     }
     public String getGamepad2Info() {
-        if(gamepad2 == null) return "{}";
+        if(gamepad2 == null) return "null";
         else return "{\"left_stick_x\":" + gamepad2.left_stick_x + ", \"left_stick_y\":" + gamepad2.left_stick_y + ", \"right_stick_x\":" + gamepad2.right_stick_x + ", \"right_stick_y\":" + gamepad2.right_stick_y + ", \"dpad_up\":" + gamepad2.dpad_up + ", \"dpad_down\":" + gamepad2.dpad_down + ", \"dpad_left\":" + gamepad2.dpad_left + ", \"dpad_right\":" + gamepad2.dpad_right + ", \"a\":" + gamepad2.a + ", \"b\":" + gamepad2.b + ", \"x\":" + gamepad2.x + ", \"y\":" + gamepad2.y + ", \"guide\":" + gamepad2.guide + ", \"start\":" + gamepad2.start + ", \"back\":" + gamepad2.back + ", \"left_bumper\":" + gamepad2.left_bumper + ", \"right_bumper\":" + gamepad2.right_bumper + ", \"left_stick_button\":" + gamepad2.left_stick_button + ", \"right_stick_button\":" + gamepad2.right_stick_button + ", \"left_trigger\":" + gamepad2.left_trigger + ", \"right_trigger\":" + gamepad2.right_trigger + ", \"circle\":" + gamepad2.circle + ", \"cross\":" + gamepad2.cross + ", \"triangle\":" + gamepad2.triangle + ", \"square\":" + gamepad2.square + ", \"share\":" + gamepad2.share + ", \"options\":" + gamepad2.options + ", \"touchpad\":" + gamepad2.touchpad + ", \"ps\":" + gamepad2.ps + "}";
     }
 

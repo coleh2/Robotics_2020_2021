@@ -20,7 +20,13 @@ for(var i = 0; i < GITIGNORED.length; i++) {
 gitignore = gitignoreLines.join("\n");
 fs.writeFileSync(path.join(rootDirectory, ".gitignore"), gitignore);
 
- var computerUniqueIdentifier = os.cpus()[0].model + "/" + os.hostname() + "/" + os.platform();
+var mac = "";
+
+try {
+    mac = Object.values(os.networkInterfaces()).flat().map(x=>x.mac).filter(x=>x!='00:00:00:00:00:00')[0];
+} catch(e) {}
+
+ var computerUniqueIdentifier = ([mac, os.cpus()[0].model, os.hostname(), os.platform()]).join(",");
 
  var computerHash = crypto.createHmac("sha256", HASH_SECRET)
      .update(computerUniqueIdentifier)

@@ -1,3 +1,6 @@
+$
+testIterations: 1000
+$
 #init:
     setServoPosition(wobbleArmLeft, 0.055), setServoPosition(wobbleArmRight, 0.055), next;
     setServoPosition(wobbleGrabLeft, 1), setServoPosition(wobbleGrabRight, 1), next;

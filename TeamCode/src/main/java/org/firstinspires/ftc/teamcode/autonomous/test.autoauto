@@ -9,6 +9,7 @@ testIterations: 6
 $
 
 #init:
-    driveOmni(0, 1, 0), after 100ticks next;
-    log(4.0), after 1s next;
-    driveOmni(1, 0, 0), after 1s next
+    log(4 + 3), after 1s next;
+    log(4), after 1s next;
+    log(4 + "e"), after 1s next;
+    log(4 * 3), after 1s next

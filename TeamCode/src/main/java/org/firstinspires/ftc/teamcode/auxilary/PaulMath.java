@@ -211,4 +211,17 @@ public abstract class PaulMath extends FeatureManager {
                 .replace("\t", "\\t")
                 .replace("\\", "\\\\");
     }
+
+    public static String join(String s, String[] a) {
+        StringBuilder r = new StringBuilder();
+        for(int i = 0; i < a.length; i++) {
+            if(i!=0) r.append(s);
+            r.append(a[i]);
+        }
+        return r.toString();
+    }
+
+    public static String JSONify(String s) {
+        return '"' + escapeString(s) + '"';
+    }
 }
