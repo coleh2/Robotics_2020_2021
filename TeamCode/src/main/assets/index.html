@@ -328,7 +328,7 @@
                     //override for when the scroll changes on hover
                     if (state.lastScrolledToBottom && state.lastScroll == parent.scrollTop) scrolledToBottom = true;
 
-                    state.pre.appendChild(document.createTextNode(data.log + "\n"));
+                    if(data.log) state.pre.appendChild(document.createTextNode(data.log + "\n"));
 
                     if (scrolledToBottom) parent.scrollTop = parent.scrollHeight - parent.clientHeight;
 
@@ -343,7 +343,7 @@
                     parent.appendChild(pre);
                 },
                 ondata: function (data, parent, state) {
-                    state.pre.appendChild(document.createTextNode(data.log + "\n"));
+                    if(data.log) state.pre.appendChild(document.createTextNode(data.log + "\n"));
                 }
             },
             "connection.serverlagtime": {

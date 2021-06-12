@@ -94,3 +94,4 @@ lint/tmp/
 /AutoautoLanguagePlugin/build.gradle
 last-build.json
 **/buildhistory/BuildHistory.java
+*__controls.java
