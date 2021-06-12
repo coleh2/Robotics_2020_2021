@@ -234,8 +234,6 @@ ___ = [ \t\r\n]*
   
 PERIOD = '.'
 DOES = 'does'
-CLOSE_SQUARE_BRACKET = ']'
-OPEN_SQUARE_BRACKET = '['
 SETS = "sets" / "SETS"
 TO = "to" / "TO"
 ARE = "are" / "ARE"

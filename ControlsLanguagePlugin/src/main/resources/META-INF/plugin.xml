@@ -1,0 +1,34 @@
+<idea-plugin>
+    <id>net.coleh.controlslanguageplugin</id>
+    <category>Custom Languages</category>
+    <name>Controlsv2 Language Support</name>
+    <vendor url="https://github.com/coleh2">coleh</vendor>
+    <version>2.0.40</version>
+
+    <idea-version since-build="193" />
+
+    <depends>com.intellij.modules.androidstudio</depends>
+    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.java</depends>
+
+    <description><![CDATA[
+      Language support for the Controls (v2) DSL for First Tech Competition's Autonomous period: easy natural-language description of TeleOp opmodes, which can be compiled to an independent opmode class.
+    ]]></description>
+
+    <actions>
+        <action id="Controls.NewFile" class="net.coleh.controlslanguageplugin.ControlsNewFileAction" text="Robot File" description="Create a new Robot file">
+            <add-to-group group-id="NewGroup" anchor="last"/>
+        </action>
+    </actions>
+
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileType language="Controls" name="Controls Robot File" extensions="controls" fieldName="INSTANCE" implementationClass="net.coleh.controlslanguageplugin.ControlsFileType"/>
+        <lang.parserDefinition language="Controls" implementationClass="net.coleh.controlslanguageplugin.parse.ControlsParserDefinition"/>
+        <lang.syntaxHighlighterFactory language="Controls" implementationClass="net.coleh.controlslanguageplugin.parse.syntaxhighlight.ControlsSyntaxHighlighterFactory"/>
+        <colorSettingsPage implementation="net.coleh.controlslanguageplugin.parse.syntaxhighlight.ControlsColorSettingsPage"/>
+        <completion.contributor language="Controls" implementationClass="net.coleh.controlslanguageplugin.completion.ControlsCompletionContributor"/>
+        <annotator language="Controls" implementationClass="net.coleh.controlslanguageplugin.annotate.ControlsAnnotator"/>
+        <lang.commenter language="Controls" implementationClass="net.coleh.controlslanguageplugin.comment.ControlsCommenter"/>
+    </extensions>
+</idea-plugin>
