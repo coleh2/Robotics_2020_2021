@@ -23,14 +23,20 @@ for(var i = 0; i < controlFiles.length; i++) {
     var filename = controlFiles[i];
     
     var fileContent = fs.readFileSync(filename).toString();
-    var ast = parser.parse(fileContent);
+    var ast;
+    try {
+        ast = parser.parse(fileContent);
+    } catch(e) {
+        console.error(`${filename}:${e.location.start.line}:${e.location.start.column}: Syntax error; could not compile. ${e.message}`);
+        continue;
+    }
     
     try {
         var code = generateCode(ast);
     } catch(e) {
         if(typeof e == "object" && e.location) {
-            console.error(filename + ":" + e.location.start.line + ":\n" + e.message);
-            break;
+            console.error(filename + ":" + e.location.start.line + ": " + e.message);
+            continue;
         }
         else {
             throw e;

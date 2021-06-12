@@ -25,7 +25,7 @@ assertation = HERES_WHAT_WILL_HAPPEN COLON? ___ {
     return text().trim();
 }
 
-statement = _ s:(if_statement / claused_statement / does_statement) t:trailers? c:commaClause? (SEMICOLON / PERIOD)? ___ {
+statement "a statement" = _ s:(if_statement / claused_statement / does_statement) t:trailers? c:commaClause? (SEMICOLON / PERIOD)? ___ {
   s.properties = s.properties||{};
   
   //don't override claused statement
@@ -97,7 +97,7 @@ comparer = IS _ r:((REALLY / ACTUALLY / TRULY) _)* c:comparisonAdjective? {
     }
 }
 
-comparisonAdjective = LESS_THAN {return "<"} 
+comparisonAdjective "comparison adjective" = LESS_THAN {return "<"}
   / MORE_THAN {return ">"} 
   / (THE_SAME_AS / EQUAL_TO) {return "=="}
   / ROUGHLY (__ (EQUAL_TO / THE_SAME_AS))? { return "~=" }
@@ -114,7 +114,7 @@ does_statement = a:value v:verb b:value i:(TO value)? {
   };
 }
 
-verb = v:(IS / DOES / HATES / HATE / MIMICS / SETS / SET / ARE / CONTROLS / CONTROL) {
+verb "a verb" = v:(IS / DOES / HATES / HATE / MIMICS / SETS / SET / ARE / CONTROLS / CONTROL) {
     v = v.toLowerCase();
     if(v == "hates") return "hate";
     if(v == "are" || v == "was") return "is";
@@ -177,7 +177,7 @@ scale_trailer = A_SCALE_OF __ n:value {
 
 type = identifier
 
-identifier = _ ((THE/AN/A) __)? l:LETTER t:(DIGIT / LETTER)* _ &{
+identifier "an identifier" = _ ((THE/AN/A) __)? l:LETTER t:(DIGIT / LETTER)* _ &{
     var banned = ["and", "the", "an", "a", "to", "but"];
     if(banned.indexOf([l].concat(t).join("")) != -1) return false;
     else return true;
@@ -189,15 +189,15 @@ identifier = _ ((THE/AN/A) __)? l:LETTER t:(DIGIT / LETTER)* _ &{
   }
 }
 
-value = _ v:(vector / non_vector) _ {
+value "a value" = _ v:(vector / non_vector) _ {
     return v;
 }
 
-non_vector = _ v:(percentage / number / identifier) _ {
+non_vector "a scalar value" = _ v:(percentage / number / identifier) _ {
     return v;
 }
 
-vector =  h:non_vector b:(COMMA __ (AND __ non_vector / non_vector))+ {
+vector "a vector" = h:non_vector b:(COMMA __ (AND __ non_vector / non_vector))+ {
     return {
         location: location(),
         type: "vector",
@@ -213,7 +213,7 @@ percentage = v:number PERCENT_SIGN {
     }
 }
 
-number = MINUS? digitsequence (PERIOD digitsequence)? { 
+number "a number" = MINUS? digitsequence (PERIOD digitsequence)? {
   return {
     location: location(),
     type: "number",
@@ -225,12 +225,12 @@ digitsequence = [0-9]+ (COMMA [0-9]+)*
 
 ANYTHING = [^\n]
 
-__ = [ \t]+
+__ "whitespace" = [ \t]+
 
 _ "whitespace"
   = [ \t]*
   
-___ = [ \t\r\n]*
+___ "whitespace with newline" = [ \t\r\n]*
   
 PERIOD = '.'
 DOES = 'does'
