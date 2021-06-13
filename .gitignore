@@ -85,6 +85,9 @@ lint/outputs/
 lint/tmp/
 # lint/reports/
 
+# what's compiler.xml??? it keeps being edited :/
+.idea/compiler.xml
+
 
 #autoauto files
 *__autoauto.java
