@@ -23,10 +23,9 @@ import net.coleh.controlslanguageplugin.parse.ControlsTypes;
 
 EOL=\R
 WHITE_SPACE=\s
-NUMERIC_VALUE=-?[0-9]*\.?[0-9]+
-NUMERIC_VALUE_WITH_UNIT=-?[0-9]*\.?[0-9]+\w+
+NUMERIC_VALUE=-?(([0-9],[0-9]|[0-9])*\.)?([0-9],[0-9]|[0-9])+
 WHITESPACE_RANGE=\s+
-IDENTIFIER=\w+
+IDENTIFIER=[a-zA-Z]\w+
 
 %state IN_COMMENT
 %state IN_STRING
@@ -71,7 +70,6 @@ IDENTIFIER=\w+
   "A SCALE OF"        { return ControlsTypes.A_SCALE_OF; }
   "-"        { return ControlsTypes.MINUS; }
   ';'        { return ControlsTypes.SEMICOLON; }
-  "\n"        { return ControlsTypes.NEWLINE; }
   "and"        { return ControlsTypes.AND; }
   "AND"        { return ControlsTypes.AND; }
   "the"        { return ControlsTypes.THE; }
@@ -151,7 +149,7 @@ IDENTIFIER=\w+
   "OF"        { return ControlsTypes.OF; }
   "%"        { return ControlsTypes.PERCENT_SIGN; }
 
-  {IDENTIFIER}               { return ControlsTypes.IDENTIFIER; }
   {NUMERIC_VALUE}            { return ControlsTypes.NUMERIC_VALUE; }
+  {IDENTIFIER}               { return ControlsTypes.IDENTIFIER; }
   [^]                        { return ControlsTypes.UNKNOWN_CHARACTER; }
 }

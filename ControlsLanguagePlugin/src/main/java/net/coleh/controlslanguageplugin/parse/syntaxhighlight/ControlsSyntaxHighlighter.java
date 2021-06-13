@@ -20,41 +20,37 @@ public class ControlsSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey OPERATOR =
             createTextAttributesKey("SIMPLE_SEPARATOR", DefaultLanguageHighlighterColors.OPERATION_SIGN);
     public static final TextAttributesKey LABEL =
-            createTextAttributesKey("AUTOAUTO_LABEL", DefaultLanguageHighlighterColors.CLASS_NAME);
+            createTextAttributesKey("CONTROLS_LABEL", DefaultLanguageHighlighterColors.CLASS_NAME);
     public static final TextAttributesKey VERB =
-            createTextAttributesKey("AUTOAUTO_VERB", DefaultLanguageHighlighterColors.FUNCTION_CALL);
+            createTextAttributesKey("CONTROLS_VERB", DefaultLanguageHighlighterColors.FUNCTION_CALL);
     public static final TextAttributesKey VALUE =
-            createTextAttributesKey("AUTOAUTO_VALUE", DefaultLanguageHighlighterColors.STRING);
+            createTextAttributesKey("CONTROLS_VALUE", DefaultLanguageHighlighterColors.STRING);
     public static final TextAttributesKey COMMA =
-            createTextAttributesKey("AUTOAUTO_COMMA", DefaultLanguageHighlighterColors.COMMA);
+            createTextAttributesKey("CONTROLS_COMMA", DefaultLanguageHighlighterColors.COMMA);
     public static final TextAttributesKey PARENS =
-            createTextAttributesKey("AUTOAUTO_PARENS", DefaultLanguageHighlighterColors.PARENTHESES);
+            createTextAttributesKey("CONTROLS_PARENS", DefaultLanguageHighlighterColors.PARENTHESES);
     public static final TextAttributesKey SEMICOLON =
-            createTextAttributesKey("AUTOAUTO_SEMICOLON", DefaultLanguageHighlighterColors.COMMA);
+            createTextAttributesKey("CONTROLS_SEMICOLON", DefaultLanguageHighlighterColors.COMMA);
     public static final TextAttributesKey COMMENT =
-            createTextAttributesKey("AUTOAUTO_COMMENT", DefaultLanguageHighlighterColors.BLOCK_COMMENT);
+            createTextAttributesKey("CONTROLS_COMMENT", DefaultLanguageHighlighterColors.BLOCK_COMMENT);
     public static final TextAttributesKey STATEMENT =
-            createTextAttributesKey("AUTOAUTO_STATEMENT", DefaultLanguageHighlighterColors.KEYWORD);
+            createTextAttributesKey("CONTROLS_STATEMENT", DefaultLanguageHighlighterColors.KEYWORD);
     public static final TextAttributesKey NUMERIC_VALUE =
-            createTextAttributesKey("AUTOAUTO_NUMERIC_VALUE", DefaultLanguageHighlighterColors.NUMBER);
-    public static final TextAttributesKey STRING =
-            createTextAttributesKey("AUTOAUTO_STRING", DefaultLanguageHighlighterColors.STRING);
+            createTextAttributesKey("CONTROLS_NUMERIC_VALUE", DefaultLanguageHighlighterColors.NUMBER);
+    public static final TextAttributesKey PROPERTY_TYPE =
+            createTextAttributesKey("CONTROLS_PROPERTY", DefaultLanguageHighlighterColors.PARAMETER);
 
     public static final TextAttributesKey BAD_CHARACTER =
             createTextAttributesKey("SIMPLE_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER);
 
-
-    public static final TextAttributesKey[] OPERATOR_KEYS = new TextAttributesKey[] { OPERATOR };
-    public static final TextAttributesKey[] PARENS_KEYS = new TextAttributesKey[] { PARENS };
     public static final TextAttributesKey[] LABEL_KEYS = new TextAttributesKey[] { LABEL };
     public static final TextAttributesKey[] VERB_KEYS = new TextAttributesKey[] { VERB };
-    public static final TextAttributesKey[] VALUE_KEYS = new TextAttributesKey[] { VALUE };
     public static final TextAttributesKey[] COMMA_KEYS = new TextAttributesKey[] { COMMA };
     public static final TextAttributesKey[] SEMICOLON_KEYS = new TextAttributesKey[] { SEMICOLON };
     public static final TextAttributesKey[] COMMENT_KEYS = new TextAttributesKey[] { COMMENT };
     public static final TextAttributesKey[] STATEMENT_KEYS = new TextAttributesKey[] { STATEMENT };
     public static final TextAttributesKey[] NUMERIC_VALUE_KEYS = new TextAttributesKey[] { NUMERIC_VALUE };
-    public static final TextAttributesKey[] STRING_KEYS = new TextAttributesKey[] { STRING };
+    public static final TextAttributesKey[] PROPERTY_TYPE_KEYS = new TextAttributesKey[] { PROPERTY_TYPE };
     public static final TextAttributesKey[] BAD_CHARACTER_KEYS = new TextAttributesKey[] { BAD_CHARACTER };
 
     public static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[] { };
@@ -75,9 +71,10 @@ public class ControlsSyntaxHighlighter extends SyntaxHighlighterBase {
                 tokenType.equals(ControlsTypes.TRULY) ||
                 tokenType.equals(ControlsTypes.ACTUALLY) ||
                 tokenType.equals(ControlsTypes.I_PROMISE) ||
-                tokenType.equals(ControlsTypes.I_THINK)) {
+                tokenType.equals(ControlsTypes.I_THINK) ||
+                tokenType.equals(ControlsTypes.THAT)) {
             return LABEL_KEYS;
-        } else if (tokenType.equals(ControlsTypes.COMMA)) {
+        } else if (tokenType.equals(ControlsTypes.COMMA) || tokenType.equals(ControlsTypes.AND)) {
             return COMMA_KEYS;
         } else if (tokenType.equals(ControlsTypes.SEMICOLON) || tokenType.equals(ControlsTypes.PERIOD) || tokenType.equals(ControlsTypes.COLON)) {
             return SEMICOLON_KEYS;
@@ -92,7 +89,11 @@ public class ControlsSyntaxHighlighter extends SyntaxHighlighterBase {
                 tokenType.equals(ControlsTypes.SET) ||
                 tokenType.equals(ControlsTypes.ARE) ||
                 tokenType.equals(ControlsTypes.CONTROLS) ||
-                tokenType.equals(ControlsTypes.CONTROL)) {
+                tokenType.equals(ControlsTypes.CONTROL) ||
+                tokenType.equals(ControlsTypes.TO) ||
+                tokenType.equals(ControlsTypes.ROUGHLY) ||
+                tokenType.equals(ControlsTypes.THE_SAME_AS) ||
+                tokenType.equals(ControlsTypes.WITHIN)) {
             return VERB_KEYS;
         } else if(tokenType.equals(ControlsTypes.OTHERWISE) ||
                 tokenType.equals(ControlsTypes.WHEN_NOT) ||
@@ -106,6 +107,11 @@ public class ControlsSyntaxHighlighter extends SyntaxHighlighterBase {
             return COMMENT_KEYS;
         } else if(tokenType.equals(ControlsTypes.NUMERIC_VALUE)) {
             return NUMERIC_VALUE_KEYS;
+        } else if(tokenType.equals(ControlsTypes.CALCULATION) ||
+                tokenType.equals(ControlsTypes.A_DEFAULT_OF) ||
+                tokenType.equals(ControlsTypes.A_SCALE_OF) ||
+                tokenType.equals(ControlsTypes.PRIORITY)) {
+            return PROPERTY_TYPE_KEYS;
         } else {
             return EMPTY_KEYS;
         }
