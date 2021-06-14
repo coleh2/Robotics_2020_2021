@@ -58,10 +58,15 @@ function doesStatementToJava(doesStatement) {
         block += resolveCalculatedStatement(doesStatement);
     } else {
         if(doesStatement.indirectObject.type == "vector") {
-            block += doesStatement.indirectObject.values.map((x,i)=>`${getVariableId(doesStatement.directObject)}[${i}] = ${getVariableId(x)}${scale?" * " + getVariableIdAsScalar(scale) : ""};`).join("\n");
+            if(doesStatement.verb == "sets") {
+                block += doesStatement.indirectObject.values.map((x,i)=>`${getVariableId(doesStatement.directObject)}[${i}] = ${getVariableId(x)}${scale?" * " + getVariableIdAsScalar(scale) : ""};`).join("\n");
+            } else if(doesStatement.verb == "controls") {
+                block += doesStatement.indirectObject.values.map((x,i)=>`values[${getVariableId(doesStatement.directObject)}[${i}]] = values[${getVariableId(x)}]${scale?" * " + getVariableIdAsScalar(scale) : ""};`).join("\n");
+            }
         } else {
-            block += `${getVariableId(doesStatement.directObject)}[0] = `
-            + `${getVariableId(doesStatement.indirectObject) + (doesStatement.indirectObject.type == "number" ? "" : "[0]")}${scale?" * " + getVariableIdAsScalar(scale) : ""};`
+            block += `values[${getVariableId(doesStatement.directObject)}] = `
+            +  getVariableIdAsScalar(doesStatement.indirectObject)
+            + `${scale?" * " + getVariableIdAsScalar(scale) : ""};`
         }
     }
     
@@ -104,11 +109,11 @@ function getVariableIdAsScalar(value) {
     if(value.type == "vector") return `arrayAverage(${getVariableId(value)})`;
     else if(value.typeType == "vector") return getVariableId(value) + "[0][0]";
     else if(value.type == "number") return getVariableId(value);
-    else return getVariableId(value) + "[0]";
+    else return "values[" + getVariableId(value) + "]";
 }
 
 function vectorToVariableId(vector) {
-    return `new float[][] {${vector.values.map(x=>getVariableId(x)).join(",")}}`;
+    return `new float[] {${vector.values.map(x=>`values[${getVariableId(x)}]`).join(",")}}`;
 }
 
 function resolveCalculatedStatement(doesStatement) {
@@ -117,7 +122,7 @@ function resolveCalculatedStatement(doesStatement) {
     if(doesStatement.properties.calculation.value == "omni") {
         var tempVarname = generateTempVarname();
         src += `float[] ${tempVarname} = PaulMath.omniCalc(${doesStatement.indirectObject.values.map(x=>getVariableIdAsScalar(x) + (scale?" * " + getVariableIdAsScalar(scale) : ""))});\n`;
-        src += `for(int i = 0; i < ${tempVarname}.length; i++) ${getVariableId(doesStatement.directObject)}[i][0] = ${tempVarname}[i];`
+        src += `for(int i = 0; i < ${tempVarname}.length; i++) values[${getVariableId(doesStatement.directObject)}[i]] = ${tempVarname}[i];`
     } else {
         throw "Unknown calculation"
     }

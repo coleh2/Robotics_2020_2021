@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.auxilary.controlmaps;
 
 public class DualControllerContolMap extends ControlMap {
-    public static String drive = "ternary( or(or(leftStickY, leftStickX), rightStickX), scale(vector3(deadzone(leftStickY, 0.1), deadzone(leftStickX, 0.05), rightStickX), ternary(rightStickX, 1.0, 1.3)), vector3(scale(deadzone(gamepad2LeftStickY, 0.15), 0.4), scale(deadzone(gamepad2LeftStickX, 0.15), 0.6), scale(gamepad2RightStickX, 0.4)))";
+    public static String drive = "vector3(deadzone(leftStickY, 0.1), deadzone(leftStickX, 0.05), rightStickX)";
     public static String intake = "ternary(cross, -1, ternary(triangle, 1, ternary(leftTrigger, -1, 0)))";
     public static String drum = "ternary(dpadUp, -1, ternary(dpadDown, 1, ternary(gamepad2DpadDown, 1, ternary(leftTrigger, -1, ternary(gamepad2DpadUp, -1, 0)))))";
     public static String spinner = "ternary(dpadRight, 0.5, ternary(gamepad2DpadRight, 0.5, ternary(gamepad2Cross, -0.5, ternary(dpadLeft, -0.5, ternary(leftTrigger, 0.5, 0)))))";

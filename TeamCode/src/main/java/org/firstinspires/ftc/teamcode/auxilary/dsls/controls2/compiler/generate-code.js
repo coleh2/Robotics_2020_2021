@@ -22,8 +22,13 @@ module.exports = function(ast) {
         TYPE_SETUP_CODE: makeTypeSetupCode(identifierEntries),
         HARDWARE_SETTING: makeHardwareSetting(identifierEntries),
         INPUT_SETTING: makeInputSetting(identifierEntries),
-        BUILTINS: `__timeSinceStartMs[0] = (float)(System.currentTimeMillis() - startTimeMs);`
+        RESETTING: makeResetting(identifierEntries),
+        BUILTINS: `values[__timeSinceStartMs] = (float)(System.currentTimeMillis() - startTimeMs);`
     };
+}
+
+function makeResetting(identifierEntries) {
+    return identifierEntries.filter(x=>x[1].typeType != "vector" && isNaN(x[0])).map(x=>`values[${x[0]}] = 0f;`).join("\n");
 }
 
 function makeInputSetting(identifierEntries) {
@@ -39,7 +44,7 @@ function makeInputSetting(identifierEntries) {
             else setter = `${inputNames[name]} ? 1f : 0f`;
             
             //set the value
-            settingStatements.push(`${name} = new float[] { ${setter} };\n`)
+            settingStatements.push(`values[${name}] = ${setter};\n`)
         }
     }
     return settingStatements.join("");
@@ -122,8 +127,9 @@ function buildVariableInits(identifierEntries) {
     }
     
     return `HardwareDevice ${scalars.map(x=>`${x}HardwareDevice`).join(",")};
-float[] ${scalars.map(x=>`${x} = new float[1]`).join(",")};
-float[][] ${vectors.map((x,i)=>`${x} = new float[${vectorLengths[i]}][]`).join(",")};`;
+final int ${scalars.map((x,i)=>`${x} = ${i}`).join(",")};
+final int[] ${vectors.map((x,i)=>`${x} = new int[${vectorLengths[i]}]`).join(",")};
+float[] values = new float[${scalars.length}];`;
 }
 
 function makeTypeSetupCode(identifierEntries) {
@@ -131,17 +137,17 @@ function makeTypeSetupCode(identifierEntries) {
         if(x[1].typeType == "vector" || !isNaN(x[0])) return "";
         
 return `${x[0]}HardwareDevice = hardwareMap.tryGet(DcMotor.class, "${x[0]}");
- if(${x[0]}HardwareDevice != null) ${x[0]}HardwareDevice = hardwareMap.tryGet(Servo.class, "${x[0]}");
+ if(${x[0]}HardwareDevice == null) ${x[0]}HardwareDevice = hardwareMap.tryGet(Servo.class, "${x[0]}");
 `;
     }).join("");
 }
 
 function makeHardwareSetting(identifierEntries) {
-    return identifierEntries.map(x=>{
+    return identifierEntries.filter(x=>x[1].typeType=="scalar").map((x,i)=>{
         if(x[1].typeType == "vector" || !isNaN(x[0])) return "";
         
-    return `if(${x[0]}HardwareDevice instanceof DcMotor) ((DcMotor) ${x[0]}HardwareDevice).setPower(${x[0]}[0]);
-else if(${x[0]}HardwareDevice instanceof Servo) ((Servo) ${x[0]}HardwareDevice).setPosition(${x[0]}[0]);
+    return `if(${x[0]}HardwareDevice instanceof DcMotor) ((DcMotor) ${x[0]}HardwareDevice).setPower(values[${x[0]}]);
+else if(${x[0]}HardwareDevice instanceof Servo) ((Servo) ${x[0]}HardwareDevice).setPosition(values[${x[0]}]);
 `;
     }).join("");
 } 
@@ -296,7 +302,7 @@ function verifyAllowedWriter(variable, statement) {
         
         throw aFitAbout("Please don't bother god.");
     }
-    if(variableName == "real") {
+    if(variableName == "real" || variableName == "reality") {
         throw aFitAbout("Stop trying to change reality");
     }
     if(variableName == "dozen") {
@@ -335,6 +341,7 @@ function addBuiltins(program) {
         hundred: 100,
         dozen: 12,
         god: 1,
+        pressed: 1,
         time: "__timeSinceStartMs"
     }
     var builtinsEntries = Object.entries(builtins);

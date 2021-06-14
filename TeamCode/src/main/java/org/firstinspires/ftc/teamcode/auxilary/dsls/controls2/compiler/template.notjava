@@ -39,16 +39,25 @@ public class template extends OpMode {
 /*VARIABLES*/
 
     public void init() {
+        FeatureManager.setIsOpModeRunning(true);
+        FeatureManager.logger.setBackend(telemetry.log());
+
 /*TYPE_SETUP_CODE*/
     }
 
     public void loop() {
-        if(startTimeMs == -1) startTimeMs = System.currentTimeMillis();
-/*INPUT_SETTING*/
-/*BUILTINS*/
-/*GENERATED_JAVA*/
+        try {
+            if (startTimeMs == -1) startTimeMs = System.currentTimeMillis();
+            /*RESETTING*/
 
-/*HARDWARE_SETTING*/
+            /*INPUT_SETTING*/
+            /*BUILTINS*/
+            /*GENERATED_JAVA*/
+
+            /*HARDWARE_SETTING*/
+        } catch(Throwable e) {
+            FeatureManager.logger.log(e.toString());
+        }
     }
 
     @Test
@@ -65,9 +74,9 @@ public class template extends OpMode {
     }
 
 
-    public float arrayAverage(float[][] v) {
+    public float arrayAverage(float[] v) {
         float total = 0;
-        for(float[] f : v) total += f[0];
+        for(float f : v) total += f;
         return total / v.length;
     }
 }

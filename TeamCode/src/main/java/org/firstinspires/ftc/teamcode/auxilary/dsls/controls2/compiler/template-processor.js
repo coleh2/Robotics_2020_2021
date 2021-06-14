@@ -10,7 +10,8 @@ module.exports = function (template, code, filename) {
         .replace("/*TYPE_SETUP_CODE*/", indent(code.TYPE_SETUP_CODE, 2))
         .replace("/*HARDWARE_SETTING*/", indent(code.HARDWARE_SETTING, 2))
         .replace("/*INPUT_SETTING*/", indent(code.INPUT_SETTING, 2))
-        .replace("/*BUILTINS*/", indent(code.BUILTINS, 2));
+        .replace("/*BUILTINS*/", indent(code.BUILTINS, 2))
+        .replace("/*RESETTING*/", indent(code.RESETTING, 2));
 }
 
 function indent(str, w) {

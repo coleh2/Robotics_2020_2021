@@ -28,7 +28,8 @@ for(var i = 0; i < controlFiles.length; i++) {
         ast = parser.parse(fileContent);
     } catch(e) {
         console.error(`${filename}:${e.location.start.line}:${e.location.start.column}: Syntax error; could not compile. ${e.message}`);
-        continue;
+        process.exitCode = 1;
+        throw "";
     }
     
     try {
@@ -36,7 +37,8 @@ for(var i = 0; i < controlFiles.length; i++) {
     } catch(e) {
         if(typeof e == "object" && e.location) {
             console.error(filename + ":" + e.location.start.line + ": " + e.message);
-            continue;
+            process.exitCode = 1;
+            throw "";
         }
         else {
             throw e;
