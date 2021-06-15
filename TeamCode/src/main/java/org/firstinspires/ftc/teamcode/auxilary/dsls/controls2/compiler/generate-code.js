@@ -176,6 +176,9 @@ function loadIdentifiersFromDoesStatement(doesStatement, conditionalUpon, condit
         doesStatement.subject = {type: "identifier", value: "god"};
     }
     
+    //the direct object always has a writer relationship
+    registerWriter(doesStatement.directObject, conditionalAgainst || conditionalUpon || doesStatement);
+    
     //if indirect object and subject are the same, only register one as a reader
     if(doesStatement.indirectObject.value != doesStatement.subject.value) {
         registerReader(doesStatement.indirectObject, doesStatement);
@@ -185,8 +188,6 @@ function loadIdentifiersFromDoesStatement(doesStatement, conditionalUpon, condit
         registerReader(doesStatement.subject, doesStatement);
     }
     
-    //the direct object always has a writer relationship
-    registerWriter(doesStatement.directObject, conditionalAgainst || conditionalUpon || doesStatement);
 }
 
 function loadIdentifiersFromIfStatement(ifStatement) {

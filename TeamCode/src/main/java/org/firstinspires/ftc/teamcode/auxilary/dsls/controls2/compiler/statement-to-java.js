@@ -1,3 +1,5 @@
+const specialKeywords = require("./special-keywords");
+
 var nonce = 0;
 
 module.exports = function(statement) {
@@ -64,9 +66,13 @@ function doesStatementToJava(doesStatement) {
                 block += doesStatement.indirectObject.values.map((x,i)=>`values[${getVariableId(doesStatement.directObject)}[${i}]] = values[${getVariableId(x)}]${scale?" * " + getVariableIdAsScalar(scale) : ""};`).join("\n");
             }
         } else {
-            block += `values[${getVariableId(doesStatement.directObject)}] = `
-            +  getVariableIdAsScalar(doesStatement.indirectObject)
-            + `${scale?" * " + getVariableIdAsScalar(scale) : ""};`
+            if(specialKeywords[doesStatement.indirectObject.value]) {
+                block += specialKeywords[doesStatement.indirectObject.value](doesStatement);
+            } else {
+                block += `values[${getVariableId(doesStatement.directObject)}] = `
+                +  getVariableIdAsScalar(doesStatement.indirectObject)
+                + `${scale?" * " + getVariableIdAsScalar(scale) : ""};`
+            }
         }
     }
     

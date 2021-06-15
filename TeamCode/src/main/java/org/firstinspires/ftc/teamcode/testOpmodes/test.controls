@@ -1,19 +1,14 @@
-i think the speed is 0.8
-i think that the driveMotors are the flMotor, the frMotor, the brMotor, and the blMotor
+i think the speed is 0.8.
 
-the leftStickY, the leftStickX, and the rightStickX control the driveMotors with the omni calculation
+i think that the driveMotors are fl, fr, br, and bl; bl is reversed.
 
-the slowSpeed is the speed with a scale of 0.5
+the leftStickY, the leftStickX, and the rightStickX control the driveMotors with the omni calculation.
 
-the gamepad2LeftStickY, the gamepad2LeftStickX, and the gamepad2RightStickX control the driveMotors with the higher priority, an omni calculation, and a scale of the slowSpeed
+the slowSpeed is the speed with a scale of 0.5;
 
-the aButton sets the drum to 1
-dpadDown sets the drum to -1 with a lower priority
+the gamepad2LeftStickY, the gamepad2LeftStickX, and the gamepad2RightStickX control the driveMotors with a higher priority, an omni calculation, and a scale of the slowSpeed.
+
+the aButton sets the drum to 1.
+dpadDown sets the drum to -1 with a lower priority.
 the leftTrigger does the flywheel
 i promise that when the aButton is pressed, the shooterArm is 0.8. otherwise, it is 0.
-
-
-i promise that fl is the flMotor
-i promise that fr is the frMotor
-i promise that br is the brMotor
-i promise that bl is the blMotor with a scale of -1
